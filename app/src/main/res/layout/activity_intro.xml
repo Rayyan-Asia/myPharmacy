@@ -16,20 +16,102 @@
             android:elevation="8dp"
             android:outlineProvider="background"
             android:background="@drawable/rounded_rectangle">
-
-        <!-- Add your input form elements here -->
-        <EditText
-                android:id="@+id/input_text"
+        <TextView
+                android:id="@+id/intro_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter text here"/>
-
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="50dp"
+                android:text="Tell us about yourself"
+                android:textSize="18sp"
+                android:textColor="#FF0000"
+                android:textStyle="bold"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="2"/>
+        <!-- Add your input form elements here -->
+        <EditText
+                android:id="@+id/first_name_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_below="@id/intro_view"
+                android:hint="First Name"/>
+        <EditText
+                android:id="@+id/last_name_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/first_name_field"
+                android:layout_marginTop="16dp"
+                android:hint="Last Name"/>
+        <Spinner
+                android:id="@+id/gender_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Gender"
+                android:layout_below="@id/last_name_field"
+                android:entries="@array/gender"/>
+        <DatePicker
+                android:id="@+id/birth_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="16dp"/>
+        <EditText
+                android:id="@+id/address_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gender_spinner"
+                android:layout_marginTop="16dp"
+                android:hint="Address"/>
+        <EditText
+                android:id="@+id/phone_number_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/address_field"
+                android:layout_marginTop="16dp"
+                android:inputType="phone"
+                android:hint="Phone Number"/>
+        <EditText
+                android:id="@+id/weight_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/phone_number_field"
+                android:layout_marginTop="16dp"
+                android:inputType="numberDecimal"
+                android:hint="Weight (kg)"/>
+        <EditText
+                android:id="@+id/height_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/weight_field"
+                android:layout_marginTop="16dp"
+                android:inputType="numberDecimal"
+                android:hint="Height (ft)"/>
+        <Spinner
+                android:id="@+id/marital_status_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Marital_Status"
+                android:layout_below="@id/height_field"
+                android:entries="@array/marital_status"/>
+        <Spinner
+                android:id="@+id/blood_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Blood Type"
+                android:layout_below="@id/marital_status_spinner"
+                android:entries="@array/blood_types"/>
         <Button
-                android:id="@+id/submit_button"
+                android:id="@+id/save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Submit"
-                android:layout_below="@id/input_text"
+                android:text="Save"
+                android:layout_below="@id/blood_type_spinner"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"/>
