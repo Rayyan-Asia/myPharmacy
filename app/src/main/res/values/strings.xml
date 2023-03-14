@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">myPharmacy</string>
+    <string name="tell_us_about_yourself">Tell us about yourself</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="gender_hint">Gender</string>
+    <string name="select_a_date">Select a date</string>
+    <string name="address">Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="weight_kg">Weight (kg)</string>
+    <string name="height_ft">Height (ft)</string>
+    <string name="marital_status_hint">Marital_Status</string>
+    <string name="blood_type_hint">Blood Type</string>
+    <string name="save">Save</string>
     <string-array name="blood_types">
         <item>No Blood Type Selected</item>
         <item>A+</item>

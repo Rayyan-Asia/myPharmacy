@@ -21,8 +21,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="50dp"
-                android:text="Tell us about yourself"
+                android:layout_marginStart="50dp"
+                android:text="@string/tell_us_about_yourself"
                 android:textSize="18sp"
                 android:textColor="#FF0000"
                 android:textStyle="bold"
@@ -37,22 +37,31 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_below="@id/intro_view"
-                android:hint="First Name"/>
+                android:hint="@string/first_name"/>
         <EditText
                 android:id="@+id/last_name_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/first_name_field"
                 android:layout_marginTop="16dp"
-                android:hint="Last Name"/>
+                android:hint="@string/last_name"/>
         <Spinner
                 android:id="@+id/gender_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="Gender"
+                android:hint="@string/gender"
                 android:layout_below="@id/last_name_field"
                 android:entries="@array/gender"/>
+        <TextView
+                android:id="@+id/birth_day_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gender_spinner"
+                android:layout_marginTop="8dp"
+                android:hint="@string/select_a_date"
+                android:focusable="false"
+                android:clickable="true"/>
         <DatePicker
                 android:id="@+id/birth_day"
                 android:layout_width="match_parent"
@@ -65,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/gender_spinner"
                 android:layout_marginTop="16dp"
-                android:hint="Address"/>
+                android:hint="@string/address"/>
         <EditText
                 android:id="@+id/phone_number_field"
                 android:layout_width="match_parent"
@@ -73,7 +82,7 @@
                 android:layout_below="@id/address_field"
                 android:layout_marginTop="16dp"
                 android:inputType="phone"
-                android:hint="Phone Number"/>
+                android:hint="@string/phone_number"/>
         <EditText
                 android:id="@+id/weight_field"
                 android:layout_width="match_parent"
@@ -81,7 +90,7 @@
                 android:layout_below="@id/phone_number_field"
                 android:layout_marginTop="16dp"
                 android:inputType="numberDecimal"
-                android:hint="Weight (kg)"/>
+                android:hint="@string/weight_kg"/>
         <EditText
                 android:id="@+id/height_field"
                 android:layout_width="match_parent"
@@ -89,13 +98,13 @@
                 android:layout_below="@id/weight_field"
                 android:layout_marginTop="16dp"
                 android:inputType="numberDecimal"
-                android:hint="Height (ft)"/>
+                android:hint="@string/height_ft"/>
         <Spinner
                 android:id="@+id/marital_status_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="Marital_Status"
+                android:hint="@string/marital_status"
                 android:layout_below="@id/height_field"
                 android:entries="@array/marital_status"/>
         <Spinner
@@ -103,14 +112,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="Blood Type"
+                android:hint="@string/blood_type"
                 android:layout_below="@id/marital_status_spinner"
                 android:entries="@array/blood_types"/>
         <Button
                 android:id="@+id/save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Save"
+                android:text="@string/save"
                 android:layout_below="@id/blood_type_spinner"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="16dp"
