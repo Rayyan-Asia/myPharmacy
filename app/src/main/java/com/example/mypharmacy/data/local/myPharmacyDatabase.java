@@ -17,22 +17,23 @@ import javax.inject.Inject;
 
 @Database(entities = {Person.class}, version = 1)
 public abstract class myPharmacyDatabase extends RoomDatabase {
+     private static final String DB_NAME = "myPharmacy.db";
+     private static myPharmacyDatabase instance;
 
-    public abstract PersonDao personDao();
-    private static final String DB_NAME = "myPharmacy.db";
+     public abstract PersonDao getPersonDao();
 
-    @Inject
-    PersonRepository personRepository;
-    private static myPharmacyDatabase instance;
-
-    public static synchronized myPharmacyDatabase getInstance(Context context) {
-        if (instance == null) {
-            instance = Room.databaseBuilder(context.getApplicationContext(), myPharmacyDatabase.class, DB_NAME)
-                    .build();
-        }
-        return instance;
-    }
+     public static synchronized myPharmacyDatabase getInstance(Context context) {
+          if (instance == null) {
+               instance = Room.databaseBuilder(context, myPharmacyDatabase.class, DB_NAME)
+                       .build();
+          }
+          return instance;
+     }
 }
+
+
+
+
 
 
 

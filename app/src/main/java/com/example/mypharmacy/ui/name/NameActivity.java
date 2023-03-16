@@ -24,7 +24,7 @@ public class NameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_name);
-        ((MyApplication) getApplicationContext()).appComponent.inject(this);
+       // ((MyApplication) getApplicationContext()).appComponent.inject(this);
 
 
         nameEditText = findViewById(R.id.nameEditText);

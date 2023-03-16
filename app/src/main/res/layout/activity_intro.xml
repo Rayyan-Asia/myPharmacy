@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="@string/gender"
+                android:hint="@string/gender_hint"
                 android:layout_below="@id/last_name_field"
                 android:entries="@array/gender"/>
         <TextView
@@ -104,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="@string/marital_status"
+                android:hint="@string/marital_status_hint"
                 android:layout_below="@id/height_field"
                 android:entries="@array/marital_status"/>
         <Spinner
@@ -112,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="@string/blood_type"
+                android:hint="@string/blood_type_hint"
                 android:layout_below="@id/marital_status_spinner"
                 android:entries="@array/blood_types"/>
         <Button

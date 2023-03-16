@@ -1,15 +1,25 @@
 package com.example.mypharmacy.data.local.repositories.impl;
 
+import android.content.Context;
 import com.example.mypharmacy.data.local.daos.PersonDao;
 import com.example.mypharmacy.data.local.entities.Person;
+import com.example.mypharmacy.data.local.myPharmacyDatabase;
 import com.example.mypharmacy.data.local.repositories.PersonRepository;
 import com.google.firebase.database.FirebaseDatabase;
 
+import javax.inject.Inject;
+
 public class PersonRepositoryImpl implements PersonRepository {
 
+
     private PersonDao personDao;
-    public PersonRepositoryImpl(PersonDao personDao) {
-        this.personDao = personDao;
+    private Context context;
+    myPharmacyDatabase database;
+
+    public PersonRepositoryImpl(Context context) {
+        this.context = context;
+        database = myPharmacyDatabase.getInstance(context);
+        this.personDao = database.getPersonDao();
     }
 
     @Override

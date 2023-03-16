@@ -3,6 +3,7 @@ package com.example.mypharmacy.data.local.entities;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.Date;
 
 @Data
 @Entity(tableName = "person")
+@TypeConverters(Converters.class)
 public class Person {
     @PrimaryKey
     public int id;
