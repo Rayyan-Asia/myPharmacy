@@ -26,4 +26,9 @@ public class PersonRepositoryImpl implements PersonRepository {
     public void insertPerson(Person person) {
         personDao.insertPerson(person);
     }
+
+    @Override
+    public Person getPerson() {
+        return personDao.getPerson();
+    }
 }
