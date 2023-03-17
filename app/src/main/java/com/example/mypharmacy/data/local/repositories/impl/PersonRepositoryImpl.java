@@ -5,15 +5,15 @@ import com.example.mypharmacy.data.local.daos.PersonDao;
 import com.example.mypharmacy.data.local.entities.Person;
 import com.example.mypharmacy.data.local.myPharmacyDatabase;
 import com.example.mypharmacy.data.local.repositories.PersonRepository;
-import com.google.firebase.database.FirebaseDatabase;
 
-import javax.inject.Inject;
+import java.util.concurrent.Executor;
 
 public class PersonRepositoryImpl implements PersonRepository {
 
 
     private PersonDao personDao;
     private Context context;
+
     myPharmacyDatabase database;
 
     public PersonRepositoryImpl(Context context) {

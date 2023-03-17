@@ -53,26 +53,22 @@
                 android:hint="@string/gender_hint"
                 android:layout_below="@id/last_name_field"
                 android:entries="@array/gender"/>
-        <TextView
+
+        <EditText
                 android:id="@+id/birth_day_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:layout_below="@id/gender_spinner"
-                android:layout_marginTop="8dp"
                 android:hint="@string/select_a_date"
                 android:focusable="false"
-                android:clickable="true"/>
-        <DatePicker
-                android:id="@+id/birth_day"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginTop="16dp"/>
+        />
+
         <EditText
                 android:id="@+id/address_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/gender_spinner"
+                android:layout_below="@id/birth_day_field"
                 android:layout_marginTop="16dp"
                 android:hint="@string/address"/>
         <EditText
