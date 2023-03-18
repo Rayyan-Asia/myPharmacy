@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.widget.*;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Person;
-import com.example.mypharmacy.ui.home.HomeActivity;
+import com.example.mypharmacy.ui.home.HomeFragment;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -143,7 +143,7 @@ public class IntroActivityListeners {
                         Toast.makeText(activity.getApplicationContext(), "Person saved successfully", Toast.LENGTH_SHORT).show();
                     }
                 }).start();
-                activity.startActivity(new Intent(activity.getApplicationContext(), HomeActivity.class));
+                activity.startActivity(new Intent(activity.getApplicationContext(), HomeFragment.class));
                 activity.finish();
             }
         });
