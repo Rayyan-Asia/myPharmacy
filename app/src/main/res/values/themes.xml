@@ -17,5 +17,11 @@
         <item name="cornerSize">16dp</item>
         <item name="cornerFamily">rounded</item>
     </style>
+    <style name="MyMenuItemStyle">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
 
 </resources>
