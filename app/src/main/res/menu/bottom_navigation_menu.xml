@@ -3,35 +3,35 @@
 <item
         android:id="@+id/home_tab"
         android:icon="@drawable/ic_home"
-        android:actionLayout="@layout/home_icon"
+        app:actionLayout="@layout/home_icon"
         android:title="@string/home_tab_title"
         app:showAsAction="always"/>
 
 <item
 android:id="@+id/medical_record_tab"
 android:icon="@drawable/ic_medical_record"
-android:actionLayout="@layout/record_icon"
+app:actionLayout="@layout/record_icon"
 android:title="@string/medical_record_tab_title"
 app:showAsAction="always"/>
 
 <item
 android:id="@+id/medication_reminder_tab"
 android:icon="@drawable/ic_medication_reminder"
-android:actionLayout="@layout/med_reminder_icon"
+app:actionLayout="@layout/med_reminder_icon"
 android:title="@string/medication_reminder_tab_title"
 app:showAsAction="always"/>
 
 <item
 android:id="@+id/family_tab"
 android:icon="@drawable/ic_family"
-android:actionLayout="@layout/family_icon"
+app:actionLayout="@layout/family_icon"
 android:title="@string/family_tab_title"
 app:showAsAction="always"/>
 
 <item
 android:id="@+id/menstrual_calendar_tab"
 android:icon="@drawable/ic_menstrual_calendar"
-android:actionLayout="@layout/menstrual_calendar_icon"
+app:actionLayout="@layout/menstrual_calendar_icon"
 android:title="@string/menstrual_calendar_tab_title"
 app:showAsAction="always"/>
 </menu>

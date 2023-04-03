@@ -3,8 +3,8 @@
     <style name="Theme.MyPharmacy" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:forceDarkAllowed" tools:targetApi="29">false</item>
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/med_red</item>
+        <item name="colorPrimaryVariant">@color/med_red</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -21,7 +21,7 @@
     <style name="MyMenuItemStyle">
         <item name="android:layout_width">32dp</item>
         <item name="android:layout_height">32dp</item>
-        <item name="android:scaleType">fitCenter</item>
+        <item name="android:scaleType">centerInside</item>
     </style>
 
 

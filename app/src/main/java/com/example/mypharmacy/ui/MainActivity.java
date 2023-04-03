@@ -3,6 +3,7 @@ package com.example.mypharmacy.ui;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.mypharmacy.R;
@@ -11,6 +12,9 @@ import com.example.mypharmacy.data.local.repositories.PersonRepository;
 import com.example.mypharmacy.data.local.repositories.impl.PersonRepositoryImpl;
 import com.example.mypharmacy.ui.intro.IntroActivity;
 import com.example.mypharmacy.ui.menu.MenuActivity;
+import pl.droidsonroids.gif.GifDrawable;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +22,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        GifDrawable gifDrawable = null;
+        try {
+            gifDrawable = new GifDrawable(getResources(), R.raw.med_title_gif);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        ImageView imageView = findViewById(R.id.main_image);
+        imageView.setImageDrawable(gifDrawable);
+
         PersonRepository personRepository = new PersonRepositoryImpl(this);
         new Thread(new Runnable() {
             @Override
@@ -41,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityWithDelay(introIntent, 5000);
         } else {
             Intent homeIntent = new Intent(this, MenuActivity.class);
-            startActivity(homeIntent);
-            System.out.println(person);
+            startActivityWithDelay(homeIntent,5000);
         }
     }
 

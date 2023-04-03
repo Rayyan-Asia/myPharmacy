@@ -1,5 +1,13 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/my_pharmacy_v3">
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+                    android:id="@+id/main_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@raw/med_title_gif">
+    </ImageView>
 </RelativeLayout>

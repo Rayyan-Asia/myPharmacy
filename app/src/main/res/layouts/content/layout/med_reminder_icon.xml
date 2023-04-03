@@ -1,8 +1,10 @@
-<ImageView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/menu_item_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_medication_reminder"
-        style="@style/MyMenuItemStyle" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:gravity="center">
+    <ImageView
+            android:id="@+id/menu_item_icon"
+            android:src="@drawable/ic_medication_reminder"
+            style="@style/MyMenuItemStyle" />
+</LinearLayout>

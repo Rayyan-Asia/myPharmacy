@@ -18,6 +18,13 @@
     <string name="family_tab_title">Family</string>
     <string name="menstrual_calendar_tab_title">Menstrual Calendar</string>
     <string name="notification_button_title">Notifications</string>
+    <string name="home_name_view">John Doe</string>
+    <string name="home_gender_view">Male</string>
+    <string name="home_birth_date">Born on 01/01/1970</string>
+    <string name="home_address_view">123 Street</string>
+    <string name="home_phone_view">555–555–555</string>
+    <string name="home_marital_view">Single</string>
+    <string name="home_blood_view">O+</string>
     <string-array name="blood_types">
         <item>No Blood Type Selected</item>
         <item>A+</item>
@@ -39,6 +46,5 @@
         <item>Married</item>
         <item>Single</item>
     </string-array>
-
 
 </resources>
