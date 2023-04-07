@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <!-- Define a RecyclerView to show the list of Tests -->
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tests_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    <!-- Define an Add button to add new Tests to the list -->
+    <Button
+            android:id="@+id/add_tests_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Test"/>
+
+</LinearLayout>
