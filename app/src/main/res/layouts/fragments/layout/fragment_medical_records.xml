@@ -2,52 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/med_background"
->
+                android:paddingTop="?attr/actionBarSize"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:layout_above="@id/cardViews"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/med_folder"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginStart="40dp"/>
-
-
-    <RelativeLayout
-            android:id="@+id/cardViews"
+    <!-- Define a TabLayout to show the two tabs -->
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
+            android:background="@color/colorPrimary"
+            app:tabMode="fixed"
+            app:tabGravity="center"/>
 
-        <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/med_background"
-                android:clickable="true">
-
-            <!-- Add content for Appointments card here -->
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/med_background"
-                android:clickable="true">
-
-            <!-- Add content for Tests card here -->
-
-        </androidx.cardview.widget.CardView>
-
-    </RelativeLayout>
+    <!-- Define a ViewPager to hold the two fragments corresponding to the tabs -->
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tab_layout"
+    />
 
 </RelativeLayout>
