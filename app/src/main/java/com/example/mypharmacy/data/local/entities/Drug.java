@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity(tableName = "drug")
 @TypeConverters(Converters.class)
 public class Drug {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
     public String name;
     public String description;

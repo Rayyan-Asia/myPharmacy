@@ -13,7 +13,7 @@ import lombok.Data;
                 @ForeignKey(entity = Drug.class, parentColumns = "id", childColumns = "drug_id", onDelete = ForeignKey.CASCADE)
         })
 public class PrescriptionDrug {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
     @ColumnInfo(name = "drug_id")
     public int drugId;
