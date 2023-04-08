@@ -13,7 +13,7 @@ foreignKeys = @ForeignKey(entity = Doctor.class,
         onDelete = ForeignKey.CASCADE))
 @TypeConverters(Converters.class)
 public class Prescription {
-   @PrimaryKey
+   @PrimaryKey(autoGenerate = true)
    public int id;
    public String name;
    public String description;

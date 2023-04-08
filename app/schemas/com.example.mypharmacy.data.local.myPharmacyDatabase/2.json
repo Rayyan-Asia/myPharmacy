@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "ad3b706fad296eb8df9f1dca36a9849d",
+    "identityHash": "809a9737734330ceb7df3d6f6091d95f",
     "entities": [
       {
         "tableName": "person",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `first_name` TEXT, `last_name` TEXT, `gender` TEXT, `address` TEXT, `weight` REAL NOT NULL, `height` REAL NOT NULL, `phone_number` INTEGER NOT NULL, `birth_date` INTEGER, `marital_status` TEXT, `blood_type` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `first_name` TEXT, `last_name` TEXT, `gender` TEXT, `address` TEXT, `weight` REAL NOT NULL, `height` REAL NOT NULL, `phone_number` INTEGER NOT NULL, `birth_date` INTEGER, `marital_status` TEXT, `blood_type` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -79,14 +79,14 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "doctor",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `specialty` TEXT, `phone` INTEGER NOT NULL, `email` TEXT, `clinical_address` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `specialty` TEXT, `phone` INTEGER NOT NULL, `email` TEXT, `clinical_address` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -129,14 +129,14 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "drug",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `description` TEXT, `manufacturer` TEXT, `category` TEXT, `type` TEXT, `expiry_date` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `description` TEXT, `manufacturer` TEXT, `category` TEXT, `type` TEXT, `expiry_date` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -185,14 +185,14 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "prescription",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `description` TEXT, `dosage` TEXT, `frequency` TEXT, `start_date` INTEGER, `end_date` INTEGER, `doctor_id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`doctor_id`) REFERENCES `doctor`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `description` TEXT, `dosage` TEXT, `frequency` TEXT, `start_date` INTEGER, `end_date` INTEGER, `doctor_id` INTEGER NOT NULL, FOREIGN KEY(`doctor_id`) REFERENCES `doctor`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -247,7 +247,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": [
@@ -266,7 +266,7 @@
       },
       {
         "tableName": "prescription_drug",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `drug_id` INTEGER NOT NULL, `prescription_id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`prescription_id`) REFERENCES `prescription`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`drug_id`) REFERENCES `drug`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `drug_id` INTEGER NOT NULL, `prescription_id` INTEGER NOT NULL, FOREIGN KEY(`prescription_id`) REFERENCES `prescription`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`drug_id`) REFERENCES `drug`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -291,7 +291,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": [
@@ -323,7 +323,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ad3b706fad296eb8df9f1dca36a9849d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '809a9737734330ceb7df3d6f6091d95f')"
     ]
   }
 }

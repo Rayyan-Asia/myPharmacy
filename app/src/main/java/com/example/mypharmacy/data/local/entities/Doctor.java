@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Entity(tableName = "doctor")
 public class Doctor {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
     public String name;
     public String specialty;
