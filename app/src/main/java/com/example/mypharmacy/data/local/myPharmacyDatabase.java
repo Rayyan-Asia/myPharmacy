@@ -10,15 +10,18 @@ import androidx.room.migration.AutoMigrationSpec;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.mypharmacy.data.local.daos.PersonDao;
-import com.example.mypharmacy.data.local.entities.Person;
+import com.example.mypharmacy.data.local.entities.*;
 import com.example.mypharmacy.data.local.repositories.PersonRepository;
 
 import javax.inject.Inject;
 
-@Database(entities = {Person.class}, version = 1)
+@Database(entities = {Person.class, Doctor.class, Drug.class, Prescription.class, PrescriptionDrug.class},
+        autoMigrations = {@AutoMigration (from = 1, to = 2)},
+        version = 2)
 public abstract class myPharmacyDatabase extends RoomDatabase {
      private static final String DB_NAME = "myPharmacy.db";
      private static myPharmacyDatabase instance;
+
 
      public abstract PersonDao getPersonDao();
 
@@ -29,6 +32,7 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
           }
           return instance;
      }
+
 }
 
 
