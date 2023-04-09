@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 
 public class MenstrualCalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
-
+    //todo check if start dates are available if not send intent to survey
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private Button nextMonthButton;

@@ -1,0 +1,86 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/med_background">
+
+    <!-- Center the white rectangle input form -->
+    <RelativeLayout
+        android:layout_width="319dp"
+        android:layout_height="351dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/rounded_rectangle"
+        android:clipToPadding="false"
+        android:elevation="8dp"
+        android:outlineProvider="background"
+        android:padding="16dp">
+
+        <!-- Add your input form elements here -->
+
+        <TextView
+            android:id="@+id/intro_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="16dp"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:text="@string/menstruarionHeader"
+            android:textColor="#FF0000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/menstrual_start_date_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/menstrual_end_date_button"
+            android:layout_marginTop="-155dp"
+            android:focusable="false"
+            android:hint="@string/select_a_date" />
+
+        <EditText
+            android:id="@+id/menstrual_end_date_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/intro_view"
+            android:layout_marginTop="151dp"
+            android:focusable="false"
+            android:hint="@string/select_a_date" />
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/menstrual_start_date_button"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="111dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/save" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/menstrual_end_date_button"
+            android:layout_marginTop="-174dp"
+            android:text="@string/startDate" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/menstrual_start_date_button"
+            android:layout_marginTop="46dp"
+            android:text="@string/endDate" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
