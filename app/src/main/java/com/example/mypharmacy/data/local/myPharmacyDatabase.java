@@ -15,8 +15,7 @@ import javax.inject.Inject;
 import java.time.LocalDate;
 
 @Database(entities = {Person.class, Doctor.class, Drug.class, Prescription.class, PrescriptionDrug.class},
-        autoMigrations = {@AutoMigration (from = 1, to = 2)},
-        version = 2)
+        version = 3, autoMigrations = @AutoMigration(from = 1, to = 2))
 public abstract class myPharmacyDatabase extends RoomDatabase {
      private static final String DB_NAME = "myPharmacy.db";
      private static myPharmacyDatabase instance;
@@ -32,7 +31,7 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
           }
           return instance;
      }
-     public static final Migration SEED_DRUG_TABLE = new Migration(1, 2) {
+     public static final Migration SEED_DRUG_TABLE = new Migration(2, 3) {
           @Override
           public void migrate(SupportSQLiteDatabase database) {
                database.execSQL("CREATE TABLE drug_new (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, manufacturer TEXT, category TEXT, type TEXT, expiry_date INTEGER)");
