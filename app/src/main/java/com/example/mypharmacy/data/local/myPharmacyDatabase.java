@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.inject.Inject;
 import java.time.LocalDate;
 
-@Database(entities = {Person.class, Doctor.class, Drug.class, Prescription.class, Document.class, Appointment.class, LabTest.class, DocumentTest.class},
-        version = 5, autoMigrations = { @AutoMigration(from = 1, to = 2), @AutoMigration(from = 3, to = 4)})
+@Database(entities = {Person.class, Doctor.class, Drug.class, Prescription.class, Document.class, Appointment.class, LabTest.class, DocumentTest.class, AppointmentPrescription.class},
+        version = 6, autoMigrations = { @AutoMigration(from = 1, to = 2), @AutoMigration(from = 3, to = 4), @AutoMigration(from = 5, to = 6)})
 public abstract class myPharmacyDatabase extends RoomDatabase {
      private static final String DB_NAME = "myPharmacy.db";
      private static myPharmacyDatabase instance;
@@ -255,8 +255,11 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
                database.execSQL("INSERT INTO prescription (name, description, dosage, frequency, start_date, end_date, doctor_id) VALUES ('Amoxicillin', 'Antibiotic', '500mg', 'three times a day', '2023-04-10', '2023-04-17', 2, 1)");
 
                //adding appointments
-               database.execSQL("INSERT INTO appointment (doctor_id, person_id, prescription_id, symptoms, diagnosis, date_of_appointment) VALUES (1, 1, 1, 'Headache', 'Migraine', '2023-04-12')");
-               database.execSQL("INSERT INTO appointment (doctor_id, person_id, prescription_id, symptoms, diagnosis, date_of_appointment) VALUES (2, 1, 2, 'Sore throat', 'Strep throat', '2023-04-14')");
+               database.execSQL("INSERT INTO appointment (doctor_id, person_id, symptoms, diagnosis, date_of_appointment) VALUES (1, 1, 'Headache', 'Migraine', '2023-04-12')");
+               database.execSQL("INSERT INTO appointment (doctor_id, person_id, symptoms, diagnosis, date_of_appointment) VALUES (2, 1, 'Sore throat', 'Strep throat', '2023-04-14')");
+
+               database.execSQL("INSERT INTO appointment_prescription (appointment_id, prescription_id) VALUES (1,1)");
+               database.execSQL("INSERT INTO appointment_prescription (appointment_id, prescription_id) VALUES (2,2)");
 
 
           }
