@@ -9,7 +9,6 @@ import java.time.LocalDate;
         foreignKeys = {
                 @ForeignKey(entity = Doctor.class, parentColumns = "id", childColumns = "doctor_id", onDelete = ForeignKey.CASCADE),
                 @ForeignKey(entity = Person.class, parentColumns = "id", childColumns = "person_id", onDelete = ForeignKey.CASCADE),
-                @ForeignKey(entity = Prescription.class, parentColumns = "id", childColumns = "person_id", onDelete = ForeignKey.CASCADE)
         })
 @TypeConverters(Converters.class)
 public class Appointment {
@@ -19,8 +18,6 @@ public class Appointment {
     public int doctorId;
     @ColumnInfo(name = "person_id")
     public int personId;
-    @ColumnInfo(name = "prescription_id")
-    public int prescriptionId;
     public String symptoms;
     public String diagnosis;
     @ColumnInfo(name = "date_of_appointment")

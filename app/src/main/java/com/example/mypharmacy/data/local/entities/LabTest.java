@@ -9,7 +9,6 @@ import java.time.LocalDate;
         foreignKeys = {
                 @ForeignKey(entity = Doctor.class, parentColumns = "id", childColumns = "doctor_id", onDelete = ForeignKey.CASCADE),
                 @ForeignKey(entity = Person.class, parentColumns = "id", childColumns = "person_id", onDelete = ForeignKey.CASCADE),
-                @ForeignKey(entity = Prescription.class, parentColumns = "id", childColumns = "person_id", onDelete = ForeignKey.CASCADE)
         })
 @TypeConverters(Converters.class)
 public class LabTest {

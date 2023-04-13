@@ -10,13 +10,13 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.mypharmacy.data.local.daos.PersonDao;
 import com.example.mypharmacy.data.local.entities.*;
 import com.example.mypharmacy.data.local.repositories.PersonRepository;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
 
-@Database(entities = {Person.class, Doctor.class, Drug.class, Prescription.class, PrescriptionDrug.class},
-        autoMigrations = {@AutoMigration (from = 1, to = 2)},
-        version = 2)
+@Database(entities = {Person.class, Doctor.class, Drug.class, Prescription.class, Document.class, Appointment.class, LabTest.class, DocumentTest.class, AppointmentPrescription.class},
+        version = 6, autoMigrations = { @AutoMigration(from = 1, to = 2), @AutoMigration(from = 3, to = 4), @AutoMigration(from = 5, to = 6)})
 public abstract class myPharmacyDatabase extends RoomDatabase {
      private static final String DB_NAME = "myPharmacy.db";
      private static myPharmacyDatabase instance;
@@ -28,11 +28,12 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
           if (instance == null) {
                instance = Room.databaseBuilder(context, myPharmacyDatabase.class, DB_NAME)
                        .addMigrations(SEED_DRUG_TABLE)
+                       .addMigrations(SEED_ENTITIES)
                        .build();
           }
           return instance;
      }
-     public static final Migration SEED_DRUG_TABLE = new Migration(1, 2) {
+     public static final Migration SEED_DRUG_TABLE = new Migration(2, 3) {
           @Override
           public void migrate(SupportSQLiteDatabase database) {
                database.execSQL("CREATE TABLE drug_new (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, manufacturer TEXT, category TEXT, type TEXT, expiry_date INTEGER)");
@@ -239,6 +240,28 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
 
                database.execSQL("DROP TABLE drug");
                database.execSQL("ALTER TABLE drug_new RENAME TO drug");
+          }
+     };
+     public static final Migration SEED_ENTITIES = new Migration(4, 5) {
+
+          @Override
+          public void migrate(@NonNull @NotNull SupportSQLiteDatabase database) {
+               //add dummy doctors
+               database.execSQL("INSERT INTO doctor (name, specialty, phone, email, clinical_address) VALUES ('John Doe', 'Cardiologist', 1234567890, 'johndoe@email.com', '123 Main St')");
+               database.execSQL("INSERT INTO doctor (name, specialty, phone, email, clinical_address) VALUES ('Jane Smith', 'Pediatrician', 2345678901, 'janesmith@email.com', '456 Oak Ave')");
+
+               //adding prescriptions
+               database.execSQL("INSERT INTO prescription (name, description, dosage, frequency, start_date, end_date, doctor_id) VALUES ('Paracetemol', 'For pain and fever', '100mg', 'twice a day', '2023-04-11', '2023-04-20', 1, 2 )");
+               database.execSQL("INSERT INTO prescription (name, description, dosage, frequency, start_date, end_date, doctor_id) VALUES ('Amoxicillin', 'Antibiotic', '500mg', 'three times a day', '2023-04-10', '2023-04-17', 2, 1)");
+
+               //adding appointments
+               database.execSQL("INSERT INTO appointment (doctor_id, person_id, symptoms, diagnosis, date_of_appointment) VALUES (1, 1, 'Headache', 'Migraine', '2023-04-12')");
+               database.execSQL("INSERT INTO appointment (doctor_id, person_id, symptoms, diagnosis, date_of_appointment) VALUES (2, 1, 'Sore throat', 'Strep throat', '2023-04-14')");
+
+               database.execSQL("INSERT INTO appointment_prescription (appointment_id, prescription_id) VALUES (1,1)");
+               database.execSQL("INSERT INTO appointment_prescription (appointment_id, prescription_id) VALUES (2,2)");
+
+
           }
      };
 
