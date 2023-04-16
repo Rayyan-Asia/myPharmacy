@@ -7,29 +7,34 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.mypharmacy.R;
+import com.example.mypharmacy.data.local.entities.Menstruation;
+import com.example.mypharmacy.data.local.repositories.MenstruationRepository;
+import com.example.mypharmacy.data.local.repositories.impl.MenstruationRepositoryImpl;
 
 import java.time.LocalDate;
 import java.util.Calendar;
 
 
 public class MenstrualCycleSurvey extends Fragment {
-
-//TODO save the dates and return to menstrual calendar activity as well as check if start date is
-// ahead of end date on save
-
     private EditText startDate;
     private EditText endDate;
 
+    private Button save;
     public static LocalDate START_DAY;
     public static LocalDate END_DAY;
 
+    public MenstruationRepository menstruationRepository;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,7 @@ public class MenstrualCycleSurvey extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        menstruationRepository = new MenstruationRepositoryImpl(this.getContext());
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menstrual_cycle_survey, container, false);
     }
@@ -52,6 +58,7 @@ public class MenstrualCycleSurvey extends Fragment {
     private void initWidgets(View view) {
         startDate = view.findViewById(R.id.menstrual_start_date_button);
         endDate = view.findViewById(R.id.menstrual_end_date_button);
+        save = view.findViewById(R.id.menstrual_save_button);
     }
 
     private void setListeners() {
@@ -92,7 +99,40 @@ public class MenstrualCycleSurvey extends Fragment {
             datePickerDialog.show();
         });
 
+        save.setOnClickListener(e->{
+            if(END_DAY== null || START_DAY == null){
+                if(START_DAY == null){
+                    startDate.setError("Date Cannot be empty");
+                }else{
+                    endDate.setError("Date Cannot be empty");
+                }
+            }else {
+                if(END_DAY.isAfter(START_DAY)){
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Menstruation menstruation = new Menstruation();
+                            menstruation.startDate=START_DAY;
+                            menstruation.endDate=END_DAY;
 
+                            // Pass the person object back to the main thread using a Handler
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    menstruationRepository.insertMenstruation(menstruation);
+                                    Toast.makeText(getContext(), "Menstruation saved successfully", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }).start();
+                }else{
+                    endDate.setError("End Date must be after Start Date.");
+                }
+            }
+        });
 
     }
+
+
 }
