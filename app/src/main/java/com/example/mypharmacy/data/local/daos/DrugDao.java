@@ -1,0 +1,15 @@
+package com.example.mypharmacy.data.local.daos;
+
+import androidx.room.*;
+import com.example.mypharmacy.data.local.entities.Doctor;
+import com.example.mypharmacy.data.local.entities.Drug;
+
+import java.util.List;
+
+@Dao
+public interface DrugDao {
+    @Query("SELECT * FROM Doctor ORDER BY name ASC")
+    List<Drug> getAllDrugs();
+    @Query("SELECT * FROM Drug where id=:id")
+    Drug getDrug(int id);
+}

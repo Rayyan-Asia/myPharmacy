@@ -9,7 +9,7 @@ import com.example.mypharmacy.data.local.entities.Person;
 @Dao
 public interface PersonDao {
         @Insert(onConflict = OnConflictStrategy.REPLACE)
-        void insertPerson(Person person);
+        long insertPerson(Person person);
 
         @Query("SELECT * FROM Person LIMIT 1;")
         Person getPerson();
