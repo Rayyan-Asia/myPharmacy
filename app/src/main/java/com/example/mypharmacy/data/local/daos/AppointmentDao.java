@@ -2,14 +2,16 @@ package com.example.mypharmacy.data.local.daos;
 
 import androidx.room.*;
 import com.example.mypharmacy.data.local.entities.Appointment;
+import com.example.mypharmacy.data.local.entities.Converters;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Dao
+@TypeConverters(Converters.class)
 public interface AppointmentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAppointment(Appointment appointment);
+    long insertAppointment(Appointment appointment);
 
     @Query("SELECT * FROM appointment WHERE id = :appointmentId")
     Appointment getAppointmentById(int appointmentId);
@@ -22,6 +24,9 @@ public interface AppointmentDao {
 
     @Query("SELECT * FROM appointment WHERE date_of_appointment = :date")
     List<Appointment> getAppointmentsByDate(LocalDate date);
+
+    @Query("SELECT * FROM appointment")
+    List<Appointment> getAllAppointments();
 
     @Query("DELETE FROM appointment WHERE id = :appointmentId")
     void deleteAppointment(int appointmentId);

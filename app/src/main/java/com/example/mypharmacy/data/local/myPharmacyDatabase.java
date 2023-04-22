@@ -7,7 +7,7 @@ import androidx.room.*;
 import androidx.room.migration.AutoMigrationSpec;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import com.example.mypharmacy.data.local.daos.PersonDao;
+import com.example.mypharmacy.data.local.daos.*;
 import com.example.mypharmacy.data.local.entities.*;
 import com.example.mypharmacy.data.local.repositories.PersonRepository;
 import org.jetbrains.annotations.NotNull;
@@ -23,12 +23,17 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
 
 
      public abstract PersonDao getPersonDao();
+     public abstract DoctorDao getDoctorDao();
+     public abstract DrugDao getDrugDao();
+     public abstract PrescriptionDao getPrescriptionDao();
+     public abstract AppointmentDao getAppointmentDao();
+     public abstract AppointmentPrescriptionDao getAppointmentPrescriptionDao();
+
 
      public static synchronized myPharmacyDatabase getInstance(Context context) {
           if (instance == null) {
                instance = Room.databaseBuilder(context, myPharmacyDatabase.class, DB_NAME)
-                       .addMigrations(SEED_DRUG_TABLE)
-                       .addMigrations(SEED_ENTITIES)
+                       .addMigrations(SEED_DRUG_TABLE,SEED_ENTITIES)
                        .build();
           }
           return instance;
@@ -40,203 +45,13 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
 
                LocalDate now = LocalDate.now();
 
-               ContentValues values = new ContentValues();
-               values.put("name", "Amoxicillin");
-               values.put("description", "An antibiotic used to treat bacterial infections");
-               values.put("manufacturer", "Pfizer");
-               values.put("category", "Antibiotic");
-               values.put("type", "Capsule");
-               values.put("expiry_date", now.plusYears(2).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
+               database.execSQL("INSERT INTO drug_new (name, description, manufacturer, category, type, expiry_date) VALUES ('Amoxicillin', 'An antibiotic used to treat bacterial infections', 'Pfizer', 'Antibiotic', 'Capsule', 1681474136)");
+               database.execSQL("INSERT INTO drug_new (name, description, manufacturer, category, type, expiry_date) VALUES ('Paracetamol', 'An analgesic used to relieve pain and reduce fever', 'Johnson & Johnson', 'Analgesic', 'Tablet', 1681474136)");
+               database.execSQL("INSERT INTO drug_new (name, description, manufacturer, category, type, expiry_date) VALUES ('Lisinopril-AstraZeneca', 'An antihypertensive used to treat high blood pressure', 'AstraZeneca', 'Antihypertensive', 'Tablet', 1681474136)");
+               database.execSQL("INSERT INTO drug_new (name, description, manufacturer, category, type, expiry_date) VALUES ('Ibuprofen-Bayer', 'An analgesic used to relieve pain and reduce fever', 'Bayer', 'Analgesic', 'Tablet', 1681474136)");
+               database.execSQL("INSERT INTO drug_new (name, description, manufacturer, category, type, expiry_date) VALUES ('Ceftriaxone', 'An antibiotic used to treat bacterial infections', 'Roche', 'Antibiotic', 'Injection', 1681474136)");
+               database.execSQL("INSERT INTO drug_new (name, description, manufacturer, category, type, expiry_date) VALUES ('Omeprazole-Pfizer', 'A proton-pump inhibitor used to treat gastroesophageal reflux disease', 'Pfizer', 'Gastrointestinal', 'Capsule', 1681474136)");
 
-               values = new ContentValues();
-               values.put("name", "Paracetamol");
-               values.put("description", "An analgesic used to relieve pain and reduce fever");
-               values.put("manufacturer", "Johnson & Johnson");
-               values.put("category", "Analgesic");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(3).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Lisinopril-AstraZeneca");
-               values.put("description", "An antihypertensive used to treat high blood pressure");
-               values.put("manufacturer", "AstraZeneca");
-               values.put("category", "Antihypertensive");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(2).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Ibuprofen-Bayer");
-               values.put("description", "An analgesic used to relieve pain and reduce fever");
-               values.put("manufacturer", "Bayer");
-               values.put("category", "Analgesic");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(2).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Ceftriaxone");
-               values.put("description", "An antibiotic used to treat bacterial infections");
-               values.put("manufacturer", "Roche");
-               values.put("category", "Antibiotic");
-               values.put("type", "Injection");
-               values.put("expiry_date", now.plusYears(1).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Omeprazole-Pfizer");
-               values.put("description", "A proton-pump inhibitor used to treat gastroesophageal reflux disease");
-               values.put("manufacturer", "Pfizer");
-               values.put("category", "Gastrointestinal");
-               values.put("type", "Capsule");
-               values.put("expiry_date", now.plusYears(2).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Metformin-Merck");
-               values.put("description", "An oral medication used to treat type 2 diabetes");
-               values.put("manufacturer", "Merck");
-               values.put("category", "Antidiabetic");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(3).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Doxycycline");
-               values.put("description", "An antibiotic used to treat bacterial infections");
-               values.put("manufacturer", "Novartis");
-               values.put("category", "Antibiotic");
-               values.put("type", "Capsule");
-               values.put("expiry_date", now.plusYears(2).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Alprazolam");
-               values.put("description", "A benzodiazepine used to treat anxiety disorders");
-               values.put("manufacturer", "Mylan");
-               values.put("category", "Anxiolytic");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(1).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Atorvastatin");
-               values.put("description", "A statin used to lower cholesterol levels");
-               values.put("manufacturer", "Aurobindo Pharma");
-               values.put("category", "Cardiovascular");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(3).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Metformin-Teva");
-               values.put("description", "An oral medication for type 2 diabetes");
-               values.put("manufacturer", "Teva Pharmaceutical Industries");
-               values.put("category", "Antidiabetic");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(2).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Ibuprofen-Pfizer");
-               values.put("description", "A nonsteroidal anti-inflammatory drug (NSAID)");
-               values.put("manufacturer", "Pfizer");
-               values.put("category", "Analgesic");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(1).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Omeprazole-Dr.Reddy's");
-               values.put("description", "A proton pump inhibitor used to treat stomach ulcers and acid reflux");
-               values.put("manufacturer", "Dr. Reddy's Laboratories");
-               values.put("category", "Gastrointestinal");
-               values.put("type", "Capsule");
-               values.put("expiry_date", now.plusYears(2).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Levothyroxine");
-               values.put("description", "A synthetic form of thyroid hormone used to treat hypothyroidism");
-               values.put("manufacturer", "Takeda Pharmaceutical Company");
-               values.put("category", "Endocrine");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(3).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Lisinopril-Apotex");
-               values.put("description", "An ACE inhibitor used to treat hypertension and heart failure");
-               values.put("manufacturer", "Apotex");
-               values.put("category", "Cardiovascular");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(2).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Warfarin");
-               values.put("description", "An anticoagulant used to prevent blood clots");
-               values.put("manufacturer", "Sandoz");
-               values.put("category", "Cardiovascular");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(1).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Citalopram");
-               values.put("description", "A selective serotonin reuptake inhibitor (SSRI) used to treat depression and anxiety disorders");
-               values.put("manufacturer", "Mylan");
-               values.put("category", "Psychotropic");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(3).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Losartan");
-               values.put("description", "An angiotensin receptor blocker (ARB) used to treat hypertension and heart failure");
-               values.put("manufacturer", "Aurobindo Pharma");
-               values.put("category", "Cardiovascular");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(3).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Simvastatin");
-               values.put("description", "A statin used to lower cholesterol and prevent heart disease");
-               values.put("manufacturer", "Teva Pharmaceutical Industries");
-               values.put("category", "Cardiovascular");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(2).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Rosuvastatin");
-               values.put("description", "A statin used to lower cholesterol and prevent heart disease");
-               values.put("manufacturer", "AstraZeneca");
-               values.put("category", "Cardiovascular");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(3).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Cefuroxime");
-               values.put("description", "A cephalosporin antibiotic used to treat bacterial infections");
-               values.put("manufacturer", "Dr. Reddy's Laboratories");
-               values.put("category", "Antibiotic");
-               values.put("type", "Injection");
-               values.put("expiry_date", now.plusYears(1).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
-
-               values = new ContentValues();
-               values.put("name", "Erythromycin");
-               values.put("description", "A macrolide antibiotic used to treat bacterial infections");
-               values.put("manufacturer", "Sandoz");
-               values.put("category", "Antibiotic");
-               values.put("type", "Tablet");
-               values.put("expiry_date", now.plusYears(2).toEpochDay());
-               database.insert("drug_new", OnConflictStrategy.REPLACE, values);
 
                database.execSQL("DROP TABLE drug");
                database.execSQL("ALTER TABLE drug_new RENAME TO drug");
@@ -246,21 +61,21 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
 
           @Override
           public void migrate(@NonNull @NotNull SupportSQLiteDatabase database) {
+               database.execSQL("INSERT INTO person (first_name, last_name, gender, address, weight, height, phone_number, birth_date, marital_status, blood_type) VALUES ('John', 'Doe', 'Male', 'Sharafa', 30, 30, 0595874752, 1681474136, 'Single', 'O+'  )");
                //add dummy doctors
                database.execSQL("INSERT INTO doctor (name, specialty, phone, email, clinical_address) VALUES ('John Doe', 'Cardiologist', 1234567890, 'johndoe@email.com', '123 Main St')");
                database.execSQL("INSERT INTO doctor (name, specialty, phone, email, clinical_address) VALUES ('Jane Smith', 'Pediatrician', 2345678901, 'janesmith@email.com', '456 Oak Ave')");
 
                //adding prescriptions
-               database.execSQL("INSERT INTO prescription (name, description, dosage, frequency, start_date, end_date, doctor_id) VALUES ('Paracetemol', 'For pain and fever', '100mg', 'twice a day', '2023-04-11', '2023-04-20', 1, 2 )");
-               database.execSQL("INSERT INTO prescription (name, description, dosage, frequency, start_date, end_date, doctor_id) VALUES ('Amoxicillin', 'Antibiotic', '500mg', 'three times a day', '2023-04-10', '2023-04-17', 2, 1)");
+               database.execSQL("INSERT INTO prescription (name, description, dosage, frequency, start_date, end_date, doctor_id, drug_id) VALUES ('Paracetemol', 'For pain and fever', '100mg', 'twice a day', '2023-04-11', '2023-04-20', 1, 2 )");
+               database.execSQL("INSERT INTO prescription (name, description, dosage, frequency, start_date, end_date, doctor_id, drug_id) VALUES ('Amoxicillin', 'Antibiotic', '500mg', 'three times a day', '2023-04-10', '2023-04-17', 2, 1)");
 
                //adding appointments
-               database.execSQL("INSERT INTO appointment (doctor_id, person_id, symptoms, diagnosis, date_of_appointment) VALUES (1, 1, 'Headache', 'Migraine', '2023-04-12')");
-               database.execSQL("INSERT INTO appointment (doctor_id, person_id, symptoms, diagnosis, date_of_appointment) VALUES (2, 1, 'Sore throat', 'Strep throat', '2023-04-14')");
+               database.execSQL("INSERT INTO appointment (title, doctor_id, person_id, symptoms, diagnosis, date_of_appointment) VALUES ('I got a Fever', 1, 1, 'Headache', 'Migraine', '2023-04-12')");
+               database.execSQL("INSERT INTO appointment (title, doctor_id, person_id, symptoms, diagnosis, date_of_appointment) VALUES ('I have the flu', 2, 1, 'Sore throat', 'Strep throat', '2023-04-14')");
 
                database.execSQL("INSERT INTO appointment_prescription (appointment_id, prescription_id) VALUES (1,1)");
                database.execSQL("INSERT INTO appointment_prescription (appointment_id, prescription_id) VALUES (2,2)");
-
 
           }
      };

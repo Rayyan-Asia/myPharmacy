@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:itemIconTint="@color/tab_icon_color"
-            app:itemTextColor="@color/tab_text_color"
+            app:itemTextColor="@color/med_red"
+            android:background="@color/med_red"
             app:menu="@menu/bottom_navigation_menu" />
 
     <FrameLayout
@@ -34,7 +35,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/med_red"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:title="myPharmacy" />

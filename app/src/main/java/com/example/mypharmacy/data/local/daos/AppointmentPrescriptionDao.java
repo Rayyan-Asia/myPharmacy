@@ -10,9 +10,8 @@ import java.util.List;
 
 @Dao
 public interface AppointmentPrescriptionDao {
-
     @Insert
-    void insert(AppointmentPrescription appointmentPrescription);
+    long insert(AppointmentPrescription appointmentPrescription);
 
     @Delete
     void delete(AppointmentPrescription appointmentPrescription);
