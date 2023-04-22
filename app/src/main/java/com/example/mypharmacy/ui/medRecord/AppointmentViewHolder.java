@@ -12,8 +12,6 @@ import com.example.mypharmacy.data.local.entities.Appointment;
 import com.example.mypharmacy.data.local.repositories.DoctorRepository;
 import com.example.mypharmacy.data.local.repositories.impl.DoctorRepositoryImpl;
 
-import java.util.List;
-
 public class AppointmentViewHolder extends RecyclerView.ViewHolder {
     private final Context context;
     private TextView appointmentTitleTextView;

@@ -33,6 +33,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentViewHold
     public void onBindViewHolder(@NonNull AppointmentViewHolder holder, int position) {
         Appointment appointment = appointmentList.get(position);
         holder.bind(appointment);
+        holder.itemView.setOnClickListener(e -> {
+
+        });
     }
 
     @Override

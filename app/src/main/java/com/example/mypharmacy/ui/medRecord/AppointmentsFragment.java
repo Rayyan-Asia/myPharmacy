@@ -20,7 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppointmentsFragment extends Fragment {
+public class AppointmentsFragment extends Fragment{
 
     private List<Appointment> mAppointments;
     private RecyclerView mRecyclerView;
@@ -64,7 +64,7 @@ public class AppointmentsFragment extends Fragment {
 
     private void setAppointmentList(List<Appointment> appointmentList) {
         this.mAppointments = appointmentList;
-        this.mAdapter = new AppointmentAdapter(appointmentList);
+        this.mAdapter = new AppointmentAdapter(mAppointments);
         this.mRecyclerView.setAdapter(mAdapter);
     }
 
