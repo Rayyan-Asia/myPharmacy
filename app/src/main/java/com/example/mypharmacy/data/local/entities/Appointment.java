@@ -14,6 +14,7 @@ import java.time.LocalDate;
 public class Appointment {
     @PrimaryKey(autoGenerate = true)
     public int id;
+    public String title;
     @ColumnInfo(name = "doctor_id")
     public int doctorId;
     @ColumnInfo(name = "person_id")

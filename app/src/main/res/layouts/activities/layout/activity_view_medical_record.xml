@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <!-- Main content -->
+    <RelativeLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white">
+
+        <TextView
+                android:id="@+id/title_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+        <TextView
+                android:id="@+id/symptoms_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Symptoms:"/>
+
+        <TextView
+                android:id="@+id/diagnosis_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Diagnosis:"/>
+
+        <TextView
+                android:id="@+id/date_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Date:"/>
+
+    </RelativeLayout>
+
+    <!-- Navigation Drawer -->
+    <LinearLayout
+            android:id="@+id/drawer"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+        <!-- Add your drawer content here -->
+        <!-- e.g. TextView for Doctor's Name, Phone, Email, etc. -->
+
+        <TextView
+                android:id="@+id/doctor_name_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Doctor's Name"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+        <TextView
+                android:id="@+id/specialty_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Specialty"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        <TextView
+                android:id="@+id/phone_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        <TextView
+                android:id="@+id/email_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        <TextView
+                android:id="@+id/clinical_address_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Clinical Address"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+    </LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
