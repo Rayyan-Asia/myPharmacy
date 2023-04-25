@@ -15,7 +15,3 @@ public interface MenstruationDao {
     @Query("SELECT * FROM Menstruation order by id desc LIMIT 1;")
     Menstruation getMenstruation();
 }
-
-
-
-

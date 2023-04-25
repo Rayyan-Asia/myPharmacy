@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -35,6 +37,7 @@ public class MenstrualCycleSurvey extends Fragment {
     public static LocalDate END_DAY;
 
     public MenstruationRepository menstruationRepository;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,35 +102,42 @@ public class MenstrualCycleSurvey extends Fragment {
             datePickerDialog.show();
         });
 
-        save.setOnClickListener(e->{
-            if(END_DAY== null || START_DAY == null){
-                if(START_DAY == null){
+        save.setOnClickListener(e -> {
+            if (END_DAY == null || START_DAY == null) {
+                if (START_DAY == null) {
                     startDate.setError("Date Cannot be empty");
-                }else{
+                } else {
                     endDate.setError("Date Cannot be empty");
                 }
-            }else {
-                if(END_DAY.isAfter(START_DAY)){
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Menstruation menstruation = new Menstruation();
-                            menstruation.startDate=START_DAY;
-                            menstruation.endDate=END_DAY;
+            } else {
+                if (END_DAY.isAfter(START_DAY)) {
+                    if(START_DAY.until(END_DAY).getDays() <= 9){
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Menstruation menstruation = new Menstruation();
+                                menstruation.startDate = START_DAY;
+                                menstruation.endDate = END_DAY;
+                                Looper.prepare();
+                                menstruationRepository.insertMenstruation(menstruation);
+                                Toast.makeText(getContext(), "Menstruation saved successfully", Toast.LENGTH_SHORT).show();
 
-                            // Pass the person object back to the main thread using a Handler
-                            Handler handler = new Handler(Looper.getMainLooper());
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    menstruationRepository.insertMenstruation(menstruation);
-                                    Toast.makeText(getContext(), "Menstruation saved successfully", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    }).start();
-                }else{
+                            }
+                        }).start();
+                        Fragment fragment = new MenstrualCalendarFragment();
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace( R.id.fragment_container,fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
+                    else {
+                        endDate.setError("You may need to see a doctor with a period this long!");
+                        Toast.makeText(getContext(), "You may need to see a doctor with a period this long!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
                     endDate.setError("End Date must be after Start Date.");
+                    Toast.makeText(getContext(), "End Date must be after Start Date.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

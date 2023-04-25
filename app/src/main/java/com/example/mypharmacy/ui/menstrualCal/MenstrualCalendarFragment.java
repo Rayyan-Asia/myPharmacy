@@ -1,6 +1,8 @@
 package com.example.mypharmacy.ui.menstrualCal;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +13,26 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mypharmacy.R;
+import com.example.mypharmacy.data.local.entities.Menstruation;
+import com.example.mypharmacy.data.local.entities.Person;
+import com.example.mypharmacy.data.local.repositories.MenstruationRepository;
+import com.example.mypharmacy.data.local.repositories.impl.MenstruationRepositoryImpl;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
 
 public class MenstrualCalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
     //todo check if start dates are available if not send intent to survey
@@ -30,6 +42,12 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
     private Button previousMonthButton;
     private LocalDate selectedDate;
 
+    private MutableLiveData<Menstruation> menstruation = new MutableLiveData<>();
+
+    public LiveData<Menstruation> getData() {
+        return menstruation;
+    }
+
     public MenstrualCalendarFragment() {
         // Required empty public constructor
     }
@@ -37,25 +55,56 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_menstrual_calendar, container, false);
+
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        initWidgets(view);
-        setListeners();
-        SetMonthView();
+        getMenstruation();
+        this.getData().observe(getViewLifecycleOwner(), new Observer<Menstruation>() {
+            @Override
+            public void onChanged(Menstruation menstruation) {
+                if (menstruation == null) {
+                    Fragment fragment = new MenstrualCycleSurvey();
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                } else {
+                    initWidgets(view);
+                    setListeners();
+                    SetMonthView();
+                }
+            }
+        });
 
     }
 
+    private void getMenstruation() {
+        MenstruationRepository menstruationRepository = new MenstruationRepositoryImpl(this.getContext());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Menstruation menstruationTemp = menstruationRepository.getMenstruation();
+                menstruation.postValue(menstruationTemp);
+            }
+        }).start();
+
+
+    }
+
+
     private void setListeners() {
-        previousMonthButton.setOnClickListener(e->{
+        previousMonthButton.setOnClickListener(e -> {
             selectedDate = selectedDate.minusMonths(1);
             SetMonthView();
         });
 
-        nextMonthButton.setOnClickListener(e-> {
+        nextMonthButton.setOnClickListener(e -> {
             selectedDate = selectedDate.plusMonths(1);
             SetMonthView();
         });
@@ -105,9 +154,9 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
 
     @Override
     public void OnItemClick(int position, String dayText) {
-        if (!dayText.equals("")){
-            String message = "Selected Date " + dayText + " "+MonthYearFromDate(selectedDate);
-            Toast.makeText(this.getContext(),message,Toast.LENGTH_LONG).show();
-         }
+        if (!dayText.equals("")) {
+            String message = "Selected Date " + dayText + " " + MonthYearFromDate(selectedDate);
+            Toast.makeText(this.getContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 }
