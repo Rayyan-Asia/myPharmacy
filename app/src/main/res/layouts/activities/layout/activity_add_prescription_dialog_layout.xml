@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent">
+    <LinearLayout
+            android:id="@+id/addPrescriptionLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+    >
+
+        <TextView
+                android:text="Add Prescription"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"/>
+
+        <TextView
+                android:text="Prescription Name"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"/>
+
+        <EditText
+                android:id="@+id/prescriptionNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter prescription name" />
+
+        <TextView
+                android:text="Prescription Description"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"/>
+
+        <EditText
+                android:id="@+id/prescriptionDescriptionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter prescription description" />
+
+        <TextView
+                android:text="Dosage"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"/>
+
+        <EditText
+                android:id="@+id/dosageEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter dosage" />
+
+        <TextView
+                android:text="Frequency"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"/>
+
+        <EditText
+                android:id="@+id/frequencyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter frequency" />
+
+        <TextView
+                android:text="Start Date"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"/>
+
+        <EditText
+                android:id="@+id/startDateEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select start date"
+                android:inputType="date" />
+
+        <TextView
+                android:text="End Date"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"/>
+
+        <EditText
+                android:id="@+id/endDateEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select end date"
+                android:inputType="date" />
+
+        <TextView
+                android:text="Select Drug"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"/>
+
+        <Spinner
+                android:id="@+id/drugSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select a Drug"
+        />
+        <Button
+                android:id="@+id/add_prescription_button_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="Add Prescription" />
+
+    </LinearLayout>
+
+
+</android.widget.RelativeLayout>

@@ -4,7 +4,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
+import lombok.Data;
 
+@Data
 @Entity(tableName = "appointment_prescription",
         foreignKeys = { @ForeignKey(entity = Appointment.class, parentColumns = "id", childColumns = "appointment_id", onDelete = ForeignKey.CASCADE),
                         @ForeignKey(entity = Prescription.class, parentColumns = "id", childColumns = "prescription_id", onDelete = ForeignKey.CASCADE)})

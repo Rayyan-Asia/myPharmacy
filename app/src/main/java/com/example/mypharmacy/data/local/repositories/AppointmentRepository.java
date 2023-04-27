@@ -1,16 +1,12 @@
 package com.example.mypharmacy.data.local.repositories;
 
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-import androidx.room.Update;
 import com.example.mypharmacy.data.local.entities.Appointment;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface AppointmentRepository {
-    void insertAppointment(Appointment appointment);
+    long insertAppointment(Appointment appointment);
 
     Appointment getAppointmentById(int appointmentId);
 
