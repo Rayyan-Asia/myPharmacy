@@ -1,10 +1,11 @@
 package com.example.mypharmacy.data.local.enums;
 
 
-public enum Color{
-    RED("#FF0000"),
-    GREEN("#00FF00"),
-    BLUE("#0000FF");
+public enum Color {
+    LUTEAL("#ADD8E6"), //LIGHT BLUE
+    FOLLICULAR("#90EE90"), // LIGHT GREEN
+    OVULATION("#FFC0CB"), // PINK
+    MENSTRUAL("#FF0000"); // RED
 
     private final String hexCode;
 

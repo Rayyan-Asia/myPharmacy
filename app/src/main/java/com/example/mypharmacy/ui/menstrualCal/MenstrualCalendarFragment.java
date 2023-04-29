@@ -1,8 +1,6 @@
 package com.example.mypharmacy.ui.menstrualCal;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,19 +21,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Menstruation;
-import com.example.mypharmacy.data.local.entities.Person;
+import com.example.mypharmacy.data.local.enums.Color;
 import com.example.mypharmacy.data.local.repositories.MenstruationRepository;
 import com.example.mypharmacy.data.local.repositories.impl.MenstruationRepositoryImpl;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
 
 public class MenstrualCalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
-    //todo check if start dates are available if not send intent to survey
+
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private Button nextMonthButton;
@@ -112,7 +108,7 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
 
     private void SetMonthView() {
         monthYearText.setText(MonthYearFromDate(selectedDate));
-        ArrayList<String> daysInMonth = DaysInMonthArray(selectedDate);
+        ArrayList<CalendarDay> daysInMonth = DaysInMonthArray(selectedDate);
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext().getApplicationContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
@@ -120,8 +116,9 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
 
     }
 
-    private ArrayList<String> DaysInMonthArray(LocalDate selectedDate) {
-        ArrayList<String> daysInMonthArray = new ArrayList<>();
+
+    private ArrayList<CalendarDay> DaysInMonthArray(LocalDate selectedDate) {
+        ArrayList<CalendarDay> daysInMonthArray = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(selectedDate);
         int daysInMonth = yearMonth.lengthOfMonth();
         LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
@@ -129,12 +126,19 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
 
         for (int i = 1; i <= 42; i++) {
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
-                daysInMonthArray.add("");
+                daysInMonthArray.add(new CalendarDay());
             } else {
-                daysInMonthArray.add(String.valueOf(i - dayOfWeek));
+                Color color = getColorFromDate();
+                daysInMonthArray.add(new CalendarDay(color, String.valueOf(i - dayOfWeek)));
             }
+
         }
         return daysInMonthArray;
+    }
+
+    //todo determine the color based on the day of the month based on the last cycle
+    private Color getColorFromDate() {
+        return Color.LUTEAL;
     }
 
     private String MonthYearFromDate(LocalDate date) {

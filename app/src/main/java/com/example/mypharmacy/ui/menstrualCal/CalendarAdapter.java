@@ -1,5 +1,6 @@
 package com.example.mypharmacy.ui.menstrualCal;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,10 @@ import com.example.mypharmacy.R;
 import java.util.ArrayList;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
-    private final ArrayList<String> daysOfMonth;
+    private final ArrayList<CalendarDay> daysOfMonth;
     private final OnItemListener onItemListener;
 
-    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener) {
+    public CalendarAdapter(ArrayList<CalendarDay> daysOfMonth, OnItemListener onItemListener) {
         this.daysOfMonth = daysOfMonth;
         this.onItemListener = onItemListener;
     }
@@ -32,7 +33,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
-        holder.dayOfMonth.setText(daysOfMonth.get(position));
+        CalendarDay calendarDay = daysOfMonth.get(position);
+        if ((calendarDay.getDay() != null)) {
+            holder.dayOfMonth.setText(calendarDay.getDay());
+        } else {
+            holder.dayOfMonth.setText("");
+        }
+        if ((calendarDay.getColor() != null))
+            holder.itemView.setBackgroundColor(Color.parseColor(calendarDay.getColor().getHexCode()));
     }
 
     @Override
