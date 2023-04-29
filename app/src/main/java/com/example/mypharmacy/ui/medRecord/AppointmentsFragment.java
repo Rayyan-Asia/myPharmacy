@@ -1,5 +1,6 @@
 package com.example.mypharmacy.ui.medRecord;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,6 +16,7 @@ import com.example.mypharmacy.data.local.entities.Appointment;
 import com.example.mypharmacy.data.local.entities.Person;
 import com.example.mypharmacy.data.local.repositories.AppointmentRepository;
 import com.example.mypharmacy.data.local.repositories.impl.AppointmentRepositoryImpl;
+import com.example.mypharmacy.ui.menu.MenuActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -55,7 +57,8 @@ public class AppointmentsFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 // Show a dialog to add a new Appointment
-                showAddAppointmentDialog();
+                Intent intent = new Intent(view.getContext(), AddAppointmentActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -66,11 +69,6 @@ public class AppointmentsFragment extends Fragment{
         this.mAppointments = appointmentList;
         this.mAdapter = new AppointmentAdapter(mAppointments);
         this.mRecyclerView.setAdapter(mAdapter);
-    }
-
-    private void showAddAppointmentDialog() {
-        // Implement the logic for showing a dialog to add a new Appointment
-        // and adding the new Appointment to the mAppointments list
     }
 }
 

@@ -2,7 +2,6 @@ package com.example.mypharmacy.data.local.repositories.impl;
 
 import android.content.Context;
 import com.example.mypharmacy.data.local.daos.AppointmentDao;
-import com.example.mypharmacy.data.local.daos.PersonDao;
 import com.example.mypharmacy.data.local.entities.Appointment;
 import com.example.mypharmacy.data.local.myPharmacyDatabase;
 import com.example.mypharmacy.data.local.repositories.AppointmentRepository;
@@ -22,8 +21,8 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         this.appointmentDao = database.getAppointmentDao();
     }
     @Override
-    public void insertAppointment(Appointment appointment) {
-        appointmentDao.insertAppointment(appointment);
+    public long insertAppointment(Appointment appointment) {
+        return appointmentDao.insertAppointment(appointment);
     }
 
     @Override

@@ -3,40 +3,32 @@ package com.example.mypharmacy.data.local.repositories.impl;
 import android.content.Context;
 import com.example.mypharmacy.data.local.daos.AppointmentDao;
 import com.example.mypharmacy.data.local.daos.DoctorDao;
+import com.example.mypharmacy.data.local.daos.DrugDao;
 import com.example.mypharmacy.data.local.entities.Doctor;
+import com.example.mypharmacy.data.local.entities.Drug;
 import com.example.mypharmacy.data.local.myPharmacyDatabase;
 import com.example.mypharmacy.data.local.repositories.DoctorRepository;
+import com.example.mypharmacy.data.local.repositories.DrugRepository;
 
 import java.util.List;
 
-public class DoctorRepositoryImpl implements DoctorRepository {
-    private DoctorDao doctorDao;
+public class DrugRepositoryImpl implements DrugRepository {
+    private DrugDao drugDao;
     private Context context;
 
     myPharmacyDatabase database;
 
-    public DoctorRepositoryImpl(Context context) {
+    public DrugRepositoryImpl(Context context) {
         this.context = context;
         database = myPharmacyDatabase.getInstance(context);
-        this.doctorDao = database.getDoctorDao();
+        this.drugDao = database.getDrugDao();
     }
     @Override
-    public long insertDoctor(Doctor doctor) {
-        return doctorDao.insertDoctor(doctor);
-    }
+    public List<Drug> getAllDrugs() { return drugDao.getAllDrugs();}
 
     @Override
-    public Doctor getDoctor(int id) {
-        return doctorDao.getDoctor(id);
+    public Drug getDrug(int id) {
+        return drugDao.getDrug(id);
     }
 
-    @Override
-    public void updateDoctor(Doctor doctor) {
-        doctorDao.updateDoctor(doctor);
-    }
-
-    @Override
-    public List<Doctor> getAllDoctors() {
-        return doctorDao.getAllDoctors();
-    }
 }

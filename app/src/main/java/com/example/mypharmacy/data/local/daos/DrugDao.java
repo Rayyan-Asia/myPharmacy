@@ -8,8 +8,8 @@ import java.util.List;
 
 @Dao
 public interface DrugDao {
-    @Query("SELECT * FROM Doctor ORDER BY name ASC")
+    @Query("SELECT * FROM drug ORDER BY name ASC")
     List<Drug> getAllDrugs();
-    @Query("SELECT * FROM Drug where id=:id")
+    @Query("SELECT * FROM drug where id=:id")
     Drug getDrug(int id);
 }
