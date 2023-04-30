@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MenstrualCalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
 
@@ -128,7 +129,7 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                 daysInMonthArray.add(new CalendarDay());
             } else {
-                Color color = getColorFromDate();
+                Color color = getColorFromDate(i - dayOfWeek);
                 daysInMonthArray.add(new CalendarDay(color, String.valueOf(i - dayOfWeek)));
             }
 
@@ -137,8 +138,35 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
     }
 
     //todo determine the color based on the day of the month based on the last cycle
-    private Color getColorFromDate() {
-        return Color.LUTEAL;
+    private Color getColorFromDate(int i) {
+        int endDay = menstruation.getValue().endDate.getDayOfMonth();
+        int startDay = menstruation.getValue().startDate.getDayOfMonth();
+        Color color = Color.MENSTRUAL;
+        if (i >= startDay && i <= endDay) {
+            color = Color.MENSTRUAL;
+        } else {
+            int stage;
+            if (i < startDay) {
+                stage = startDay - i;
+                if (stage <= 9) {
+                    color = Color.LUTEAL;
+                } else if (stage > 9 && stage <= 14) {
+                    color = Color.OVULATION;
+                } else
+                    color = Color.FOLLICULAR;
+            } else {
+                stage = i - startDay;
+                if (stage <= 9) {
+                    color = Color.FOLLICULAR;
+                } else if ( stage <= 14) {
+                    color = Color.OVULATION;
+                }
+                else
+                    color = Color.LUTEAL;
+            }
+        }
+
+        return color;
     }
 
     private String MonthYearFromDate(LocalDate date) {
