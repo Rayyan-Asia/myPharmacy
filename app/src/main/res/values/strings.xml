@@ -46,5 +46,7 @@
         <item>Married</item>
         <item>Single</item>
     </string-array>
+    <string name="nextArrow">-></string>
+    <string name="previousArrow"> &lt;-</string>
 
 </resources>

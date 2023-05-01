@@ -41,6 +41,7 @@ public class IntroActivityListeners {
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
         });
+
         saveButton.setOnClickListener(v -> {
             Person person = new Person();
             int check = 0;

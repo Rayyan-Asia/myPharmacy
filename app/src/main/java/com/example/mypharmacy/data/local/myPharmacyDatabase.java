@@ -4,19 +4,20 @@ import android.content.ContentValues;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.room.*;
-import androidx.room.migration.AutoMigrationSpec;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.mypharmacy.data.local.daos.*;
 import com.example.mypharmacy.data.local.entities.*;
-import com.example.mypharmacy.data.local.repositories.PersonRepository;
+
 import org.jetbrains.annotations.NotNull;
 
-import javax.inject.Inject;
 import java.time.LocalDate;
 
-@Database(entities = {Person.class, Doctor.class, Drug.class, Prescription.class, Document.class, Appointment.class, LabTest.class, DocumentTest.class, AppointmentPrescription.class},
-        version = 6, autoMigrations = { @AutoMigration(from = 1, to = 2), @AutoMigration(from = 3, to = 4), @AutoMigration(from = 5, to = 6)})
+@Database(entities = {Person.class, Doctor.class, Drug.class, Prescription.class, Document.class,
+        Appointment.class, LabTest.class, DocumentTest.class, AppointmentPrescription.class,
+          Menstruation.class},
+        version = 7, autoMigrations = { @AutoMigration(from = 1, to = 2), @AutoMigration(from = 3, to = 4), @AutoMigration(from = 5, to = 6),
+        @AutoMigration(from = 6, to = 7)})
 public abstract class myPharmacyDatabase extends RoomDatabase {
      private static final String DB_NAME = "myPharmacy.db";
      private static myPharmacyDatabase instance;
@@ -80,7 +81,15 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
           }
      };
 
+     public static final Migration CREATE_MENSTRUATIONS = new Migration(6, 7) {
 
+          @Override
+          public void migrate(@NonNull @NotNull SupportSQLiteDatabase database) {
+               database.execSQL("CREATE TABLE menstruation (id INTEGER PRIMARY KEY AUTOINCREMENT, start_date Integer, end_date INTEGER check(end_date>start_date))");
+          }
+     };
+
+     public abstract MenstruationDao getMenstruationDao();
 }
 
 
