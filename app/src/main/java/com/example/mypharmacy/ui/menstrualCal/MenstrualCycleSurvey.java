@@ -121,10 +121,11 @@ public class MenstrualCycleSurvey extends Fragment {
                                 Looper.prepare();
                                 menstruationRepository.insertMenstruation(menstruation);
                                 Toast.makeText(getContext(), "Menstruation saved successfully", Toast.LENGTH_SHORT).show();
+                                switchToCalendar();
 
                             }
                         }).start();
-                        switchToCalendar();
+
                     }
                     else {
                         endDate.setError("You may need to see a doctor with a period this long!");
