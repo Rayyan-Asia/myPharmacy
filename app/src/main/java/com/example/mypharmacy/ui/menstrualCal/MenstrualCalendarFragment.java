@@ -65,8 +65,8 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
         this.getData().observe(getViewLifecycleOwner(), new Observer<Menstruation>() {
             @Override
             public void onChanged(Menstruation menstruation) {
-                if (menstruation == null || (!isSameMonth(currentDate,menstruation.endDate)
-                        && !isSameMonth(currentDate,menstruation.startDate))) {
+                if ((menstruation == null || (!isSameMonth(currentDate, menstruation.endDate)
+                        && !isSameMonth(currentDate, menstruation.startDate))) && menstruation.endDate.until(currentDate).getDays()> 35) {
                     switchToSurvey();
                 } else {
                     initWidgets(view);
@@ -151,12 +151,13 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
         if (isSameMonth(endDate, selectedDate) && isSameMonth(startDate, selectedDate)) {
             return getColorSameMonth(i);
         } else if (isSameMonth(endDate, selectedDate) && !isSameMonth(startDate, selectedDate)) {
-            return getColorAfter( i , endDate.getDayOfMonth());
+            return getColorAfter(i, endDate.getDayOfMonth());
         } else if (!isSameMonth(endDate, selectedDate) && isSameMonth(startDate, selectedDate)) {
             return getColorBefore(startDate.getDayOfMonth(), i);
-        } else {
-            return Color.PLAIN;
+        } else if (endDate.until(currentDate).getDays() < 40){
+            return getColorAfter(i,endDate.getDayOfMonth() - endDate.getMonth().maxLength());
         }
+        else return Color.PLAIN;
 
     }
 
@@ -173,9 +174,9 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
             color = Color.MENSTRUAL;
         } else {
             if (i < startDay) {
-                color = getColorBefore( startDay,i);
+                color = getColorBefore(startDay, i);
             } else {
-                color = getColorAfter(i,endDay);
+                color = getColorAfter(i, endDay);
             }
         }
 
@@ -183,11 +184,11 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
     }
 
     @NonNull
-    private Color getColorBefore( int startDay, int i) {
+    private Color getColorBefore(int startDay, int i) {
         Color color;
         int stage;
         stage = startDay - i;
-        if(stage < 0 ){
+        if (stage < 0) {
             color = Color.MENSTRUAL;
         } else if (stage <= 9) {
             color = Color.LUTEAL;
@@ -212,10 +213,9 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
             color = Color.OVULATION;
         } else if (stage <= 23)
             color = Color.LUTEAL;
-        else if (stage <= 28){
+        else if (stage <= 28) {
             color = Color.EXPECTED;
-        }
-        else
+        } else
             color = Color.PLAIN;
 
 
