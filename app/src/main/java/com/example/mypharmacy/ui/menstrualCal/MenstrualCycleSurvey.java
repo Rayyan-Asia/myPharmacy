@@ -78,7 +78,7 @@ public class MenstrualCycleSurvey extends Fragment {
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                             // set day of month , month and year value in the edit text
                             startDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            START_DAY = LocalDate.of(year, monthOfYear, dayOfMonth);
+                            START_DAY = LocalDate.of(year, monthOfYear+1, dayOfMonth);
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -96,7 +96,7 @@ public class MenstrualCycleSurvey extends Fragment {
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                             // set day of month , month and year value in the edit text
                             endDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            END_DAY = LocalDate.of(year, monthOfYear, dayOfMonth);
+                            END_DAY = LocalDate.of(year, monthOfYear + 1, dayOfMonth);
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -124,12 +124,7 @@ public class MenstrualCycleSurvey extends Fragment {
 
                             }
                         }).start();
-                        Fragment fragment = new MenstrualCalendarFragment();
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace( R.id.fragment_container,fragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                        switchToCalendar();
                     }
                     else {
                         endDate.setError("You may need to see a doctor with a period this long!");
@@ -142,6 +137,15 @@ public class MenstrualCycleSurvey extends Fragment {
             }
         });
 
+    }
+
+    private void switchToCalendar() {
+        Fragment fragment = new MenstrualCalendarFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace( R.id.fragment_container,fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
 

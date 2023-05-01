@@ -12,7 +12,7 @@ public class CalendarDay {
     }
 
     public CalendarDay() {
-
+        this.color = Color.PLAIN;
     }
 
     public Color getColor() {

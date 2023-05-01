@@ -5,7 +5,9 @@ public enum Color {
     LUTEAL("#ADD8E6"), //LIGHT BLUE
     FOLLICULAR("#90EE90"), // LIGHT GREEN
     OVULATION("#FFC0CB"), // PINK
-    MENSTRUAL("#FF0000"); // RED
+    MENSTRUAL("#FF0000"), // RED
+    PLAIN("#FFFFFF"),
+    EXPECTED("#888888");
 
     private final String hexCode;
 

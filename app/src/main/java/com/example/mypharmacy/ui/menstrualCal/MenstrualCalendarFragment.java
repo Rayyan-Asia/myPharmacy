@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mypharmacy.MenstruationsList;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Menstruation;
 import com.example.mypharmacy.data.local.enums.Color;
@@ -29,15 +30,15 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class MenstrualCalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
 
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
-    private Button nextMonthButton;
-    private Button previousMonthButton;
-    private LocalDate selectedDate;
+    private Button EditButton;
+    private Button previousMenstruationsButton;
+    private LocalDate currentDate = LocalDate.now();
+
 
     private MutableLiveData<Menstruation> menstruation = new MutableLiveData<>();
 
@@ -64,13 +65,9 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
         this.getData().observe(getViewLifecycleOwner(), new Observer<Menstruation>() {
             @Override
             public void onChanged(Menstruation menstruation) {
-                if (menstruation == null) {
-                    Fragment fragment = new MenstrualCycleSurvey();
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_container, fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                if (menstruation == null || (!isSameMonth(currentDate,menstruation.endDate)
+                        && !isSameMonth(currentDate,menstruation.startDate))) {
+                    switchToSurvey();
                 } else {
                     initWidgets(view);
                     setListeners();
@@ -79,6 +76,15 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
             }
         });
 
+    }
+
+    private void switchToSurvey() {
+        Fragment fragment = new MenstrualCycleSurvey();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     private void getMenstruation() {
@@ -96,20 +102,22 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
 
 
     private void setListeners() {
-        previousMonthButton.setOnClickListener(e -> {
-            selectedDate = selectedDate.minusMonths(1);
-            SetMonthView();
+        previousMenstruationsButton.setOnClickListener(e -> {
+            Fragment fragment = new MenstruationsList();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
-
-        nextMonthButton.setOnClickListener(e -> {
-            selectedDate = selectedDate.plusMonths(1);
-            SetMonthView();
+        EditButton.setOnClickListener(e -> {
+            switchToSurvey();
         });
     }
 
     private void SetMonthView() {
-        monthYearText.setText(MonthYearFromDate(selectedDate));
-        ArrayList<CalendarDay> daysInMonth = DaysInMonthArray(selectedDate);
+        monthYearText.setText(MonthYearFromDate(currentDate));
+        ArrayList<CalendarDay> daysInMonth = DaysInMonthArray(currentDate);
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext().getApplicationContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
@@ -129,7 +137,7 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                 daysInMonthArray.add(new CalendarDay());
             } else {
-                Color color = getColorFromDate(i - dayOfWeek);
+                Color color = getColorFromDate(i - dayOfWeek, selectedDate);
                 daysInMonthArray.add(new CalendarDay(color, String.valueOf(i - dayOfWeek)));
             }
 
@@ -137,34 +145,81 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
         return daysInMonthArray;
     }
 
-    //todo determine the color based on the day of the month based on the last cycle
-    private Color getColorFromDate(int i) {
+    private Color getColorFromDate(int i, LocalDate selectedDate) {
+        LocalDate endDate = menstruation.getValue().endDate;
+        LocalDate startDate = menstruation.getValue().startDate;
+        if (isSameMonth(endDate, selectedDate) && isSameMonth(startDate, selectedDate)) {
+            return getColorSameMonth(i);
+        } else if (isSameMonth(endDate, selectedDate) && !isSameMonth(startDate, selectedDate)) {
+            return getColorAfter(endDate.getDayOfMonth(), i);
+        } else if (!isSameMonth(endDate, selectedDate) && isSameMonth(startDate, selectedDate)) {
+            return getColorBefore(endDate.getDayOfMonth(), i);
+        } else {
+            return Color.PLAIN;
+        }
+
+    }
+
+    private boolean isSameMonth(LocalDate date, LocalDate selectedDate) {
+        return (date.getMonth().equals(selectedDate.getMonth()) && date.getYear() == (selectedDate.getYear()));
+    }
+
+    @NonNull
+    private Color getColorSameMonth(int i) {
+        Color color;
         int endDay = menstruation.getValue().endDate.getDayOfMonth();
         int startDay = menstruation.getValue().startDate.getDayOfMonth();
-        Color color = Color.MENSTRUAL;
+
         if (i >= startDay && i <= endDay) {
             color = Color.MENSTRUAL;
         } else {
-            int stage;
+
             if (i < startDay) {
-                stage = startDay - i;
-                if (stage <= 9) {
-                    color = Color.LUTEAL;
-                } else if (stage > 9 && stage <= 14) {
-                    color = Color.OVULATION;
-                } else
-                    color = Color.FOLLICULAR;
+                color = getColorBefore(i, startDay);
             } else {
-                stage = i - startDay;
-                if (stage <= 9) {
-                    color = Color.FOLLICULAR;
-                } else if ( stage <= 14) {
-                    color = Color.OVULATION;
-                }
-                else
-                    color = Color.LUTEAL;
+                color = getColorAfter(i, endDay);
             }
         }
+
+        return color;
+    }
+
+    @NonNull
+    private Color getColorBefore(int i, int startDay) {
+        Color color;
+        int stage;
+        stage = startDay - i;
+        if(stage < 0 ){
+            color = Color.MENSTRUAL;
+        }
+        else if (stage <= 9) {
+            color = Color.LUTEAL;
+        } else if (stage > 9 && stage <= 14) {
+            color = Color.OVULATION;
+        } else
+            color = Color.FOLLICULAR;
+        return color;
+    }
+
+    @NonNull
+    private Color getColorAfter(int i, int endDay) {
+        Color color;
+        int stage;
+        stage = i - endDay;
+        if (i <= endDay)
+            return Color.MENSTRUAL;
+        if (stage <= 9) {
+            color = Color.FOLLICULAR;
+        } else if (stage <= 14) {
+            color = Color.OVULATION;
+        } else if (stage <= 23)
+            color = Color.LUTEAL;
+        else if (stage <= 28){
+            color = Color.EXPECTED;
+        }
+        else
+            color = Color.PLAIN;
+
 
         return color;
     }
@@ -178,16 +233,16 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
     private void initWidgets(View view) {
         calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView);
         monthYearText = view.findViewById(R.id.monthYearTextview);
-        selectedDate = LocalDate.now();
-        previousMonthButton = view.findViewById(R.id.PreviousMonthButton);
-        nextMonthButton = view.findViewById(R.id.NextMonthButton);
+        currentDate = LocalDate.now();
+        previousMenstruationsButton = view.findViewById(R.id.PreviousMenstruationsButton);
+        EditButton = view.findViewById(R.id.EditMenstruationButton);
 
     }
 
     @Override
     public void OnItemClick(int position, String dayText) {
         if (!dayText.equals("")) {
-            String message = "Selected Date " + dayText + " " + MonthYearFromDate(selectedDate);
+            String message = "Selected Date " + dayText + " " + MonthYearFromDate(currentDate);
             Toast.makeText(this.getContext(), message, Toast.LENGTH_LONG).show();
         }
     }

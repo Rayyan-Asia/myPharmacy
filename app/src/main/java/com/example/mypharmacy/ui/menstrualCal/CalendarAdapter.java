@@ -1,6 +1,7 @@
 package com.example.mypharmacy.ui.menstrualCal;
 
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.calendar_cell,parent,false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        layoutParams.height = (int) (parent.getHeight() * 0.1666666);
+        layoutParams.height = (int) (parent.getHeight() * 0.145);
         return new CalendarViewHolder(view, onItemListener);
     }
 
@@ -39,8 +40,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         } else {
             holder.dayOfMonth.setText("");
         }
-        if ((calendarDay.getColor() != null))
-            holder.itemView.setBackgroundColor(Color.parseColor(calendarDay.getColor().getHexCode()));
+        if ((calendarDay.getColor() != null)) {
+            GradientDrawable drawable = (GradientDrawable) holder.itemView.getBackground();
+            drawable.setColor(Color.parseColor(calendarDay.getColor().getHexCode()));
+            holder.itemView.setBackground(drawable);
+        }
+
+
     }
 
     @Override

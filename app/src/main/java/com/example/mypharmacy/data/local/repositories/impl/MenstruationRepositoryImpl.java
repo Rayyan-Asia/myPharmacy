@@ -7,6 +7,8 @@ import com.example.mypharmacy.data.local.entities.Menstruation;
 import com.example.mypharmacy.data.local.myPharmacyDatabase;
 import com.example.mypharmacy.data.local.repositories.MenstruationRepository;
 
+import java.util.List;
+
 public class MenstruationRepositoryImpl implements MenstruationRepository{
 
 
@@ -30,4 +32,11 @@ public class MenstruationRepositoryImpl implements MenstruationRepository{
     public Menstruation getMenstruation() {
         return menstruationDao.getMenstruation();
     }
+
+    @Override
+    public List<Menstruation> getMenstruations() {
+        return menstruationDao.getMenstruations();
+    }
+
+
 }
