@@ -78,7 +78,7 @@ public class MenstrualCycleSurvey extends Fragment {
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                             // set day of month , month and year value in the edit text
                             startDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            START_DAY = LocalDate.of(year, monthOfYear+1, dayOfMonth);
+                            START_DAY = LocalDate.of(year, monthOfYear + 1, dayOfMonth);
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -111,23 +111,25 @@ public class MenstrualCycleSurvey extends Fragment {
                 }
             } else {
                 if (END_DAY.isAfter(START_DAY)) {
-                    if(START_DAY.until(END_DAY).getDays() <= 9){
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Menstruation menstruation = new Menstruation();
-                                menstruation.startDate = START_DAY;
-                                menstruation.endDate = END_DAY;
-                                Looper.prepare();
-                                menstruationRepository.insertMenstruation(menstruation);
-                                Toast.makeText(getContext(), "Menstruation saved successfully", Toast.LENGTH_SHORT).show();
-                                switchToCalendar();
-
-                            }
-                        }).start();
-
-                    }
-                    else {
+                    if (START_DAY.until(END_DAY).getDays() <= 9) {
+                        if (START_DAY.isBefore(LocalDate.now()) && (END_DAY.isBefore((LocalDate.now())) || END_DAY.getDayOfYear() == LocalDate.now().getDayOfYear() ))  {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Menstruation menstruation = new Menstruation();
+                                    menstruation.startDate = START_DAY;
+                                    menstruation.endDate = END_DAY;
+                                    Looper.prepare();
+                                    menstruationRepository.insertMenstruation(menstruation);
+                                    Toast.makeText(getContext(), "Menstruation saved successfully", Toast.LENGTH_SHORT).show();
+                                    switchToCalendar();
+                                }
+                            }).start();
+                        } else {
+                            endDate.setError("You can't travel into the future");
+                            Toast.makeText(getContext(), "You can't predict the future", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
                         endDate.setError("You may need to see a doctor with a period this long!");
                         Toast.makeText(getContext(), "You may need to see a doctor with a period this long!", Toast.LENGTH_SHORT).show();
                     }
@@ -144,7 +146,7 @@ public class MenstrualCycleSurvey extends Fragment {
         Fragment fragment = new MenstrualCalendarFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace( R.id.fragment_container,fragment);
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
