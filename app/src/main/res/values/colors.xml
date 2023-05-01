@@ -12,5 +12,8 @@
     <color name="tab_text_color">#FFFFFF</color>
     <color name="med_red">#F14D42</color>
     <color name="dark_gray">#5A5A5A</color>
+    <color name="ambulance_white">#FFFFFF</color>
+    <color name="ambulance_red">#FF0000</color>
+    <color name="ambulance_blue">#0000FF</color>
 
 </resources>

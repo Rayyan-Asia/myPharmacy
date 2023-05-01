@@ -109,15 +109,12 @@ public class AddAppointmentActivity extends AppCompatActivity {
                 }
             }
         });
-
-        Button addButton = findViewById(R.id.add_prescription_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAddPrescriptionDialog();
-            }
-        });
-
+        drugSpinner = findViewById(R.id.drugSpinner);
+        prescriptionNameEditText = findViewById(R.id.prescriptionNameEditText);
+        prescriptionDescriptionEditText = findViewById(R.id.prescriptionDescriptionEditText);
+        dosageEditText = findViewById(R.id.dosageEditText);
+        frequencyEditText = findViewById(R.id.frequencyEditText);
+        startDateEditText = findViewById(R.id.startDateEditText);
 
         doctorRepository = new DoctorRepositoryImpl(getApplication());
         drugRepository = new DrugRepositoryImpl(getApplication());
@@ -141,6 +138,53 @@ public class AddAppointmentActivity extends AppCompatActivity {
                 });
             }
         }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Drug> drugs = drugRepository.getAllDrugs();
+                ArrayAdapter<Drug> drugAdapter = new ArrayAdapter<>(AddAppointmentActivity.this,
+                        android.R.layout.simple_spinner_item, drugs);
+                drugAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                drugSpinner.setAdapter(drugAdapter);
+            }
+        }).start();
+        startDateEditText.setOnClickListener(e -> {
+            final Calendar c = Calendar.getInstance();
+            int mYear = c.get(Calendar.YEAR); // current yeardialog
+            int mMonth = c.get(Calendar.MONTH); // current month
+            int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+            // date picker dialog
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            // set day of month , month and year value in the edit text
+                            startDateEditText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                            START_DATE = LocalDate.of(year, monthOfYear, dayOfMonth);
+                        }
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
+        });
+        endDateEditText = findViewById(R.id.endDateEditText);
+        endDateEditText.setOnClickListener(e -> {
+            final Calendar c = Calendar.getInstance();
+            int mYear = c.get(Calendar.YEAR); // current year
+            int mMonth = c.get(Calendar.MONTH); // current month
+            int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+            // date picker dialog
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            // set day of month , month and year value in the edit text
+                            endDateEditText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                            END_DATE = LocalDate.of(year, monthOfYear, dayOfMonth);
+                        }
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
+        });
+
+
 
     }
 
@@ -153,7 +197,7 @@ public class AddAppointmentActivity extends AppCompatActivity {
         Drug drug = null;
         String doctorName = "";
         String doctorSpecialty = "";
-        int doctorPhone = 0;
+        String doctorPhone = "";
         String doctorEmail = "";
         String clinicalAddress = "";
 
@@ -178,20 +222,73 @@ public class AddAppointmentActivity extends AppCompatActivity {
         } else if (doctorRadioGroup.getCheckedRadioButtonId() == R.id.newDoctorRadioButton) {
             doctorName = nameEditText.getText().toString().trim();
             doctorSpecialty = specialtyEditText.getText().toString().trim();
-            String phoneString = phoneEditText.getText().toString().trim();
+            doctorPhone = phoneEditText.getText().toString().trim();
+            int phone = 0;
+            if(!doctorPhone.isEmpty()) {
+                phone = Integer.parseInt(doctorPhone);
+            }
             if (doctorName.isEmpty()) {
                 nameEditText.setError("Name is required");
                 check = 1;
             }
-            doctor = new Doctor();
-            doctor.setName(doctorName);
-            doctor.setSpecialty(doctorSpecialty);
-            doctor.setPhone(doctorPhone);
-            doctor.setEmail(doctorEmail);
-            doctor.setClinicalAddress(clinicalAddress);
+            if(check == 0) {
+                doctor = new Doctor();
+                doctor.setName(doctorName);
+                doctor.setSpecialty(doctorSpecialty);
+                doctor.setPhone(phone);
+                doctor.setEmail(doctorEmail);
+                doctor.setClinicalAddress(clinicalAddress);
+                Doctor finalDoctor = doctor;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        finalDoctor.setId((int) doctorRepository.insertDoctor(finalDoctor));
+                    }
+                }).start();
+            }
+        }
+        String startDateString = startDateEditText.getText().toString();
+        String endDateString = endDateEditText.getText().toString();
+        String prescriptionName = prescriptionNameEditText.getText().toString();
+        String prescriptionDescription = prescriptionDescriptionEditText.getText().toString();
+        String prescriptionDosage = dosageEditText.getText().toString();
+        String prescriptionFrequency = frequencyEditText.getText().toString();
+
+        if (prescriptionName.isEmpty()) {
+            prescriptionNameEditText.setError("Prescription name is required");
+            check = 1;
+        }
+        if (prescriptionDosage.isEmpty()) {
+            dosageEditText.setError("Prescription dosage is required");
+            check = 1;
+        }
+        if (prescriptionFrequency.isEmpty()) {
+            frequencyEditText.setError("Prescription frequency is required");
+            check = 1;
+        }
+        if (startDateString.trim().isEmpty()) {
+            startDateEditText.setError("Date is required");
+            check = 1;
+        }
+        if (endDateString.trim().isEmpty()) {
+            endDateEditText.setError("Date is required");
+            check = 1;
+        }
+        if(!drugSpinner.getSelectedItem().toString().equals("")) {
+            drug = (Drug) drugSpinner.getSelectedItem();
+        } else {
+            check = 1;
         }
         if(check == 0) {
             //Create appointment
+            Prescription prescription = new Prescription();
+            prescription.setName(prescriptionName);
+            prescription.setDescription(prescriptionDescription);
+            prescription.setDosage(prescriptionDosage);
+            prescription.setFrequency(prescriptionFrequency);
+            prescription.setStartDate(START_DATE);
+            prescription.setEndDate(END_DATE);
+            prescription.setDrugId(drug.getId());
             Appointment appointment = new Appointment();
             appointment.setTitle(title);
             appointment.setDoctorId(doctor.getId());
@@ -199,131 +296,23 @@ public class AddAppointmentActivity extends AppCompatActivity {
             appointment.setDiagnosis(diagnosis);
             appointment.setDateOfAppointment(APPOINTMENT_DATE);
             // Save the appointment to the database
-            long appointmentID = appointmentRepository.insertAppointment(appointment);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    long appointmentID = appointmentRepository.insertAppointment(appointment);
+                    long prescriptionID = prescriptionRepository.insertPrescription(prescription);
 
-            //add appointment prescription
-            AppointmentPrescription appointmentPrescription = new AppointmentPrescription();
-            appointmentPrescription.setAppointmentId((int) appointmentID);
-            //appointmentPrescription.setPrescriptionId((int) prescriptionID);
-            appointmentPrescriptionRepository.insert(appointmentPrescription);
+                    //add appointment prescription
+                    AppointmentPrescription appointmentPrescription = new AppointmentPrescription();
+                    appointmentPrescription.setAppointmentId((int) appointmentID);
+                    appointmentPrescription.setPrescriptionId((int) prescriptionID);
+                    appointmentPrescriptionRepository.insert(appointmentPrescription);
+                }
+            });
 
             // Show a confirmation message
             Toast.makeText(this, "Appointment saved", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
-    private void showAddPrescriptionDialog() {
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.activity_add_prescription_dialog_layout);
-
-        drugSpinner = dialog.findViewById(R.id.drugSpinner);
-        prescriptionNameEditText = dialog.findViewById(R.id.prescriptionNameEditText);
-        prescriptionDescriptionEditText = dialog.findViewById(R.id.prescriptionDescriptionEditText);
-        dosageEditText = dialog.findViewById(R.id.dosageEditText);
-        frequencyEditText = dialog.findViewById(R.id.frequencyEditText);
-        startDateEditText = dialog.findViewById(R.id.startDateEditText);
-        startDateEditText.setOnClickListener(e -> {
-            final Calendar c = Calendar.getInstance();
-            int mYear = c.get(Calendar.YEAR); // current year
-            int mMonth = c.get(Calendar.MONTH); // current month
-            int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-            // date picker dialog
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            // set day of month , month and year value in the edit text
-                            startDateEditText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            START_DATE = LocalDate.of(year, monthOfYear, dayOfMonth);
-                        }
-                    }, mYear, mMonth, mDay);
-            datePickerDialog.show();
-        });
-        endDateEditText = dialog.findViewById(R.id.endDateEditText);
-        endDateEditText.setOnClickListener(e -> {
-            final Calendar c = Calendar.getInstance();
-            int mYear = c.get(Calendar.YEAR); // current year
-            int mMonth = c.get(Calendar.MONTH); // current month
-            int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-            // date picker dialog
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            // set day of month , month and year value in the edit text
-                            endDateEditText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            END_DATE = LocalDate.of(year, monthOfYear, dayOfMonth);
-                        }
-                    }, mYear, mMonth, mDay);
-            datePickerDialog.show();
-        });
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                runOnUiThread(new Runnable() {
-                    List<Drug> drugs = drugRepository.getAllDrugs();
-                    @Override
-                    public void run() {
-                        ArrayAdapter<Drug> drugAdapter = new ArrayAdapter<>(AddAppointmentActivity.this,
-                                android.R.layout.simple_spinner_item, drugs);
-                        drugAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        drugSpinner.setAdapter(drugAdapter);
-                    }
-                });
-            }
-        }).start();
-        Button addButton = dialog.findViewById(R.id.add_prescription_button_dialog);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String startDateString = startDateEditText.getText().toString();
-                String endDateString = startDateEditText.getText().toString();
-                String prescriptionName = prescriptionNameEditText.getText().toString();
-                String prescriptionDescription = prescriptionDescriptionEditText.getText().toString();
-                String prescriptionDosage = dosageEditText.getText().toString();
-                String prescriptionFrequency = frequencyEditText.getText().toString();
-                Drug drug = null;
-
-                int check = 0;
-                if (prescriptionName.isEmpty()) {
-                    prescriptionNameEditText.setError("Prescription name is required");
-                    check = 1;
-                }
-                if (prescriptionDosage.isEmpty()) {
-                    dosageEditText.setError("Prescription dosage is required");
-                    check = 1;
-                }
-                if (prescriptionFrequency.isEmpty()) {
-                    frequencyEditText.setError("Prescription frequency is required");
-                    check = 1;
-                }
-                if (startDateString.trim().isEmpty()) {
-                    startDateEditText.setError("Date is required");
-                    check = 1;
-                }
-                if (endDateString.trim().isEmpty()) {
-                    endDateEditText.setError("Date is required");
-                    check = 1;
-                }
-                if(drugSpinner.getSelectedItem().toString().equals("")) {
-                    drug = (Drug) drugSpinner.getSelectedItem();
-                    check = 1;
-                }
-                if(check == 0) {
-                    Prescription prescription = new Prescription();
-                    prescription.setName(prescriptionName);
-                    prescription.setDescription(prescriptionDescription);
-                    prescription.setDosage(prescriptionDosage);
-                    prescription.setFrequency(prescriptionFrequency);
-                    prescription.setStartDate(START_DATE);
-                    prescription.setEndDate(END_DATE);
-                    prescription.setDrugId(drug.getId());
-                    long prescriptionID = prescriptionRepository.insertPrescription(prescription);
-                }
-            }
-        });
-        dialog.show();
-    }
-
 }
