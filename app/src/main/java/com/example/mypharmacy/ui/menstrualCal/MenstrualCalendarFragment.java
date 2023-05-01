@@ -172,11 +172,10 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
         if (i >= startDay && i <= endDay) {
             color = Color.MENSTRUAL;
         } else {
-
             if (i < startDay) {
-                color = getColorBefore(i, startDay);
+                color = getColorBefore( startDay,i);
             } else {
-                color = getColorAfter(i, endDay);
+                color = getColorAfter(i,endDay);
             }
         }
 
