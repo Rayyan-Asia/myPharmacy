@@ -67,6 +67,7 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
             public void onChanged(Menstruation menstruation) {
                 if ((menstruation == null || (!isSameMonth(currentDate, menstruation.endDate)
                         && !isSameMonth(currentDate, menstruation.startDate))) && menstruation.endDate.until(currentDate).getDays()> 35) {
+                    Toast.makeText(getContext(), "No Entry in Previous Month", Toast.LENGTH_LONG).show();
                     switchToSurvey();
                 } else {
                     initWidgets(view);
