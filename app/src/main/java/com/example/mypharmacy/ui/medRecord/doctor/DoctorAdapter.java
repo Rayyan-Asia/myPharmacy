@@ -39,6 +39,9 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorViewHolder> {
 
         });
     }
+    public void updateData(List<Doctor> data) {
+        doctorList = data;
+    }
 
     @Override
     public int getItemCount() {

@@ -41,7 +41,7 @@ public class DoctorViewHolder extends RecyclerView.ViewHolder {
                 doctor_name.setText(doctor.getName());
                 doctor_specialty.setText(doctor.getSpecialty());
                 doctor_phone.setText(""+doctor.getPhone());
-                doctor_email.setText(doctor.getClinicalAddress());
+                doctor_email.setText(doctor.getEmail());
                 doctor_clinical_address.setText(doctor.getClinicalAddress());
             }
         }).start();
