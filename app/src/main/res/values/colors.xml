@@ -15,5 +15,8 @@
     <color name="ambulance_white">#FFFFFF</color>
     <color name="ambulance_red">#FF0000</color>
     <color name="ambulance_blue">#0000FF</color>
+    <color name="gray">#888</color>
+    <color name="blue">#0000ff</color>
+
 
 </resources>
