@@ -19,7 +19,6 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mypharmacy.MenstruationsList;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Menstruation;
 import com.example.mypharmacy.data.local.enums.Color;

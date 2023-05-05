@@ -1,4 +1,4 @@
-package com.example.mypharmacy;
+package com.example.mypharmacy.ui.menstrualCal;
 
 import android.os.Bundle;
 
@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Menstruation;
 import com.example.mypharmacy.data.local.repositories.MenstruationRepository;
 import com.example.mypharmacy.data.local.repositories.impl.MenstruationRepositoryImpl;
