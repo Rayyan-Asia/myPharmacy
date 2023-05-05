@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.ui.medRecord.doctor.DoctorCardActivity;
+import com.example.mypharmacy.ui.medRecord.drug.DrugCardActivity;
 
 public class MedicalRecordFragment extends Fragment {
 
@@ -47,9 +48,7 @@ public class MedicalRecordFragment extends Fragment {
         drugCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Handle drugCard click event
-                // For example, you can start a new activity or fragment
-                // to display information about drugs
+                startActivity(new Intent(getContext(), DrugCardActivity.class));
             }
         });
 
