@@ -18,4 +18,9 @@ public class Doctor {
     public String clinicalAddress;
 
 
+    @Override
+    public String toString() {
+        return name;
+
+    }
 }

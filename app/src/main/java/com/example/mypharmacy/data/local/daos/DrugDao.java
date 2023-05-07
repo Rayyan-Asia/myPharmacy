@@ -12,4 +12,7 @@ public interface DrugDao {
     List<Drug> getAllDrugs();
     @Query("SELECT * FROM drug where id=:id")
     Drug getDrug(int id);
+
+    @Insert
+    long insertDrug(Drug drug);
 }

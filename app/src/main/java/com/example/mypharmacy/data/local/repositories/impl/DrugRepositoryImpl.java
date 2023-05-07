@@ -31,4 +31,9 @@ public class DrugRepositoryImpl implements DrugRepository {
         return drugDao.getDrug(id);
     }
 
+    @Override
+    public long insertDrug(Drug drug) {
+        return drugDao.insertDrug(drug);
+    }
+
 }

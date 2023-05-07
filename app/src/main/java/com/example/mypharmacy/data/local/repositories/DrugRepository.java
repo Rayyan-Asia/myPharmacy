@@ -7,4 +7,5 @@ import java.util.List;
 public interface DrugRepository {
     List<Drug> getAllDrugs();
     Drug getDrug(int id);
+    long insertDrug(Drug drug);
 }

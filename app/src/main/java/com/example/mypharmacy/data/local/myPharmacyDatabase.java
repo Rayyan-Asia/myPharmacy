@@ -29,6 +29,7 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
      public abstract PrescriptionDao getPrescriptionDao();
      public abstract AppointmentDao getAppointmentDao();
      public abstract AppointmentPrescriptionDao getAppointmentPrescriptionDao();
+     public abstract MenstruationDao getMenstruationDao();
 
 
      public static synchronized myPharmacyDatabase getInstance(Context context) {
@@ -42,7 +43,7 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
      public static final Migration SEED_DRUG_TABLE = new Migration(2, 3) {
           @Override
           public void migrate(SupportSQLiteDatabase database) {
-               database.execSQL("CREATE TABLE drug_new (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, manufacturer TEXT, category TEXT, type TEXT, expiry_date INTEGER)");
+               database.execSQL("CREATE TABLE drug_new (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, description TEXT, manufacturer TEXT, category TEXT, type TEXT, expiry_date INTEGER)");
 
                LocalDate now = LocalDate.now();
 
@@ -80,16 +81,6 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
 
           }
      };
-
-     public static final Migration CREATE_MENSTRUATIONS = new Migration(6, 7) {
-
-          @Override
-          public void migrate(@NonNull @NotNull SupportSQLiteDatabase database) {
-               database.execSQL("CREATE TABLE menstruation (id INTEGER PRIMARY KEY AUTOINCREMENT, start_date Integer, end_date INTEGER check(end_date>start_date))");
-          }
-     };
-
-     public abstract MenstruationDao getMenstruationDao();
 }
 
 

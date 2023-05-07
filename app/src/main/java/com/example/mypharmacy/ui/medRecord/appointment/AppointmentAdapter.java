@@ -1,15 +1,13 @@
-package com.example.mypharmacy.ui.medRecord;
+package com.example.mypharmacy.ui.medRecord.appointment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Appointment;
-import org.jetbrains.annotations.NotNull;
+import com.example.mypharmacy.ui.medRecord.appointment.AppointmentViewHolder;
 
 import java.util.List;
 
@@ -25,7 +23,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentViewHold
     @NonNull
     @Override
     public AppointmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_medical_records_appointments_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_appointment_card, parent, false);
         return new AppointmentViewHolder(view);
     }
 
@@ -36,6 +34,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentViewHold
         holder.itemView.setOnClickListener(e -> {
 
         });
+    }
+    public void updateData(List<Appointment> data) {
+        appointmentList = data;
     }
 
     @Override
