@@ -9,7 +9,6 @@ import com.example.mypharmacy.R;
 import com.example.mypharmacy.ui.family.FamilyFragment;
 import com.example.mypharmacy.ui.home.HomeFragment;
 import com.example.mypharmacy.ui.medRecord.MedicalRecordFragment;
-import com.example.mypharmacy.ui.medRecord.MedicalRecordFragmentOld;
 import com.example.mypharmacy.ui.medReminder.MedicationReminderFragment;
 import com.example.mypharmacy.ui.menstrualCal.MenstrualCalendarFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

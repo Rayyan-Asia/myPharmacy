@@ -8,14 +8,14 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/drugs_list"
+            android:id="@+id/appointments_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_drug_button"
+            android:id="@+id/add_appointment_button"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginBottom="70dp"

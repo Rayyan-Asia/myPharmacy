@@ -34,7 +34,7 @@ public class DrugCardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drug);
 
         drugRepository = new DrugRepositoryImpl(this);
-        drugRecycleView = findViewById(R.id.doctors_list);
+        drugRecycleView = findViewById(R.id.drugs_list);
 
         createDrugLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -69,7 +69,7 @@ public class DrugCardActivity extends AppCompatActivity {
             }
         }).start();
         drugRecycleView.setLayoutManager(new LinearLayoutManager(this));
-        addDrugButton = findViewById(R.id.add_doctor_button);
+        addDrugButton = findViewById(R.id.add_drug_button);
         addDrugButton.setOnClickListener(e -> {
             Intent intent = new Intent(this, CreateDrugActivity.class);
             createDrugLauncher.launch(intent);

@@ -3,15 +3,10 @@ package com.example.mypharmacy.ui.medRecord.doctor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mypharmacy.R;
-import com.example.mypharmacy.data.local.entities.Appointment;
 import com.example.mypharmacy.data.local.entities.Doctor;
-import com.example.mypharmacy.ui.medRecord.AppointmentViewHolder;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 

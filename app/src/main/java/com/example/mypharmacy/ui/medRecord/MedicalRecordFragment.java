@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.example.mypharmacy.R;
+import com.example.mypharmacy.ui.medRecord.appointment.AppointmentCardActivity;
 import com.example.mypharmacy.ui.medRecord.doctor.DoctorCardActivity;
 import com.example.mypharmacy.ui.medRecord.drug.DrugCardActivity;
 
@@ -55,9 +56,7 @@ public class MedicalRecordFragment extends Fragment {
         appointmentCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Handle appointmentCard click event
-                // For example, you can start a new activity or fragment
-                // to display information about appointments
+                startActivity(new Intent(getContext(), AppointmentCardActivity.class));
             }
         });
 
