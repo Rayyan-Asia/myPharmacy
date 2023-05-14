@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 7,
-    "identityHash": "3cfc5fe4b6bdc075876aecdab6e296e4",
+    "version": 8,
+    "identityHash": "120acfeb24ed8eab843c547b794e2d9e",
     "entities": [
       {
         "tableName": "person",
@@ -606,12 +606,85 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "lab_test",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `doctor_id` INTEGER NOT NULL, `person_id` INTEGER NOT NULL, `date_of_test` INTEGER, `test_name` TEXT, `file_path` TEXT, FOREIGN KEY(`doctor_id`) REFERENCES `doctor`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_id`) REFERENCES `person`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "doctorId",
+            "columnName": "doctor_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "personId",
+            "columnName": "person_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateOfTest",
+            "columnName": "date_of_test",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "testName",
+            "columnName": "test_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "path",
+            "columnName": "file_path",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "doctor",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "doctor_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "person",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "person_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3cfc5fe4b6bdc075876aecdab6e296e4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '120acfeb24ed8eab843c547b794e2d9e')"
     ]
   }
 }
