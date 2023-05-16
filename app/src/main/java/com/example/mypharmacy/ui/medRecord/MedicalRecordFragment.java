@@ -14,6 +14,7 @@ import com.example.mypharmacy.R;
 import com.example.mypharmacy.ui.medRecord.appointment.AppointmentCardActivity;
 import com.example.mypharmacy.ui.medRecord.doctor.DoctorCardActivity;
 import com.example.mypharmacy.ui.medRecord.drug.DrugCardActivity;
+import com.example.mypharmacy.ui.medRecord.labTest.LabTestListActivity;
 
 public class MedicalRecordFragment extends Fragment {
 
@@ -63,9 +64,7 @@ public class MedicalRecordFragment extends Fragment {
         labTestsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Handle labTestsCard click event
-                // For example, you can start a new activity or fragment
-                // to display information about lab tests
+                startActivity(new Intent(getContext(), LabTestListActivity.class));
             }
         });
     }
