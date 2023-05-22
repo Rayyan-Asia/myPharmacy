@@ -52,4 +52,7 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="lab_test_type_header">Please select the lab test type.</string>
+    <string name="submit">submit</string>
+    <string name="how_is_the_lab_test_stored">How is the lab test stored?</string>
 </resources>

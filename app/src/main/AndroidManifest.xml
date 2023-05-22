@@ -14,8 +14,9 @@
         android:theme="@style/Theme.MyPharmacy"
         tools:targetApi="31">
         <activity
-            android:name=".LabTestViewHolder"
+            android:name=".ui.medRecord.labTest.CreateLabTestActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.medRecord.labTest.LabTestListActivity"
             android:exported="false"
