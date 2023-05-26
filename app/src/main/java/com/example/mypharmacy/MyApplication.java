@@ -114,9 +114,6 @@ public class MyApplication extends Application {
                 drug12.setType("Capsule");
                 drug12.setExpiryDate(LocalDate.of(2024, 5, 20));
 
-
-
-
                 // Insert drugs into the repository
                 if(drugRepository.getDrug(1) == null) {
                     drugRepository.insertDrug(drug1);
