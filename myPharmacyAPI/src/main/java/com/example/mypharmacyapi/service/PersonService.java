@@ -1,10 +1,14 @@
 package com.example.mypharmacyapi.service;
 
+import com.example.mypharmacyapi.dto.PersonDto;
+import com.example.mypharmacyapi.dto.PersonInsertDto;
 import com.example.mypharmacyapi.entity.Person;
+
+import java.util.Optional;
 
 public interface PersonService {
 
-    long insertPerson(Person person);
+    PersonDto insertPerson(PersonInsertDto person);
 
-    Person getPerson();
+    PersonDto getPerson(long id);
 }
