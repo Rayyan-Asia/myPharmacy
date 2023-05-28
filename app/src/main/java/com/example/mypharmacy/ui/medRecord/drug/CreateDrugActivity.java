@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Drug;
@@ -18,7 +15,9 @@ import java.time.LocalDate;
 import java.util.Calendar;
 
 public class CreateDrugActivity extends AppCompatActivity {
-    private EditText nameEditText, descriptionEditText, manufacturerEditText, categoryEditText, typeEditText, expiryDateEditText;
+    private EditText nameEditText, descriptionEditText, expiryDateEditText;
+    private Spinner manufacturerSpinner, categorySpinner, typeSpinner;
+    private TextView manufacturerTextView, categoryTextView, typeTextView;
     private Button createButton;
     private LocalDate EXPIRY_DATE;
     private DrugRepository drugRepository;
@@ -31,10 +30,13 @@ public class CreateDrugActivity extends AppCompatActivity {
 
         nameEditText = findViewById(R.id.edit_text_name);
         descriptionEditText = findViewById(R.id.edit_text_description);
-        manufacturerEditText = findViewById(R.id.edit_text_manufacturer);
-        categoryEditText = findViewById(R.id.edit_text_category);
-        typeEditText = findViewById(R.id.edit_text_type);
+        manufacturerSpinner = findViewById(R.id.manufacturer_spinner);
+        categorySpinner = findViewById(R.id.category_spinner);
+        typeSpinner = findViewById(R.id.types_spinner);
         createButton = findViewById(R.id.button_create);
+        manufacturerTextView = findViewById(R.id.manufacturer);
+        categoryTextView = findViewById(R.id.category);
+        typeTextView = findViewById(R.id.type);
         expiryDateEditText = findViewById(R.id.expiryDateEditTexxt);
         expiryDateEditText.setOnClickListener(e -> {
             final Calendar c = Calendar.getInstance();
@@ -58,9 +60,9 @@ public class CreateDrugActivity extends AppCompatActivity {
             if (isValidForm()) {
                 String name = nameEditText.getText().toString();
                 String description = descriptionEditText.getText().toString();
-                String manufacturer = manufacturerEditText.getText().toString();
-                String category = categoryEditText.getText().toString();
-                String type = typeEditText.getText().toString();
+                String manufacturer = manufacturerSpinner.getSelectedItem().toString();
+                String category = categorySpinner.getSelectedItem().toString();
+                String type = typeSpinner.getSelectedItem().toString();
 
 
                 Drug drug = new Drug();
@@ -97,18 +99,18 @@ public class CreateDrugActivity extends AppCompatActivity {
             isValid = false;
         }
 
-        if (manufacturerEditText.getText().toString().isEmpty()) {
-            manufacturerEditText.setError("Required");
+        if (manufacturerSpinner.getSelectedItem().toString().equals("Choose a Manufacturer")) {
+            manufacturerTextView.setError("Required");
             isValid = false;
         }
 
-        if (categoryEditText.getText().toString().isEmpty()) {
-            categoryEditText.setError("Required");
+        if (categorySpinner.getSelectedItem().toString().equals("Choose a Category")) {
+            categoryTextView.setError("Required");
             isValid = false;
         }
 
-        if (typeEditText.getText().toString().isEmpty()) {
-            typeEditText.setError("Required");
+        if (typeSpinner.getSelectedItem().toString().equals("Choose a Type")) {
+            typeTextView.setError("Required");
             isValid = false;
         }
 
