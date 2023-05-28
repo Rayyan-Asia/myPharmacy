@@ -10,12 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Data
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Component
+@Service
 public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
     private final ModelMapper modelMapper;
