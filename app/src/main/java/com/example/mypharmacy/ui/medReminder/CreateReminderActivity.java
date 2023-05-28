@@ -52,7 +52,7 @@ public class CreateReminderActivity extends AppCompatActivity {
 
         buttonCreate.setOnClickListener(v -> createReminder());
         // Populate spinner with drugs
-        populateDrugSpinner();
+        new Thread(this::populateDrugSpinner).start();
     }
 
     private void populateDrugSpinner() {
@@ -105,13 +105,17 @@ public class CreateReminderActivity extends AppCompatActivity {
         Drug selectedDrug = (Drug) drugSpinner.getSelectedItem();
         reminder.setDrugId(selectedDrug.getId());
         // Add the reminder to the repository
-        reminderRepository.insertReminder(reminder);
+        new Thread(() -> {
+            reminderRepository.insertReminder(reminder);
+            // Activate a notification for the reminder
+            activateNotification(reminder);
+        }).start();
 
-        // Activate a notification for the reminder
-        activateNotification(reminder);
+        runOnUiThread(() -> {
+            Toast.makeText(this, "Reminder created successfully", Toast.LENGTH_SHORT).show();
+            finish();
+        });
 
-        Toast.makeText(this, "Reminder created successfully", Toast.LENGTH_SHORT).show();
-        finish();
     }
 
     private Timestamp getTimestamp(int hour, int minute) {
@@ -172,7 +176,7 @@ public class CreateReminderActivity extends AppCompatActivity {
             intent.putExtra("notificationId", notificationId);
             intent.putExtra("message", "It's time to take your medication!");
 
-            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             // Set the alarm to trigger at the specified timestamp
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
