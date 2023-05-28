@@ -18,7 +18,7 @@ import java.util.Optional;
 @Component
 public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
     @Override
     public PersonDto insertPerson(PersonInsertDto personInsertDto) {
         Person person = modelMapper.map(personInsertDto, Person.class);
@@ -30,7 +30,7 @@ public class PersonServiceImpl implements PersonService {
     public PersonDto getPerson(long id) {
         Optional<Person> person = personRepository.findById(id);
         if(person.isPresent()){
-            return modelMapper.map(person, PersonDto.class);
+            return modelMapper.map(person.get(), PersonDto.class);
         } else {
             return null;
         }

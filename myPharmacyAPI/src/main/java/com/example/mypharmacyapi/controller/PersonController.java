@@ -8,20 +8,22 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/api/person")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonController {
-    private PersonService personService;
-    @PostMapping("person")
-    PersonDto insertPerson(@Valid @RequestBody PersonInsertDto person){
-        return personService.insertPerson(person);
+    private final PersonService personService;
+    @PostMapping
+    ResponseEntity<PersonDto> insertPerson(@Valid @RequestBody PersonInsertDto person){
+        return ResponseEntity.ok().body(personService.insertPerson(person));
     }
-    @GetMapping("person/{id}")
-    PersonDto getPerson(@PathVariable long id){
-        return personService.getPerson(id);
+    @GetMapping("/{id}")
+    ResponseEntity<PersonDto> getPerson(@PathVariable long id){
+        return ResponseEntity.ok().body(personService.getPerson(id));
     }
 }
