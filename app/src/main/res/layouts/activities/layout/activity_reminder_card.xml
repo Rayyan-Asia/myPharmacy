@@ -36,27 +36,27 @@
                     android:textStyle="bold"/>
 
             <TextView
-                    android:id="@+id/frequency_label"
+                    android:id="@+id/dosage_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Frequency:"
+                    android:text="Dosage:"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
             <TextView
-                    android:id="@+id/reminder_frequency"
+                    android:id="@+id/reminder_dosage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"/>
 
 
         </LinearLayout>
-
+        <!-- The button should be changed to a trash-bin drawable -->
         <Button
-                android:id="@+id/increment_button"
+                android:id="@+id/delete_reminder_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+"
+                android:text="DEL"
                 android:layout_gravity="center"
                 />
     </LinearLayout>

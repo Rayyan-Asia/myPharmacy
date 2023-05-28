@@ -1,166 +1,177 @@
 package com.example.mypharmacy.ui.medReminder;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.content.Intent;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.mypharmacy.R;
-import com.example.mypharmacy.data.local.entities.Doctor;
-import com.example.mypharmacy.data.local.entities.Drug;
-import com.example.mypharmacy.data.local.entities.Prescription;
-import com.example.mypharmacy.data.local.repositories.DoctorRepository;
-import com.example.mypharmacy.data.local.repositories.DrugRepository;
-import com.example.mypharmacy.data.local.repositories.PrescriptionRepository;
-import com.example.mypharmacy.data.local.repositories.impl.DoctorRepositoryImpl;
-import com.example.mypharmacy.data.local.repositories.impl.DrugRepositoryImpl;
-import com.example.mypharmacy.data.local.repositories.impl.PrescriptionRepositoryImpl;
+import android.widget.*;
 
-import java.time.LocalDate;
-import java.util.Calendar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import com.example.mypharmacy.R;
+import com.example.mypharmacy.data.local.entities.Drug;
+import com.example.mypharmacy.data.local.repositories.ReminderRepository;
+import com.example.mypharmacy.data.local.entities.Reminder;
+import com.example.mypharmacy.data.local.repositories.impl.DrugRepositoryImpl;
+import com.example.mypharmacy.data.local.repositories.impl.ReminderRepositoryImplementation;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateReminderActivity extends AppCompatActivity {
-    private EditText nameEditText, daysEditText, dosageEditText, frequencyEditText, categoryEditText, typeEditText, startDateEditText, endDateEditText;
-    private Button createButton;
-    private LocalDate START_DATE, END_DATE;
-    private DrugRepository drugRepository;
-    private DoctorRepository doctorRepository;
-    private PrescriptionRepository prescriptionRepository;
+
+    private EditText editTextName;
+    private EditText editTextDosage;
+    private RadioGroup radioGroup;
+    private TimePicker timePicker;
+    private Button buttonCreate;
+    private Spinner drugSpinner;
+
+    private ReminderRepository reminderRepository = new ReminderRepositoryImplementation(this);
+
+    private static final String CHANNEL_ID = "reminder_channel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_reminder);
-        // repositories
-        drugRepository = new DrugRepositoryImpl(this);
-        doctorRepository = new DoctorRepositoryImpl(this);
-        prescriptionRepository = new PrescriptionRepositoryImpl(this);
-        // form elements
-        nameEditText = findViewById(R.id.edit_text_name);
-        dosageEditText = findViewById(R.id.edit_text_dosage);
-        frequencyEditText = findViewById(R.id.edit_text_frequency);
-        daysEditText = findViewById(R.id.edit_text_days);
-        categoryEditText = findViewById(R.id.edit_text_category);
-        typeEditText = findViewById(R.id.edit_text_type);
-        startDateEditText = findViewById(R.id.edit_text_startDate);
-        endDateEditText = findViewById(R.id.edit_text_endDate);
 
-        createButton = findViewById(R.id.button_create);
+        editTextName = findViewById(R.id.edit_text_name);
+        editTextDosage = findViewById(R.id.edit_text_dosage);
+        radioGroup = findViewById(R.id.radio_group);
+        timePicker = findViewById(R.id.time_picker);
+        drugSpinner = findViewById(R.id.spinner_drug);
+        buttonCreate = findViewById(R.id.button_create);
 
-        // listeners
-        startDateEditText.setOnClickListener(e -> {
-            final Calendar c = Calendar.getInstance();
-            int mYear = c.get(Calendar.YEAR); // current year
-            int mMonth = c.get(Calendar.MONTH); // current month
-            int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-            // date picker dialog
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    (view, year, monthOfYear, dayOfMonth) -> {
-                        // set day of month , month and year value in the edit text
-                        startDateEditText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                        START_DATE = LocalDate.of(year, monthOfYear, dayOfMonth);
-                    }, mYear, mMonth, mDay);
-            datePickerDialog.show();
-        });
-
-        endDateEditText.setOnClickListener(e -> {
-            final Calendar c = Calendar.getInstance();
-            int mYear = c.get(Calendar.YEAR); // current year
-            int mMonth = c.get(Calendar.MONTH); // current month
-            int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-            // date picker dialog
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    (view, year, monthOfYear, dayOfMonth) -> {
-                        // set day of month , month and year value in the edit text
-                        endDateEditText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                        END_DATE = LocalDate.of(year, monthOfYear, dayOfMonth);
-                    }, mYear, mMonth, mDay);
-            datePickerDialog.show();
-        });
-
-
-        createButton.setOnClickListener(view -> {
-            if (isValidForm()) {
-                String name = nameEditText.getText().toString();
-                String dosage = dosageEditText.getText().toString();
-                String frequency = frequencyEditText.getText().toString();
-                // may use if a Drug object was needed
-                String category = categoryEditText.getText().toString();
-                String type = typeEditText.getText().toString();
-
-                // Prescription instantiation
-                Prescription prescription = new Prescription();
-                prescription.setName(name);
-                prescription.setDosage(dosage);
-                prescription.setFrequency(frequency);
-                prescription.setStartDate(START_DATE);
-                prescription.setEndDate(END_DATE);
-                Doctor doctor = new Doctor();
-                new Thread(() -> {
-                    doctorRepository.insertDoctor(doctor);
-                    finish();
-                }).start();
-                Drug drug = new Drug();
-                new Thread(() -> {
-                    drugRepository.insertDrug(drug);
-                    finish();
-                }).start();
-                prescription.setDrugId(drug.getId());
-                prescription.setDoctorId(doctor.getId());
-                new Thread(() -> {
-                    doctorRepository.insertDoctor(doctor);
-                    drugRepository.insertDrug(drug);
-                    prescriptionRepository.insertPrescription(prescription);
-                    Intent resultIntent = new Intent();
-                    setResult(Activity.RESULT_OK, resultIntent);
-                    finish();
-                }).start();
-            }
-        });
+        buttonCreate.setOnClickListener(v -> createReminder());
+        // Populate spinner with drugs
+        populateDrugSpinner();
     }
 
-    private boolean isValidForm() {
-        boolean isValid = true;
+    private void populateDrugSpinner() {
+        // retrieve drugs from database
+        List<Drug> drugs = new DrugRepositoryImpl(this).getAllDrugs();
+        // create a list of drug names
+        List<String> drugNames = new ArrayList<>();
+        for (Drug drug : drugs) {
+            drugNames.add(drug.getName());
+        }
+        // create an adapter and set it to the spinner
+        ArrayAdapter<Drug> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, drugs);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        drugSpinner.setAdapter(adapter);
 
-        if (nameEditText.getText().toString().isEmpty()) {
-            nameEditText.setError("Required");
-            isValid = false;
+    }
+
+    private void createReminder() {
+        String name = editTextName.getText().toString().trim();
+        String dosage = editTextDosage.getText().toString().trim();
+
+        if (name.isEmpty() || dosage.isEmpty()) {
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        if (dosageEditText.getText().toString().isEmpty()) {
-            dosageEditText.setError("Required");
-            isValid = false;
+        RadioButton selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
+        String frequency = selectedRadioButton.getText().toString();
+
+        int hour;
+        int minute;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            hour = timePicker.getHour();
+            minute = timePicker.getMinute();
+        } else {
+            hour = timePicker.getCurrentHour();
+            minute = timePicker.getCurrentMinute();
         }
 
-        if (frequencyEditText.getText().toString().isEmpty()) {
-            frequencyEditText.setError("Required");
-            isValid = false;
-        }
-        // doesn't matter for now
-//        if (categoryEditText.getText().toString().isEmpty()) {
-//            categoryEditText.setError("Required");
-//            isValid = false;
-//        }
-//
-//        if (typeEditText.getText().toString().isEmpty()) {
-//            typeEditText.setError("Required");
-//            isValid = false;
-//        }
+        Timestamp timestamp = getTimestamp(hour, minute);
 
-        if (START_DATE == null) {
-            Toast.makeText(this, "Please select a starting date", Toast.LENGTH_SHORT).show();
-            isValid = false;
+        List<Timestamp> timestamps = getTimestampsForFrequency(timestamp, frequency);
+
+        Reminder reminder = new Reminder();
+        reminder.setName(name);
+        reminder.setDosage(dosage);
+        reminder.setTimes(timestamps);
+        // Get drugId from spinner
+        Drug selectedDrug = (Drug) drugSpinner.getSelectedItem();
+        reminder.setDrugId(selectedDrug.getId());
+        // Add the reminder to the repository
+        reminderRepository.insertReminder(reminder);
+
+        // Activate a notification for the reminder
+        activateNotification(reminder.getId());
+
+        Toast.makeText(this, "Reminder created successfully", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    private Timestamp getTimestamp(int hour, int minute) {
+        long currentMillis = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(currentMillis);
+        timestamp.setHours(hour);
+        timestamp.setMinutes(minute);
+        timestamp.setSeconds(0);
+        return timestamp;
+    }
+
+    private List<Timestamp> getTimestampsForFrequency(Timestamp timestamp, String frequency) {
+        List<Timestamp> timestamps = new ArrayList<>();
+
+        // Add the initial timestamp
+        timestamps.add(timestamp);
+
+        // Add additional timestamps based on the selected frequency
+        switch (frequency) {
+            case "Daily":
+                // Add timestamps for the next year of days
+                for (int i = 1; i < 365; i++) {
+                    Timestamp nextDayTimestamp = new Timestamp(timestamp.getTime() + ((long) i * 24 * 60 * 60 * 1000));
+                    timestamps.add(nextDayTimestamp);
+                }
+                break;
+            case "Weekly":
+                // Add timestamps for the next year of weeks
+                for (int i = 1; i < 48; i++) {
+                    Timestamp nextWeekTimestamp = new Timestamp(timestamp.getTime() + ((long) i * 7 * 24 * 60 * 60 * 1000));
+                    timestamps.add(nextWeekTimestamp);
+                }
+                break;
+            case "Monthly":
+                // Add timestamps for the next year of months
+                for (int i = 1; i < 12; i++) {
+                    Timestamp nextMonthTimestamp = new Timestamp(timestamp.getTime());
+                    nextMonthTimestamp.setMonth(nextMonthTimestamp.getMonth() + i);
+                    timestamps.add(nextMonthTimestamp);
+                }
+                break;
         }
-        if (END_DATE == null) {
-            Toast.makeText(this, "Please select an end date", Toast.LENGTH_SHORT).show();
-            isValid = false;
-        }
-        return isValid;
+
+        return timestamps;
+    }
+
+    private void activateNotification(int reminderId) {
+        createNotificationChannel();
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID).setSmallIcon(R.drawable.ic_medication_reminder).setContentTitle("Medication Reminder").setContentText("It's time to take your medication!").setPriority(NotificationCompat.PRIORITY_DEFAULT).setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        int notificationId = reminderId;
+        notificationManager.notify(notificationId, builder.build());
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Reminder Channel";
+            String description = "Channel for medication reminders";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        } else Toast.makeText(this, "Notification channel could not be created", Toast.LENGTH_SHORT).show();
     }
 }
-

@@ -4,16 +4,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.mypharmacy.data.local.entities.Prescription;
+import com.example.mypharmacy.data.local.entities.Reminder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class ReminderAdapter extends RecyclerView.Adapter<ReminderViewHolder> {
-    private List<Prescription> prescriptionList;
+    private List<Reminder> reminderList;
 
-    public ReminderAdapter(List<Prescription> prescriptionList) {
-        this.prescriptionList = prescriptionList;
+    public ReminderAdapter(List<Reminder> reminderList) {
+        this.reminderList = reminderList;
     }
 
     @NonNull
@@ -27,19 +27,19 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ReminderViewHolder holder, int position) {
-        Prescription prescription = prescriptionList.get(position);
-        holder.bind(prescription);
+        Reminder reminder = reminderList.get(position);
+        holder.bind(reminder);
         holder.itemView.setOnClickListener(e -> {
-
+            // TODO: Open the reminder details activity
         });
     }
 
-    public void updateData(List<Prescription> data) {
-        prescriptionList = data;
+    public void updateData(List<Reminder> data) {
+        reminderList = data;
     }
 
     @Override
     public int getItemCount() {
-        return prescriptionList.size();
+        return reminderList.size();
     }
 }
