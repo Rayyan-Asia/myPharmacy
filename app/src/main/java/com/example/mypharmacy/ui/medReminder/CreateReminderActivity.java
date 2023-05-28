@@ -1,13 +1,17 @@
 package com.example.mypharmacy.ui.medReminder;
 
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.*;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.mypharmacy.R;
@@ -104,7 +108,7 @@ public class CreateReminderActivity extends AppCompatActivity {
         reminderRepository.insertReminder(reminder);
 
         // Activate a notification for the reminder
-        activateNotification(reminder.getId());
+        activateNotification(reminder);
 
         Toast.makeText(this, "Reminder created successfully", Toast.LENGTH_SHORT).show();
         finish();
@@ -154,13 +158,32 @@ public class CreateReminderActivity extends AppCompatActivity {
         return timestamps;
     }
 
-    private void activateNotification(int reminderId) {
+    private void activateNotification(Reminder reminder) {
         createNotificationChannel();
+        List<Timestamp> timestamps = reminder.getTimes();
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID).setSmallIcon(R.drawable.ic_medication_reminder).setContentTitle("Medication Reminder").setContentText("It's time to take your medication!").setPriority(NotificationCompat.PRIORITY_DEFAULT).setAutoCancel(true);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        int notificationId = reminderId;
-        notificationManager.notify(notificationId, builder.build());
+        for (int i = 0; i < timestamps.size(); i++) {
+            Timestamp timestamp = timestamps.get(i);
+            int notificationId = reminder.getId();
+
+            // Create an intent to launch the notification
+            Intent intent = new Intent(this, ReminderNotificationReceiver.class);
+            intent.putExtra("notificationId", notificationId);
+            intent.putExtra("message", "It's time to take your medication!");
+
+            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // Set the alarm to trigger at the specified timestamp
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timestamp.getTime(), pendingIntent);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, timestamp.getTime(), pendingIntent);
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, timestamp.getTime(), pendingIntent);
+            }
+        }
+
     }
 
     private void createNotificationChannel() {

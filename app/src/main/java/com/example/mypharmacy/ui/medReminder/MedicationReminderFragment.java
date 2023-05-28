@@ -20,7 +20,6 @@ import com.example.mypharmacy.data.local.repositories.impl.ReminderRepositoryImp
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class MedicationReminderFragment extends Fragment {
