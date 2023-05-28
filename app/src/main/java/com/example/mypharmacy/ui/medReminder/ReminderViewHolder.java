@@ -36,9 +36,11 @@ public class ReminderViewHolder extends RecyclerView.ViewHolder {
         reminder_dosage.setText(reminder.getDosage());
         deleteReminderButton.setOnClickListener(e -> {
             // Delete the reminder from the repository
-            ReminderRepository reminderRepository = new ReminderRepositoryImplementation(this.itemView.getContext());
-            reminderRepository.deleteReminder(reminder.getId());
 
+            new Thread(() -> {
+                ReminderRepository reminderRepository = new ReminderRepositoryImplementation(this.itemView.getContext());
+                reminderRepository.deleteReminder(reminder.getId());
+            }).start();
             // Cancel the associated notification using the reminder_id as the notification_id
             int notificationId = reminder.getId();
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.itemView.getContext());

@@ -59,8 +59,11 @@ public class MedicationReminderFragment extends Fragment {
         });
         new Thread(() -> {
             List<Reminder> reminderList = reminderRepository.getActiveReminders();
-            reminderAdapter = new ReminderAdapter(reminderList);
-            reminderRecyclerView.setAdapter(reminderAdapter);
+
+            getActivity().runOnUiThread(() -> {
+                reminderAdapter = new ReminderAdapter(reminderList);
+                reminderRecyclerView.setAdapter(reminderAdapter);
+            });
         }).start();
         reminderRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         addReminderButton = view.findViewById(R.id.add_reminder_button);
