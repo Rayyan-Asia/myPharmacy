@@ -15,6 +15,8 @@ import com.example.mypharmacy.data.local.repositories.impl.DrugRepositoryImpl;
 import com.example.mypharmacy.data.local.repositories.impl.ReminderRepositoryImplementation;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class ReminderViewHolder extends RecyclerView.ViewHolder {
     private TextView reminder_name, reminder_dosage;
     private Button deleteReminderButton;
@@ -24,9 +26,7 @@ public class ReminderViewHolder extends RecyclerView.ViewHolder {
         reminder_name = itemView.findViewById(R.id.reminder_name);
         reminder_dosage = itemView.findViewById(R.id.reminder_dosage);
         deleteReminderButton = itemView.findViewById(R.id.delete_reminder_button);
-        deleteReminderButton.setOnClickListener(e -> {
 
-        });
     }
 
     public void bind(Reminder reminder) {
@@ -40,6 +40,13 @@ public class ReminderViewHolder extends RecyclerView.ViewHolder {
             new Thread(() -> {
                 ReminderRepository reminderRepository = new ReminderRepositoryImplementation(this.itemView.getContext());
                 reminderRepository.deleteReminder(reminder.getId());
+                List<Reminder> reminderList = reminderRepository.getActiveReminders();
+
+                // update the recycler view reminderRecyclerView from MedicationReminderFragment
+                MedicationReminderFragment.reminderRecyclerView.post(() -> {
+                    MedicationReminderFragment.reminderRecyclerView.getAdapter().notifyDataSetChanged();
+                    MedicationReminderFragment.reminderAdapter.updateData(reminderList);
+                });
             }).start();
             // Cancel the associated notification using the reminder_id as the notification_id
             int notificationId = reminder.getId();

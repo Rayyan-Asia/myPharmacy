@@ -23,8 +23,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class MedicationReminderFragment extends Fragment {
-    ReminderAdapter reminderAdapter;
-    RecyclerView reminderRecyclerView;
+    static ReminderAdapter reminderAdapter;
+    static RecyclerView reminderRecyclerView;
     private ReminderRepository reminderRepository;
     private FloatingActionButton addReminderButton;
     private ActivityResultLauncher<Intent> addReminderLauncher;
@@ -34,8 +34,7 @@ public class MedicationReminderFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_medication_reminder, container, false);
     }
