@@ -26,7 +26,6 @@ public class LabTestListActivity extends AppCompatActivity {
     private RecyclerView testsListView;
     private LabTestRepository repository;
 
-    private ActivityResultLauncher<Intent> createLabTestLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,29 +46,7 @@ public class LabTestListActivity extends AppCompatActivity {
             }
         }).start();
 
-        createLabTestLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == RESULT_OK) {
-                            // Refresh the list by updating the adapter and notifying it that the data has changed
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    List<LabTest> tests = repository.listLabTests();
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            labTestAdapter.updateData(tests);
-                                            labTestAdapter.notifyDataSetChanged();
-                                        }
-                                    });
-                                }
-                            }).start();
-                        }
-                    }
-                });
+
 
     }
 
@@ -88,6 +65,7 @@ public class LabTestListActivity extends AppCompatActivity {
 
     private void switchToSurvey() {
         Intent intent = new Intent(this, CreateLabTestActivity.class);
-        createLabTestLauncher.launch(intent);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 }

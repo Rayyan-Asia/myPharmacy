@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="startDate">Please enter the start date:</string>
-    <string name="endDate">Please enter the end date:</string>
-    <string name="menstruarionHeader">Please enter the start date and end date of your latest menstruation.</string>
-    <!-- TODO: Remove or change this placeholder text -->
+<resources><!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="MenstrualLegend">Red : Menstrual Phase\nGray : Next Expected Menstruation\nBlue : Luteal Phase\nGreen : Follicular Phase\nPink : Ovulation Phase</string>
     <string name="title_activity_lab_test_list">LabTestListActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -55,4 +50,107 @@
     <string name="lab_test_type_header">Please select the lab test type.</string>
     <string name="submit">submit</string>
     <string name="how_is_the_lab_test_stored">How is the lab test stored?</string>
+        <string name="app_name">myPharmacy</string>
+        <string name="first_name">First Name</string>
+        <string name="last_name">Last Name</string>
+        <string name="gender_hint">Gender</string>
+        <string name="select_a_date">Select a date</string>
+        <string name="address">Address</string>
+        <string name="phone_number">Phone Number</string>
+        <string name="weight_kg">Weight (kg)</string>
+        <string name="height_ft">Height (ft)</string>
+        <string name="marital_status_hint">Marital_Status</string>
+        <string name="blood_type_hint">Blood Type</string>
+        <string name="save">Save</string>
+        <string name="home_tab_title">myPharmacy Home</string>
+        <string name="medical_record_tab_title">Medical Records</string>
+        <string name="medication_reminder_tab_title">Medication Reminder</string>
+        <string name="family_tab_title">Family</string>
+        <string name="menstrual_calendar_tab_title">Menstrual Calendar</string>
+        <string name="notification_button_title">Notifications</string>
+        <string name="home_name_view">John Doe</string>
+        <string name="home_gender_view">Male</string>
+        <string name="home_birth_date">Born on 01/01/1970</string>
+        <string name="home_address_view">123 Street</string>
+        <string name="home_phone_view">555–555–555</string>
+        <string name="home_marital_view">Single</string>
+        <string name="home_blood_view">O+</string>
+        <string-array name="blood_types">
+            <item>No Blood Type Selected</item>
+            <item>A+</item>
+            <item>A-</item>
+            <item>B+</item>
+            <item>B-</item>
+            <item>AB+</item>
+            <item>AB-</item>
+            <item>O+</item>
+            <item>O-</item>
+        </string-array>
+        <string-array name="gender">
+            <item>No Gender Selected</item>
+            <item>Male</item>
+            <item>Female</item>
+        </string-array>
+        <string-array name="marital_status">
+            <item>No Marital Status Selected</item>
+            <item>Married</item>
+            <item>Single</item>
+        </string-array>
+        <string-array name="manufacturers_array">
+            <item>Bayer</item>
+            <item>Pfizer</item>
+            <item>Novartis</item>
+            <item>Johnson &amp; Johnson</item>
+            <item>GSK</item>
+        </string-array>
+        <string-array name="categories_array">
+            <item>Analgesic</item>
+            <item>Antibiotic</item>
+            <item>Antihypertensive</item>
+            <item>Antiallergic</item>
+            <item>Antidepressant</item>
+            <item>Antipyretic</item>
+        </string-array>
+        <string-array name="types_array">
+            <item>Tablet</item>
+            <item>Capsule</item>
+            <item>Syrup</item>
+            <item>Injection</item>
+            <item>Ointment</item>
+            <item>Drops</item>
+        </string-array>
+        <string-array name="doctor_specialties_array">
+            <item>Cardiologist</item>
+            <item>Dermatologist</item>
+            <item>Endocrinologist</item>
+            <item>Gastroenterologist</item>
+            <item>Neurologist</item>
+            <item>Orthopedic Surgeon</item>
+            <item>Pediatrician</item>
+            <item>Psychiatrist</item>
+            <item>Radiologist</item>
+            <item>Urologist</item>
+        </string-array>
+        <string name="startDate">Please enter the start date:</string>
+        <string name="endDate">Please enter the end date:</string>
+        <string name="menstruarionHeader">Please enter the start date and end date of your latest menstruation.</string>
+        <string name="MenstrualLegend">Red : Menstrual Phase\nGray : Next Expected Menstruation\nBlue : Luteal Phase\nGreen : Follicular Phase\nPink : Ovulation Phase</string>
+        <string name="choose_a_manufacturer">Choose a Manufacturer</string>
+        <string name="choose_a_category">Choose a Category</string>
+        <string name="choose_a_drug_type">Choose a Drug Type</string>
+        <string name="type">Type</string>
+        <string name="expiry_date">Expiry Date</string>
+        <string name="create_drug">Create Drug</string>
+        <string name="category">Category</string>
+        <string name="manufacturer">Manufacturer</string>
+        <string name="description">Description</string>
+        <string name="name">Name</string>
+
+        <string name="nextArrow">-></string>
+        <string name="previousArrow"> &lt;-</string>
+        <string name="tell_us_about_yourself">Tell us about Yourself!</string>
+    <string name="lab_text_name">Please enter the name.</string>
+    <string name="ex_xray">ex: XRay</string>
+
+
 </resources>

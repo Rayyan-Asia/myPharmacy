@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name="com.example.mypharmacy.MyApplication"
         android:allowBackup="true"
@@ -68,21 +71,20 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.medRecord.AddAppointmentActivity"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
+<!--        <activity-->
+<!--            android:name=".ui.medRecord.AddAppointmentActivity"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.SEND" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
 
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
+<!--                <data android:mimeType="text/plain" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
         <activity
             android:name=".ui.medRecord.doctor.DoctorCardActivity"
             android:exported="false">
-        <activity android:name=".ui.medRecord.doctor.DoctorCardActivity" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 

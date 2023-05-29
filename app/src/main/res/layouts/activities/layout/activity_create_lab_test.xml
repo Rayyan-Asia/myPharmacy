@@ -5,9 +5,10 @@
 
     <!-- Center the white rectangle input form -->
     <RelativeLayout
-        android:layout_width="298dp"
-        android:layout_height="383dp"
+        android:layout_width="306dp"
+        android:layout_height="364dp"
         android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
         android:layout_gravity="center"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
@@ -20,8 +21,8 @@
 
         <TextView
             android:id="@+id/intro_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="54dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_gravity="center_horizontal"
@@ -39,14 +40,14 @@
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
-            android:layout_height="37dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/intro_view"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="29dp"
             android:shadowColor="#000000"
             android:shadowDx="2"
             android:shadowDy="2"
@@ -58,27 +59,60 @@
 
         <Spinner
             android:id="@+id/lab_test_type_spinner"
-            android:layout_width="270dp"
-            android:layout_height="57dp"
-            android:layout_above="@+id/submit_lab_type_button"
+            android:layout_width="290dp"
+            android:layout_height="51dp"
+            android:layout_above="@+id/textView4"
             android:layout_below="@+id/textView"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="63dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="12dp"
             android:spinnerMode="dropdown" />
 
         <Button
             android:id="@+id/submit_lab_type_button"
-            android:layout_width="145dp"
-            android:layout_height="wrap_content"
+            android:layout_width="144dp"
+            android:layout_height="49dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="74dp"
-            android:layout_marginEnd="70dp"
-            android:layout_marginBottom="56dp"
+            android:layout_marginStart="81dp"
+            android:layout_marginEnd="94dp"
+            android:layout_marginBottom="9dp"
             android:text="@string/submit"
             android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="271dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/submit_lab_type_button"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="66dp"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:text="@string/lab_text_name"
+            android:textColor="#FF0000"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/lab_test_name_edit_text"
+            android:layout_width="282dp"
+            android:layout_height="54dp"
+            android:layout_above="@+id/submit_lab_type_button"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="7dp"
+            android:ems="10"
+            android:hint="@string/ex_xray"
+            android:inputType="textPersonName"
+            android:textSize="16sp" />
 
 
     </RelativeLayout>
