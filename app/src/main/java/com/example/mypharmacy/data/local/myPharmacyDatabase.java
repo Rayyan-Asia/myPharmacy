@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.room.*;
+import androidx.room.migration.AutoMigrationSpec;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.mypharmacy.data.local.daos.*;
@@ -37,7 +38,7 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
      public static synchronized myPharmacyDatabase getInstance(Context context) {
           if (instance == null) {
                instance = Room.databaseBuilder(context, myPharmacyDatabase.class, DB_NAME)
-                       .addMigrations(SEED_DRUG_TABLE,SEED_ENTITIES)
+                       .addMigrations(SEED_DRUG_TABLE,SEED_ENTITIES,REMOVE_DOCTOR_FROM_LAB_TEST)
                        .build();
           }
           return instance;
@@ -81,6 +82,16 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
                database.execSQL("INSERT INTO appointment_prescription (appointment_id, prescription_id) VALUES (1,1)");
                database.execSQL("INSERT INTO appointment_prescription (appointment_id, prescription_id) VALUES (2,2)");
 
+          }
+     };
+
+     public static final Migration REMOVE_DOCTOR_FROM_LAB_TEST = new Migration(8,9) {
+          @Override
+          public void migrate(@NonNull SupportSQLiteDatabase database) {
+               database.execSQL("CREATE TABLE lab_test_new (id INTEGER PRIMARY KEY, person_id INTEGER, date_of_test TEXT, test_name TEXT, file_path TEXT)");
+               database.execSQL("INSERT INTO lab_test_new (id, person_id, date_of_test, test_name, file_path) SELECT id, person_id, date_of_test, test_name, file_path FROM lab_test");
+               database.execSQL("DROP TABLE lab_test");
+               database.execSQL("ALTER TABLE lab_test_new RENAME TO lab_test");
           }
      };
 }

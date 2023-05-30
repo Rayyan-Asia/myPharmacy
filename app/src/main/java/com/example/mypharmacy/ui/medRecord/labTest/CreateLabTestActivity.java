@@ -3,16 +3,20 @@ package com.example.mypharmacy.ui.medRecord.labTest;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.documentfile.provider.DocumentFile;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,19 +42,16 @@ import lombok.NonNull;
 
 
 public class CreateLabTestActivity extends AppCompatActivity {
-
     Button submit;
     private Spinner typeSpinner;
-
     private EditText fileNameEditText;
-
     private String fileName;
-
-    private String filePath;
-
     LabTestRepository repository  = new LabTestRepositoryImpl(this);
+    private static final int REQUEST_CODE_PICK_FILE = 3;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_PERMISSION_CAMERA = 2;
+
+    // todo add date chooser for date created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +76,9 @@ public class CreateLabTestActivity extends AppCompatActivity {
                 LabTestType type = (LabTestType) typeSpinner.getSelectedItem();
                 if (type == LabTestType.ADD_FROM_LOCAL_STORAGE) {
                     // open storage
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
                 } else if (type == LabTestType.ADD_NEW) {
                     checkCameraPermission();
                 }
@@ -110,17 +114,11 @@ public class CreateLabTestActivity extends AppCompatActivity {
         }
     }
 
-
-
     public void startCameraActivity() {
         // Create an intent to start the Camera app.
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-
     }
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -130,7 +128,29 @@ public class CreateLabTestActivity extends AppCompatActivity {
             File file = storeImage(image);
             saveImageToDatabase(file.getAbsolutePath());
         }
+        if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == RESULT_OK && data.getData() != null) {
+            Uri uri = data.getData();
+            String path = getAbsolutePathFromUri(uri);
+            // Do something with the file path.
+            Log.i("Path", path);
+        }
     }
+
+    private String getAbsolutePathFromUri(Uri uri) {
+        String path = null;
+        if (DocumentsContract.isDocumentUri(this, uri)) {
+            DocumentFile documentFile = DocumentFile.fromSingleUri(this, uri);
+            // If the URI represents a document, try to retrieve the absolute path.
+            if (documentFile != null && documentFile.exists()) {
+                path = documentFile.getUri().getPath();
+            }
+        } else {
+            // For non-document URIs, directly retrieve the path.
+            path = uri.getPath();
+        }
+        return path;
+    }
+
     private File storeImage(Bitmap image) {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "IMG_" + timeStamp + ".jpg";
@@ -153,7 +173,9 @@ public class CreateLabTestActivity extends AppCompatActivity {
         Thread thread = new Thread() {
             @Override
             public void run() {
+                // todo Get person Id
                 repository.insertLabTest(test);
+
                 Toast.makeText(CreateLabTestActivity.this, "Test saved successfully",
                         Toast.LENGTH_SHORT).show();
             }
@@ -161,14 +183,13 @@ public class CreateLabTestActivity extends AppCompatActivity {
         thread.start();
 
     }
-
-
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish(); // Optional: Finish the current activity to remove it from the stack
     }
+
+
 
 }

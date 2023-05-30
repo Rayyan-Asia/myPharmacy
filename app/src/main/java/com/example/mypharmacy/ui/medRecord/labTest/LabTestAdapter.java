@@ -44,4 +44,5 @@ public class LabTestAdapter extends RecyclerView.Adapter<LabTestViewHolder> {
     public int getItemCount() {
         return labTestList.size();
     }
+
 }
