@@ -151,6 +151,8 @@
         <string name="tell_us_about_yourself">Tell us about Yourself!</string>
     <string name="lab_text_name">Please enter the name.</string>
     <string name="ex_xray">ex: XRay</string>
+    <string name="please_fill_in_lab_test_information">Please fill in lab test information.</string>
+    <string name="when_was_the_test_taken">When was the test taken?</string>
 
 
 </resources>

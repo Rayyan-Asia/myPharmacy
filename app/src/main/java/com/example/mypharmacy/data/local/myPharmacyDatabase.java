@@ -88,7 +88,7 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
      public static final Migration REMOVE_DOCTOR_FROM_LAB_TEST = new Migration(8,9) {
           @Override
           public void migrate(@NonNull SupportSQLiteDatabase database) {
-               database.execSQL("CREATE TABLE lab_test_new (id INTEGER PRIMARY KEY, person_id INTEGER, date_of_test TEXT, test_name TEXT, file_path TEXT)");
+               database.execSQL("CREATE TABLE lab_test_new (id INTEGER PRIMARY KEY, person_id INTEGER , date_of_test TEXT, test_name TEXT, file_path TEXT, FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE)");
                database.execSQL("INSERT INTO lab_test_new (id, person_id, date_of_test, test_name, file_path) SELECT id, person_id, date_of_test, test_name, file_path FROM lab_test");
                database.execSQL("DROP TABLE lab_test");
                database.execSQL("ALTER TABLE lab_test_new RENAME TO lab_test");
