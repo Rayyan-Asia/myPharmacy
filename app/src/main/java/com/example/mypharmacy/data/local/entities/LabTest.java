@@ -20,5 +20,8 @@ public class LabTest {
     public int personId;
     @ColumnInfo(name = "date_of_test")
     public LocalDate dateOfTest;
-
+    @ColumnInfo(name = "test_name")
+    public String testName;
+    @ColumnInfo(name = "file_path")
+    public String path;
 }

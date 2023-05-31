@@ -39,6 +39,8 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
 
     public abstract ReminderDao getReminderDao();
 
+     public abstract LabTestDao getLabTestDao();
+
 
     public static synchronized myPharmacyDatabase getInstance(Context context) {
         if (instance == null) {

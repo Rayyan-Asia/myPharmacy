@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 8,
-    "identityHash": "569807fe9b65f7d3809efe99a1c91b10",
+    "identityHash": "e2940213d51c693e43ce20190d061b41",
     "entities": [
       {
         "tableName": "person",
@@ -394,7 +394,7 @@
       },
       {
         "tableName": "lab_test",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `doctor_id` INTEGER NOT NULL, `person_id` INTEGER NOT NULL, `date_of_test` INTEGER, FOREIGN KEY(`doctor_id`) REFERENCES `doctor`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_id`) REFERENCES `person`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `doctor_id` INTEGER NOT NULL, `person_id` INTEGER NOT NULL, `date_of_test` INTEGER, `test_name` TEXT, `file_path` TEXT, FOREIGN KEY(`doctor_id`) REFERENCES `doctor`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_id`) REFERENCES `person`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -418,6 +418,18 @@
             "fieldPath": "dateOfTest",
             "columnName": "date_of_test",
             "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "testName",
+            "columnName": "test_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "path",
+            "columnName": "file_path",
+            "affinity": "TEXT",
             "notNull": false
           }
         ],
@@ -655,7 +667,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '569807fe9b65f7d3809efe99a1c91b10')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e2940213d51c693e43ce20190d061b41')"
     ]
   }
 }
