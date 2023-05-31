@@ -12,6 +12,5 @@ public interface DoctorRepository {
     long insertDoctor(Doctor doctor);
     Doctor getDoctor(int id);
     void updateDoctor(Doctor doctor);
-
     List<Doctor> getAllDoctors();
 }

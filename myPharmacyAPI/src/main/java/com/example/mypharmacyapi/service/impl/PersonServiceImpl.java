@@ -10,15 +10,15 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Data
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Component
+@Service
 public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
     @Override
     public PersonDto insertPerson(PersonInsertDto personInsertDto) {
         Person person = modelMapper.map(personInsertDto, Person.class);
@@ -30,7 +30,7 @@ public class PersonServiceImpl implements PersonService {
     public PersonDto getPerson(long id) {
         Optional<Person> person = personRepository.findById(id);
         if(person.isPresent()){
-            return modelMapper.map(person, PersonDto.class);
+            return modelMapper.map(person.get(), PersonDto.class);
         } else {
             return null;
         }
