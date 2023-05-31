@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <application
         android:name="com.example.mypharmacy.MyApplication"
         android:allowBackup="true"
@@ -26,8 +23,12 @@
             android:label="@string/title_activity_lab_test_list"
             android:theme="@style/Theme.MyPharmacy" />
         <activity
-            android:name=".ui.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:name=".ui.medReminder.CreateReminderActivity"
+           />
+        <activity
+                android:name=".ui.MainActivity"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,9 +40,45 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.name.NameActivity"
-            android:exported="false">
+                android:name=".ui.name.NameActivity"
+                android:exported="false">
             <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".ui.intro.IntroActivity"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".ui.menu.MenuActivity"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.medRecord.doctor.DoctorCardActivity" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:mimeType="text/plain"/>
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -50,87 +87,43 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.intro.IntroActivity"
-            android:exported="false">
+                android:name=".ui.medRecord.doctor.CreateDoctorActivity"
+                android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.menu.MenuActivity"
-            android:exported="false">
+                android:name=".ui.medRecord.drug.DrugCardActivity"
+                android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
-<!--        <activity-->
-<!--            android:name=".ui.medRecord.AddAppointmentActivity"-->
-<!--            android:exported="false">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.SEND" />-->
-
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-
-<!--                <data android:mimeType="text/plain" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-        <activity
-            android:name=".ui.medRecord.doctor.DoctorCardActivity"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.medRecord.doctor.CreateDoctorActivity"
-            android:exported="false">
+                android:name=".ui.medRecord.drug.CreateDrugActivity"
+                android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.medRecord.drug.DrugCardActivity"
-            android:exported="false">
+                android:name=".ui.medRecord.appointment.AppointmentCardActivity"
+                android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.medRecord.drug.CreateDrugActivity"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.medRecord.appointment.AppointmentCardActivity"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND"/>
 
                 <category android:name="android.intent.category.DEFAULT" />
 
