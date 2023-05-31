@@ -16,8 +16,8 @@ import java.time.LocalDate;
 @Database(entities = {Person.class, Doctor.class, Drug.class, Prescription.class, Document.class,
         Appointment.class, LabTest.class, DocumentTest.class, AppointmentPrescription.class,
           Menstruation.class},
-        version = 7, autoMigrations = { @AutoMigration(from = 1, to = 2), @AutoMigration(from = 3, to = 4), @AutoMigration(from = 5, to = 6),
-        @AutoMigration(from = 6, to = 7)})
+        version = 9, autoMigrations = { @AutoMigration(from = 1, to = 2), @AutoMigration(from = 3, to = 4), @AutoMigration(from = 5, to = 6),
+        @AutoMigration(from = 6, to = 7), @AutoMigration(from = 7, to = 8)})
 public abstract class myPharmacyDatabase extends RoomDatabase {
      private static final String DB_NAME = "myPharmacy.db";
      private static myPharmacyDatabase instance;
@@ -30,6 +30,8 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
      public abstract AppointmentDao getAppointmentDao();
      public abstract AppointmentPrescriptionDao getAppointmentPrescriptionDao();
      public abstract MenstruationDao getMenstruationDao();
+
+     public abstract LabTestDao getLabTestDao();
 
 
      public static synchronized myPharmacyDatabase getInstance(Context context) {

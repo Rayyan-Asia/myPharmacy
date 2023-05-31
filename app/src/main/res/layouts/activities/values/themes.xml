@@ -1,0 +1,11 @@
+<resources>
+
+    <style name="Theme.MyPharmacy.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.MyPharmacy.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.MyPharmacy.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>
