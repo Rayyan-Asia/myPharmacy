@@ -14,7 +14,11 @@
         android:theme="@style/Theme.MyPharmacy"
         tools:targetApi="31">
         <activity
-            android:name=".LabTestListActivity"
+            android:name=".ui.medRecord.labTest.CreateLabTestActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.medRecord.labTest.LabTestListActivity"
             android:exported="false"
             android:label="@string/title_activity_lab_test_list"
             android:theme="@style/Theme.MyPharmacy" />
@@ -121,22 +125,23 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="text/plain"/>
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
         <activity
-                android:name=".ui.medRecord.appointment.CreateAppointmentActivity"
-                android:exported="false">
+            android:name=".ui.medRecord.appointment.CreateAppointmentActivity"
+            android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.SEND"/>
+                <action android:name="android.intent.action.SEND" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="text/plain"/>
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

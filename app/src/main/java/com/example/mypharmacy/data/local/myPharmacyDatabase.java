@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.room.*;
+import androidx.room.migration.AutoMigrationSpec;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.mypharmacy.data.local.daos.*;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 @Database(entities = {Person.class, Doctor.class, Drug.class, Prescription.class, Document.class,
         Appointment.class, LabTest.class, DocumentTest.class, AppointmentPrescription.class,
         Menstruation.class, Reminder.class},
-        version = 8, autoMigrations = {@AutoMigration(from = 1, to = 2), @AutoMigration(from = 3, to = 4), @AutoMigration(from = 5, to = 6),
+        version = 9, autoMigrations = {@AutoMigration(from = 1, to = 2), @AutoMigration(from = 3, to = 4), @AutoMigration(from = 5, to = 6),
         @AutoMigration(from = 6, to = 7), @AutoMigration(from = 7, to = 8)})
 public abstract class myPharmacyDatabase extends RoomDatabase {
     private static final String DB_NAME = "myPharmacy.db";
@@ -42,19 +43,18 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
      public abstract LabTestDao getLabTestDao();
 
 
-    public static synchronized myPharmacyDatabase getInstance(Context context) {
-        if (instance == null) {
-            instance = Room.databaseBuilder(context, myPharmacyDatabase.class, DB_NAME)
-                    .addMigrations(SEED_DRUG_TABLE, SEED_ENTITIES)
-                    .build();
-        }
-        return instance;
-    }
-
-    public static final Migration SEED_DRUG_TABLE = new Migration(2, 3) {
-        @Override
-        public void migrate(SupportSQLiteDatabase database) {
-            database.execSQL("CREATE TABLE drug_new (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, description TEXT, manufacturer TEXT, category TEXT, type TEXT, expiry_date INTEGER)");
+     public static synchronized myPharmacyDatabase getInstance(Context context) {
+          if (instance == null) {
+               instance = Room.databaseBuilder(context, myPharmacyDatabase.class, DB_NAME)
+                       .addMigrations(SEED_DRUG_TABLE,SEED_ENTITIES,REMOVE_DOCTOR_FROM_LAB_TEST)
+                       .build();
+          }
+          return instance;
+     }
+     public static final Migration SEED_DRUG_TABLE = new Migration(2, 3) {
+          @Override
+          public void migrate(SupportSQLiteDatabase database) {
+               database.execSQL("CREATE TABLE drug_new (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, description TEXT, manufacturer TEXT, category TEXT, type TEXT, expiry_date INTEGER)");
 
             LocalDate now = LocalDate.now();
 
@@ -90,8 +90,18 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
             database.execSQL("INSERT INTO appointment_prescription (appointment_id, prescription_id) VALUES (1,1)");
             database.execSQL("INSERT INTO appointment_prescription (appointment_id, prescription_id) VALUES (2,2)");
 
-        }
-    };
+          }
+     };
+
+     public static final Migration REMOVE_DOCTOR_FROM_LAB_TEST = new Migration(8,9) {
+          @Override
+          public void migrate(@NonNull SupportSQLiteDatabase database) {
+               database.execSQL("CREATE TABLE lab_test_new (id INTEGER PRIMARY KEY, person_id INTEGER , date_of_test TEXT, test_name TEXT, file_path TEXT, FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE)");
+               database.execSQL("INSERT INTO lab_test_new (id, person_id, date_of_test, test_name, file_path) SELECT id, person_id, date_of_test, test_name, file_path FROM lab_test");
+               database.execSQL("DROP TABLE lab_test");
+               database.execSQL("ALTER TABLE lab_test_new RENAME TO lab_test");
+          }
+     };
 }
 
 
