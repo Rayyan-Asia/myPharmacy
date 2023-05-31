@@ -7,6 +7,7 @@ import android.widget.*;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Person;
 import com.example.mypharmacy.ui.home.HomeFragment;
+import com.example.mypharmacy.ui.menu.MenuActivity;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -141,10 +142,9 @@ public class IntroActivityListeners {
                     @Override
                     public void run() {
                         activity.personRepository.insertPerson(person);
-                        Toast.makeText(activity.getApplicationContext(), "Person saved successfully", Toast.LENGTH_SHORT).show();
                     }
                 }).start();
-                activity.startActivity(new Intent(activity.getApplicationContext(), HomeFragment.class));
+                activity.startActivity(new Intent(activity.getApplicationContext(), MenuActivity.class));
                 activity.finish();
             }
         });
