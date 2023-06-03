@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 8,
-    "identityHash": "120acfeb24ed8eab843c547b794e2d9e",
+    "identityHash": "e2940213d51c693e43ce20190d061b41",
     "entities": [
       {
         "tableName": "person",
@@ -608,8 +608,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "lab_test",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `doctor_id` INTEGER NOT NULL, `person_id` INTEGER NOT NULL, `date_of_test` INTEGER, `test_name` TEXT, `file_path` TEXT, FOREIGN KEY(`doctor_id`) REFERENCES `doctor`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_id`) REFERENCES `person`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "tableName": "reminder",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `dosage` TEXT, `times` TEXT, `drug_id` INTEGER NOT NULL, FOREIGN KEY(`drug_id`) REFERENCES `drug`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -618,34 +618,28 @@
             "notNull": true
           },
           {
-            "fieldPath": "doctorId",
-            "columnName": "doctor_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "personId",
-            "columnName": "person_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "dateOfTest",
-            "columnName": "date_of_test",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "testName",
-            "columnName": "test_name",
+            "fieldPath": "name",
+            "columnName": "name",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "path",
-            "columnName": "file_path",
+            "fieldPath": "dosage",
+            "columnName": "dosage",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "times",
+            "columnName": "times",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "drugId",
+            "columnName": "drug_id",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -657,22 +651,11 @@
         "indices": [],
         "foreignKeys": [
           {
-            "table": "doctor",
+            "table": "drug",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "doctor_id"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          },
-          {
-            "table": "person",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "person_id"
+              "drug_id"
             ],
             "referencedColumns": [
               "id"
@@ -684,7 +667,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '120acfeb24ed8eab843c547b794e2d9e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e2940213d51c693e43ce20190d061b41')"
     ]
   }
 }
