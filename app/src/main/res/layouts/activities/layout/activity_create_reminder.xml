@@ -7,15 +7,6 @@
         tools:context=".ui.medReminder.CreateReminderActivity"
         android:orientation="vertical">
 
-    <TextView
-            android:text="Name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    <EditText
-            android:id="@+id/edit_text_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
     <!-- Drug from spinner -->
     <TextView
             android:text="Drug"
@@ -35,50 +26,76 @@
     <EditText
             android:id="@+id/edit_text_dosage"
             android:layout_width="match_parent"
+            android:hint="optional"
             android:layout_height="wrap_content"/>
 
     <!--Get frequency using radio button (determines list size)-->
     <TextView
-            android:text="Frequency"
+            android:text="Frequency per day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+    <!-- Radio buttons for frequency once,twice,thrice /day -->
     <RadioGroup
-            android:id="@+id/radio_group"
+            android:id="@+id/radio_group_frequency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
         <RadioButton
-                android:id="@+id/radio_button_daily"
-                android:text="Daily"
+                android:id="@+id/radio_button_once"
+                android:text="once"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         <RadioButton
-                android:id="@+id/radio_button_weekly"
-                android:text="Weekly"
+                android:id="@+id/radio_button_twice"
+                android:text="Twice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         <RadioButton
-                android:id="@+id/radio_button_monthly"
-                android:text="Monthly"
+                android:id="@+id/radio_button_thrice"
+                android:text="Three times"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
     </RadioGroup>
 
-    <!--Get time of reminder (time picker)-->
+    <!--Get time of reminder -->
     <TextView
             android:text="Time of Reminder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    <TimePicker
-            android:id="@+id/time_picker"
+    <!-- time 1 -->
+    <EditText
+            android:id="@+id/edit_text_time1"
+            android:inputType="time"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:hint="select a time for reminder"/>
+
+    <!-- time 2 -->
+    <EditText
+            android:id="@+id/edit_text_time2"
+            android:inputType="time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:focusable="false"
+            android:hint="select a time for reminder"/>
+
+    <!-- time 3 -->
+    <EditText
+            android:id="@+id/edit_text_time3"
+            android:inputType="time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:focusable="false"
+            android:hint="select a time for reminder"/>
 
     <Button
             android:id="@+id/button_create"

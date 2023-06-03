@@ -1,18 +1,15 @@
 package com.example.mypharmacy.ui.medReminder;
 
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.*;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Drug;
@@ -27,12 +24,13 @@ import java.util.List;
 
 public class CreateReminderActivity extends AppCompatActivity {
 
-    private EditText editTextName;
     private EditText editTextDosage;
-    private RadioGroup radioGroup;
-    private TimePicker timePicker;
+    private EditText editTextTime1, editTextTime2, editTextTime3;
+    private RadioGroup frequencyRadioGroup;
+    private RadioButton radioButtonOnce, radioButtonTwice, radioButtonThrice;
     private Button buttonCreate;
     private Spinner drugSpinner;
+    public static String FREQUENCY = "";
 
     private ReminderRepository reminderRepository = new ReminderRepositoryImplementation(this);
 
@@ -42,17 +40,63 @@ public class CreateReminderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_reminder);
-
-        editTextName = findViewById(R.id.edit_text_name);
         editTextDosage = findViewById(R.id.edit_text_dosage);
-        radioGroup = findViewById(R.id.radio_group);
-        timePicker = findViewById(R.id.time_picker);
         drugSpinner = findViewById(R.id.spinner_drug);
         buttonCreate = findViewById(R.id.button_create);
+        editTextTime1 = findViewById(R.id.edit_text_time1);
+        editTextTime2 = findViewById(R.id.edit_text_time2);
+        editTextTime3 = findViewById(R.id.edit_text_time3);
 
+        // get radio buttons
+        frequencyRadioGroup = findViewById(R.id.radio_group_frequency);
+        radioButtonOnce = findViewById(R.id.radio_button_once);
+        radioButtonTwice = findViewById(R.id.radio_button_twice);
+        radioButtonThrice = findViewById(R.id.radio_button_thrice);
+
+        // default radio button selection
+        frequencyRadioGroup.check(radioButtonOnce.getId()); // default selection
+        FREQUENCY = "once";
+
+        // set listeners
+        frequencyRadioGroup.setOnCheckedChangeListener((group, checkedId) -> updateEditTextVisibility(checkedId));
         buttonCreate.setOnClickListener(v -> createReminder());
+        editTextTime1.setOnClickListener(v -> showTimePickerDialog(editTextTime1));
+        editTextTime2.setOnClickListener(v -> showTimePickerDialog(editTextTime2));
+        editTextTime3.setOnClickListener(v -> showTimePickerDialog(editTextTime3));
         // Populate spinner with drugs
         new Thread(this::populateDrugSpinner).start();
+    }
+
+    private void showTimePickerDialog(EditText editText) {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute) -> {
+            String time = hourOfDay + ":" + minute;
+            editText.setText(time);
+        }, 0, 0, false);
+        timePickerDialog.show();
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    private void updateEditTextVisibility(int checkedId) {
+        switch (checkedId) {
+            case R.id.radio_button_once:
+                FREQUENCY = "once";
+                editTextTime1.setVisibility(View.VISIBLE);
+                editTextTime2.setVisibility(View.GONE);
+                editTextTime3.setVisibility(View.GONE);
+                break;
+            case R.id.radio_button_twice:
+                FREQUENCY = "twice";
+                editTextTime1.setVisibility(View.VISIBLE);
+                editTextTime2.setVisibility(View.VISIBLE);
+                editTextTime3.setVisibility(View.GONE);
+                break;
+            case R.id.radio_button_thrice:
+                FREQUENCY = "thrice";
+                editTextTime1.setVisibility(View.VISIBLE);
+                editTextTime2.setVisibility(View.VISIBLE);
+                editTextTime3.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     private void populateDrugSpinner() {
@@ -71,38 +115,29 @@ public class CreateReminderActivity extends AppCompatActivity {
     }
 
     private void createReminder() {
-        String name = editTextName.getText().toString().trim();
-        String dosage = editTextDosage.getText().toString().trim();
+        String dosage = editTextDosage.getText().toString().trim(); // optional
+        // validate time fields based on frequency
 
-        if (name.isEmpty() || dosage.isEmpty()) {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        validateTimeFields();
+        // get time(String from edit text) based on frequency and create a timestamp
 
-        RadioButton selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
-        String frequency = selectedRadioButton.getText().toString();
+        Timestamp timestamp1 = getTimestampFromEditText(editTextTime1);
+        Timestamp timestamp2 = getTimestampFromEditText(editTextTime2);
+        Timestamp timestamp3 = getTimestampFromEditText(editTextTime3);
 
-        int hour;
-        int minute;
+        // create a list of timestamps based on frequency
+        List<Timestamp> timestamps = getTimestampsForFrequency(timestamp1, FREQUENCY);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            hour = timePicker.getHour();
-            minute = timePicker.getMinute();
-        } else {
-            hour = timePicker.getCurrentHour();
-            minute = timePicker.getCurrentMinute();
-        }
-
-        Timestamp timestamp = getTimestamp(hour, minute);
-
-        List<Timestamp> timestamps = getTimestampsForFrequency(timestamp, frequency);
 
         Reminder reminder = new Reminder();
-        reminder.setName(name);
-        reminder.setDosage(dosage);
+
         reminder.setTimes(timestamps);
         // Get drugId from spinner
         Drug selectedDrug = (Drug) drugSpinner.getSelectedItem();
+        reminder.setName(selectedDrug.getName()); // name from drug
+        if (!dosage.isEmpty()) {
+            reminder.setDosage(dosage);
+        }
         reminder.setDrugId(selectedDrug.getId());
         // Add the reminder to the repository
         new Thread(() -> {
@@ -116,6 +151,49 @@ public class CreateReminderActivity extends AppCompatActivity {
             finish();
         });
 
+    }
+
+    private Timestamp getTimestampFromEditText(EditText editTextTime) {
+        String time = editTextTime.getText().toString().trim();
+        String[] timeArray = time.split(":");
+        int hour = Integer.parseInt(timeArray[0]);
+        int minute = Integer.parseInt(timeArray[1]);
+        return getTimestamp(hour, minute);
+    }
+
+    private void validateTimeFields() {
+        switch (FREQUENCY) {
+            case "once":
+                if (editTextTime1.getText().toString().isEmpty()) {
+                    editTextTime1.setError("Time is required");
+                    editTextTime1.requestFocus();
+                }
+                break;
+            case "twice":
+                if (editTextTime1.getText().toString().isEmpty()) {
+                    editTextTime1.setError("Time is required");
+                    editTextTime1.requestFocus();
+                }
+                if (editTextTime2.getText().toString().isEmpty()) {
+                    editTextTime2.setError("Time is required");
+                    editTextTime2.requestFocus();
+                }
+                break;
+            case "thrice":
+                if (editTextTime1.getText().toString().isEmpty()) {
+                    editTextTime1.setError("Time is required");
+                    editTextTime1.requestFocus();
+                }
+                if (editTextTime2.getText().toString().isEmpty()) {
+                    editTextTime2.setError("Time is required");
+                    editTextTime2.requestFocus();
+                }
+                if (editTextTime3.getText().toString().isEmpty()) {
+                    editTextTime3.setError("Time is required");
+                    editTextTime3.requestFocus();
+                }
+                break;
+        }
     }
 
     private Timestamp getTimestamp(int hour, int minute) {
