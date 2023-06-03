@@ -24,7 +24,15 @@
             android:name=".ui.medRecord.labTest.LabTestListActivity"
             android:exported="false"
             android:label="@string/title_activity_lab_test_list"
-            android:theme="@style/Theme.MyPharmacy" />
+            android:theme="@style/Theme.MyPharmacy">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
@@ -148,7 +156,24 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.mypharmacy.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
+
+    <queries>
+        <!-- Query for the app that handles file-related operations -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
 
 </manifest>

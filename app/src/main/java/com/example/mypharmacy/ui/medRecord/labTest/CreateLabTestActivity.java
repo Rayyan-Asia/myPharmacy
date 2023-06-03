@@ -159,12 +159,16 @@ public class CreateLabTestActivity extends AppCompatActivity {
             SwitchToListActivity();
         }
         if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == RESULT_OK && data.getData() != null) {
-            Uri uri = data.getData();
-            String path = getAbsolutePathFromUri(uri);
-            // Do something with the file path.
-            Log.i("Path", path);
-            saveImageToDatabase(path);
-            SwitchToListActivity();
+            Bitmap image;
+            try {
+                image = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                File file = storeImage(image);
+                saveImageToDatabase(file.getAbsolutePath());
+                SwitchToListActivity();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Failed to retrieve image", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -174,20 +178,6 @@ public class CreateLabTestActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private String getAbsolutePathFromUri(Uri uri) {
-        String path = null;
-        if (DocumentsContract.isDocumentUri(this, uri)) {
-            DocumentFile documentFile = DocumentFile.fromSingleUri(this, uri);
-            // If the URI represents a document, try to retrieve the absolute path.
-            if (documentFile != null && documentFile.exists()) {
-                path = documentFile.getUri().getPath();
-            }
-        } else {
-            // For non-document URIs, directly retrieve the path.
-            path = uri.getPath();
-        }
-        return path;
-    }
 
     private File storeImage(Bitmap image) {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
@@ -218,7 +208,6 @@ public class CreateLabTestActivity extends AppCompatActivity {
             }
         };
         thread.start();
-
     }
     @Override
     public void onBackPressed() {
