@@ -55,10 +55,11 @@ public class CreateLabTestActivity extends AppCompatActivity {
     private String fileName;
     private LocalDate TEST_DATE;
     PersonRepository personRepository = new PersonRepositoryImpl(this);
-    LabTestRepository repository  = new LabTestRepositoryImpl(this);
+    LabTestRepository repository = new LabTestRepositoryImpl(this);
     private static final int REQUEST_CODE_PICK_FILE = 3;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_PERMISSION_CAMERA = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,13 +78,13 @@ public class CreateLabTestActivity extends AppCompatActivity {
 
         submit.setOnClickListener(e -> {
             fileName = fileNameEditText.getText().toString().trim();
-            if (fileName.equals("") || fileName.length() <= 3 ){
+            if (fileName.equals("") || fileName.length() <= 3) {
                 Toast.makeText(getApplicationContext(), "Please enter a proper name.",
                         Toast.LENGTH_LONG).show();
-            }else if (TEST_DATE == null || TEST_DATE.isAfter(LocalDate.now())){
+            } else if (TEST_DATE == null || TEST_DATE.isAfter(LocalDate.now())) {
                 Toast.makeText(getApplicationContext(), "Please enter a proper test date",
                         Toast.LENGTH_LONG).show();
-            } else{
+            } else {
                 LabTestType type = (LabTestType) typeSpinner.getSelectedItem();
                 if (type == LabTestType.ADD_FROM_LOCAL_STORAGE) {
                     // open storage
@@ -109,7 +110,7 @@ public class CreateLabTestActivity extends AppCompatActivity {
                             // set day of month , month and year value in the edit text
 
                             labTestDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            TEST_DATE = LocalDate.of(year, monthOfYear+1, dayOfMonth);
+                            TEST_DATE = LocalDate.of(year, monthOfYear + 1, dayOfMonth);
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -148,15 +149,17 @@ public class CreateLabTestActivity extends AppCompatActivity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             // Get the image from the data intent.
-            Bitmap image  = (Bitmap) data.getExtras().get("data");
+            Bitmap image = (Bitmap) data.getExtras().get("data");
             File file = storeImage(image);
             saveImageToDatabase(file.getAbsolutePath());
-            SwitchToListActivity();
+            setResult(RESULT_OK);
+            finish();
         }
         if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == RESULT_OK && data.getData() != null) {
             Bitmap image;
@@ -164,18 +167,13 @@ public class CreateLabTestActivity extends AppCompatActivity {
                 image = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
                 File file = storeImage(image);
                 saveImageToDatabase(file.getAbsolutePath());
-                SwitchToListActivity();
+                setResult(RESULT_OK);
+                finish();
             } catch (IOException e) {
                 e.printStackTrace();
                 Toast.makeText(this, "Failed to retrieve image", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private void SwitchToListActivity() {
-        Intent intent = new Intent(this, LabTestListActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
     }
 
 
@@ -193,7 +191,8 @@ public class CreateLabTestActivity extends AppCompatActivity {
         }
         return file;
     }
-    private void saveImageToDatabase( String path) {
+
+    private void saveImageToDatabase(String path) {
         // Get the DAO for the image table.
         LabTest test = new LabTest();
 
@@ -203,19 +202,19 @@ public class CreateLabTestActivity extends AppCompatActivity {
                 test.testName = fileName;
                 test.path = path;
                 test.dateOfTest = TEST_DATE;
-                test.personId= personRepository.getPerson().id;
+                test.personId = personRepository.getPerson().id;
                 repository.insertLabTest(test);
             }
         };
         thread.start();
     }
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish(); // Optional: Finish the current activity to remove it from the stack
     }
-
 
 
 }

@@ -34,30 +34,28 @@ public class LabTestListActivity extends AppCompatActivity {
     private LabTestRepository repository;
     Context context;
 
+    private ActivityResultLauncher<Intent> labTestActivityResultLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lab_test_list);
         initViews();
         repository = new LabTestRepositoryImpl(this);
-        context =this;
+        context = this;
         initListeners();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Pass the context to the thread
-                labTests = repository.listLabTests();
-                if (labTests.size() == 0)
-                    switchToSurvey();
+        loadData();
 
-                labTestAdapter = new LabTestAdapter(labTests,context);
-                testsListView.setAdapter(labTestAdapter);
-            }
-        }).start();
-
-
+        labTestActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK) {
+                            loadData();
+                        }
+                    }
+                });
     }
-
 
     private void initViews() {
         addTestButton = findViewById(R.id.add_lab_test_button);
@@ -70,18 +68,37 @@ public class LabTestListActivity extends AppCompatActivity {
 
     private void initListeners() {
 
-        addTestButton.setOnClickListener(e -> {
-            switchToSurvey();
+        addTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchToSurvey();
+            }
         });
 
     }
 
+    private void loadData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                labTests = repository.listLabTests();
+                if (labTests.size() == 0)
+                    switchToSurvey();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        labTestAdapter = new LabTestAdapter(labTests, context);
+                        testsListView.setAdapter(labTestAdapter);
+                    }
+                });
+            }
+        }).start();
+    }
 
     private void switchToSurvey() {
         Intent intent = new Intent(this, CreateLabTestActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
+        labTestActivityResultLauncher.launch(intent);
     }
-
-
 }
