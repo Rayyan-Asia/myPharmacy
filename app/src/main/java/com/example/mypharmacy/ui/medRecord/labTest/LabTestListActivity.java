@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,7 +32,9 @@ public class LabTestListActivity extends AppCompatActivity {
     private FloatingActionButton addTestButton;
     private RecyclerView testsListView;
     private LabTestRepository repository;
+    Context context;
 
+    private ActivityResultLauncher<Intent> labTestActivityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,62 +42,63 @@ public class LabTestListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lab_test_list);
         initViews();
         repository = new LabTestRepositoryImpl(this);
-
+        context = this;
         initListeners();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                labTests = repository.listLabTests();
-                if(labTests.size()==0)
-                    switchToSurvey();
-                labTestAdapter = new LabTestAdapter(labTests);
-                testsListView.setAdapter(labTestAdapter);
-            }
-        }).start();
+        loadData();
 
-
+        labTestActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK) {
+                            loadData();
+                        }
+                    }
+                });
     }
-
-
 
     private void initViews() {
         addTestButton = findViewById(R.id.add_lab_test_button);
         testsListView = findViewById(R.id.lab_test_recyclerview);
         testsListView.setLayoutManager(new LinearLayoutManager(this));
+        int spacingInPixels = 20;
+        SpacingItemDecoration itemDecoration = new SpacingItemDecoration(spacingInPixels);
+        testsListView.addItemDecoration(itemDecoration);
     }
 
-    private void initListeners(){
+    private void initListeners() {
 
-        addTestButton.setOnClickListener(e -> {
-            switchToSurvey();
-        });
-        // todo check if this works
-        testsListView.setOnClickListener(e->{
-                    int position = testsListView.getChildLayoutPosition(testsListView);
-                    LabTest clickedItem = labTests.get(position);
-                    File file = new File(clickedItem.path);
-                    Intent openFileIntent = new Intent(Intent.ACTION_VIEW);
-                    Uri fileUri = Uri.fromFile(file);
-                    openFileIntent.setDataAndType(fileUri, getMimeType(fileUri));
-                    openFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                    if (openFileIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(openFileIntent);
-                    } else {
-                        // No app available to handle the file
-                        Toast.makeText(this, "No app available to open the file", Toast.LENGTH_SHORT).show();
-                    }
+        addTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchToSurvey();
             }
-        );
+        });
+
     }
 
-    private String getMimeType(Uri uri) {
-        ContentResolver contentResolver = getContentResolver();
-        return contentResolver.getType(uri);
+    private void loadData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                labTests = repository.listLabTests();
+                if (labTests.size() == 0)
+                    switchToSurvey();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        labTestAdapter = new LabTestAdapter(labTests, context);
+                        testsListView.setAdapter(labTestAdapter);
+                    }
+                });
+            }
+        }).start();
     }
+
     private void switchToSurvey() {
         Intent intent = new Intent(this, CreateLabTestActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
+        labTestActivityResultLauncher.launch(intent);
     }
 }
