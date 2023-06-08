@@ -2,6 +2,7 @@ package com.example.mypharmacy.ui.family;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.mypharmacy.Configuration;
 import com.example.mypharmacy.R;
+import com.example.mypharmacy.api.ApiService;
+import com.example.mypharmacy.api.dto.PersonDto;
+import com.example.mypharmacy.api.dto.UserDto;
 import com.example.mypharmacy.data.local.entities.User;
 import com.example.mypharmacy.data.local.repositories.AppointmentRepository;
 import com.example.mypharmacy.data.local.repositories.DoctorRepository;
@@ -28,12 +32,13 @@ import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,6 +53,7 @@ public class FamilyFragment extends Fragment {
     Configuration configuration = new Configuration();
     DoctorRepository doctorRepository;
     Intent successIntent;
+    ApiService apiService;
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
             new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
@@ -63,15 +69,47 @@ public class FamilyFragment extends Fragment {
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    User user = new User();
-                    user.setEmail(firebaseUser.getEmail());
-                    user.setPersonId(personRepository.getPerson().getId());
-                    userRepository.insertUser(user);
-                }
-            }).start();
+            if(response.isNewUser()) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        User user = new User();
+                        user.setEmail(firebaseUser.getEmail());
+                        user.setPersonId(personRepository.getPerson().getId());
+                        userRepository.insertUser(user);
+                        UserDto userDto = new UserDto();
+                        PersonDto personDto = new PersonDto();
+                        personDto.setId(user.personId);
+                        userDto.setId(user.getId());
+                        userDto.setEmail(user.getEmail());
+                        userDto.setPerson(personDto);
+                        Call<UserDto> call = apiService.insertUser(userDto);
+                        call.enqueue(new Callback<UserDto>() {
+                            @Override
+                            public void onResponse(Call<UserDto> call, Response<UserDto> response) {
+                                if (response.isSuccessful()) {
+                                    // Handle successful response
+                                    UserDto data = response.body();
+                                    Log.println(Log.INFO, "User Response", data.toString());
+
+                                } else {
+                                    Log.println(Log.ERROR, "User Response","BIG DOO DOO");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<UserDto> call, Throwable t) {
+                                // Handle network or other errors
+                                // ...
+                            }
+                        });
+
+
+                    }
+                }).start();
+            } else {
+
+            }
 
             // ...
         } else {
@@ -96,6 +134,12 @@ public class FamilyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable Bundle savedInstanceState) {
         login = view.findViewById(R.id.loginButton);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(configuration.getApiUrl())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiService = retrofit.create(ApiService.class);
         userRepository = new UserRepositoryImpl(view.getContext());
         personRepository = new PersonRepositoryImpl(view.getContext());
         doctorRepository = new DoctorRepositoryImpl(view.getContext());
@@ -103,7 +147,6 @@ public class FamilyFragment extends Fragment {
         successIntent = new Intent(view.getContext(), FamilyList.class);
         login.setOnClickListener(e -> {
             List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build(),
                     new AuthUI.IdpConfig.GoogleBuilder().build());
 
             // Create and launch sign-in intent

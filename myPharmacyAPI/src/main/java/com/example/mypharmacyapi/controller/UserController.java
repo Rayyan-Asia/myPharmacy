@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     @PostMapping
-    ResponseEntity<UserDto> insertUser(@Valid @RequestBody UserInsertDto user){
+    ResponseEntity<UserDto> insertUser(@Valid @RequestBody UserDto user){
         return ResponseEntity.ok().body(userService.insertUser(user));
     }
     @GetMapping("/{id}")
