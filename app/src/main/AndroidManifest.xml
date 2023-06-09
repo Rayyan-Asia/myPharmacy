@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name="com.example.mypharmacy.MyApplication"
         android:allowBackup="true"
@@ -11,7 +14,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyPharmacy"
+        android:theme="@style/MyPharmacyTheme"
         tools:targetApi="31">
         <activity
             android:name=".ui.medRecord.labTest.CreateLabTestActivity"
@@ -19,9 +22,16 @@
 
         <activity
             android:name=".ui.medRecord.labTest.LabTestListActivity"
-            android:exported="false"
-            android:label="@string/title_activity_lab_test_list"
-            android:theme="@style/Theme.MyPharmacy" />
+            android:exported="true"
+            android:label="@string/title_activity_lab_test_list">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
+        </activity>
         <activity
             android:exported="true"
             android:name=".ui.medReminder.CreateReminderActivity"
@@ -141,7 +151,35 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+        <activity
+                android:name=".ui.family.FamilyList"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.mypharmacy.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
+
+    <queries>
+        <!-- Query for the app that handles file-related operations -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
 
 </manifest>

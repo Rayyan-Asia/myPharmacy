@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "519263308964",
+    "firebase_url": "https://mypharamcy-725ef-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "mypharamcy-725ef",
     "storage_bucket": "mypharamcy-725ef.appspot.com"
   },
@@ -9,12 +10,57 @@
       "client_info": {
         "mobilesdk_app_id": "1:519263308964:android:5eeba862a9817dcab56a31",
         "android_client_info": {
+          "package_name": "com.example.myPharmacy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519263308964-d4bnolqj484ie437ddjs8tc2etin1qk7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myPharmacy",
+            "certificate_hash": "be306e37a335fca02dc61cbedea4a49305cbc683"
+          }
+        },
+        {
+          "client_id": "519263308964-ack2337grjf047nlhtl0l1a1s8u1ehp8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcQSozJolyfPWzqIUSAp4EkLHi18JrYdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519263308964-36ni7uerib2q914j4sodbcnml8o2e5cd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519263308964:android:1591dbaaf377a3e4b56a31",
+        "android_client_info": {
           "package_name": "com.example.mypharmacy"
         }
       },
       "oauth_client": [
         {
-          "client_id": "519263308964-36ni7uerib2q914j4sodbcnml8o2e5cd.apps.googleusercontent.com",
+          "client_id": "519263308964-aokvvvgqh3panmj3q25hr5vaeook1lhc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mypharmacy",
+            "certificate_hash": "be306e37a335fca02dc61cbedea4a49305cbc683"
+          }
+        },
+        {
+          "client_id": "519263308964-ack2337grjf047nlhtl0l1a1s8u1ehp8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

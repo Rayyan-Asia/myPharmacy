@@ -394,17 +394,11 @@
       },
       {
         "tableName": "lab_test",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `doctor_id` INTEGER NOT NULL, `person_id` INTEGER NOT NULL, `date_of_test` INTEGER, `test_name` TEXT, `file_path` TEXT, FOREIGN KEY(`doctor_id`) REFERENCES `doctor`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_id`) REFERENCES `person`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `person_id` INTEGER NOT NULL, `date_of_test` INTEGER, `test_name` TEXT, `file_path` TEXT, FOREIGN KEY(`doctor_id`) REFERENCES `doctor`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_id`) REFERENCES `person`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "doctorId",
-            "columnName": "doctor_id",
             "affinity": "INTEGER",
             "notNull": true
           },

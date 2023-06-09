@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_MyPharmacy);
         setContentView(R.layout.activity_main);
         GifDrawable gifDrawable = null;
         try {
@@ -51,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
     private void startNextActivity(Person person) {
         if (person == null) {
             Intent introIntent = new Intent(this, IntroActivity.class);
-            startActivityWithDelay(introIntent, 5000);
+            startActivityWithDelay(introIntent, 1000);
         } else {
             Intent homeIntent = new Intent(this, MenuActivity.class);
-            startActivityWithDelay(homeIntent,5000);
+            startActivityWithDelay(homeIntent,1000);
         }
     }
 
