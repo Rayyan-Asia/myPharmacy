@@ -1,5 +1,8 @@
 package com.example.mypharmacy.ui.medReminder;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import androidx.annotation.NonNull;
@@ -36,7 +39,6 @@ public class ReminderViewHolder extends RecyclerView.ViewHolder {
         reminder_dosage.setText(reminder.getDosage());
         deleteReminderButton.setOnClickListener(e -> {
             // Delete the reminder from the repository
-
             new Thread(() -> {
                 ReminderRepository reminderRepository = new ReminderRepositoryImplementation(this.itemView.getContext());
                 reminderRepository.deleteReminder(reminder.getId());
@@ -48,10 +50,11 @@ public class ReminderViewHolder extends RecyclerView.ViewHolder {
                     MedicationReminderFragment.reminderAdapter.updateData(reminderList);
                 });
             }).start();
-            // Cancel the associated notification using the reminder_id as the notification_id
-            int notificationId = reminder.getId();
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.itemView.getContext());
-            notificationManager.cancel(notificationId);
+            // Cancel the scheduled alarm for the reminder
+            AlarmManager alarmManager = (AlarmManager) this.itemView.getContext().getSystemService(this.itemView.getContext().ALARM_SERVICE);
+            Intent intent = new Intent(this.itemView.getContext(), ReminderBroadcastReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this.itemView.getContext(), reminder.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.cancel(pendingIntent);
         });
     }
 

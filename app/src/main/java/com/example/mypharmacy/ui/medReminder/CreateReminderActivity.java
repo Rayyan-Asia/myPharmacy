@@ -249,6 +249,9 @@ public class CreateReminderActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Creates a notification channel for the reminder feature
+     */
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the notification channel
