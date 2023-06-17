@@ -20,6 +20,7 @@ import com.example.mypharmacy.data.local.repositories.impl.ReminderRepositoryImp
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class CreateReminderActivity extends AppCompatActivity {
@@ -205,66 +206,46 @@ public class CreateReminderActivity extends AppCompatActivity {
         return timestamp;
     }
 
-    private List<Timestamp> getTimestampsForFrequency(Timestamp timestamp, String frequency) {
-        List<Timestamp> timestamps = new ArrayList<>();
-
-        // Add the initial timestamp
-        timestamps.add(timestamp);
-
-        // Add additional timestamps based on the selected frequency
-        switch (frequency) {
-            case "Daily":
-                // Add timestamps for the next year of days
-                for (int i = 1; i < 365; i++) {
-                    Timestamp nextDayTimestamp = new Timestamp(timestamp.getTime() + ((long) i * 24 * 60 * 60 * 1000));
-                    timestamps.add(nextDayTimestamp);
-                }
-                break;
-            case "Weekly":
-                // Add timestamps for the next year of weeks
-                for (int i = 1; i < 48; i++) {
-                    Timestamp nextWeekTimestamp = new Timestamp(timestamp.getTime() + ((long) i * 7 * 24 * 60 * 60 * 1000));
-                    timestamps.add(nextWeekTimestamp);
-                }
-                break;
-            case "Monthly":
-                // Add timestamps for the next year of months
-                for (int i = 1; i < 12; i++) {
-                    Timestamp nextMonthTimestamp = new Timestamp(timestamp.getTime());
-                    nextMonthTimestamp.setMonth(nextMonthTimestamp.getMonth() + i);
-                    timestamps.add(nextMonthTimestamp);
-                }
-                break;
-        }
-
-        return timestamps;
-    }
 
     private void activateNotification(Reminder reminder) {
-        createNotificationChannel();
         List<Timestamp> timestamps = reminder.getTimes();
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        for (int i = 0; i < timestamps.size(); i++) {
-            Timestamp timestamp = timestamps.get(i);
-            int notificationId = reminder.getId();
+        for (Timestamp timestamp : timestamps) {
+            // Get the current date and time
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
 
-            // Create an intent to launch the notification
-            Intent intent = new Intent(this, ReminderNotificationReceiver.class);
-            intent.putExtra("notificationId", notificationId);
-            intent.putExtra("message", "It's time to take your medication!");
+            // Set the reminder time
+            Calendar reminderTime = Calendar.getInstance();
+            reminderTime.setTime(timestamp);
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            // Set the reminder time for today
+            calendar.set(Calendar.HOUR_OF_DAY, reminderTime.get(Calendar.HOUR_OF_DAY));
+            calendar.set(Calendar.MINUTE, reminderTime.get(Calendar.MINUTE));
+            calendar.set(Calendar.SECOND, 0);
 
-            // Set the alarm to trigger at the specified timestamp
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timestamp.getTime(), pendingIntent);
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, timestamp.getTime(), pendingIntent);
-            } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, timestamp.getTime(), pendingIntent);
+            // If the reminder time has already passed for today, schedule it for the next day
+            if (calendar.getTimeInMillis() <= System.currentTimeMillis()) { // not sure about this
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
             }
+
+            // Calculate the time window for the reminder
+            long windowStartMillis = calendar.getTimeInMillis() - (10 * 60 * 1000); // 10 minutes before the reminder time
+            long windowEndMillis = calendar.getTimeInMillis() + (10 * 60 * 1000); // 10 minutes after the reminder time
+
+            // Create an Intent for the BroadcastReceiver
+            Intent intent = new Intent(this, ReminderBroadcastReceiver.class); // TODO: modify this to put useful data in the intent
+            intent.putExtra("reminderId", reminder.getId());
+            intent.putExtra("reminderName", reminder.getName());
+
+            // Create a PendingIntent using a unique identifier
+            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(this, reminder.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // Schedule the alarm using AlarmManager and setWindow()
+            alarmManager.setWindow(AlarmManager.RTC_WAKEUP, windowStartMillis, windowEndMillis, pendingIntent);
         }
+
 
     }
 
