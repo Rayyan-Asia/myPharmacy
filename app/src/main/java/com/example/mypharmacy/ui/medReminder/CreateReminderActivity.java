@@ -32,7 +32,7 @@ public class CreateReminderActivity extends AppCompatActivity {
     private Spinner drugSpinner;
     public static String FREQUENCY = "";
 
-    private ReminderRepository reminderRepository = new ReminderRepositoryImplementation(this);
+    private final ReminderRepository reminderRepository = new ReminderRepositoryImplementation(this);
 
     private static final String CHANNEL_ID = "reminder_channel";
 
@@ -65,6 +65,8 @@ public class CreateReminderActivity extends AppCompatActivity {
         editTextTime3.setOnClickListener(v -> showTimePickerDialog(editTextTime3));
         // Populate spinner with drugs
         new Thread(this::populateDrugSpinner).start();
+        // Create notification channel
+        createNotificationChannel();
     }
 
     private void showTimePickerDialog(EditText editText) {
@@ -114,20 +116,18 @@ public class CreateReminderActivity extends AppCompatActivity {
 
     }
 
+    // redoing the creation from scratch
     private void createReminder() {
         String dosage = editTextDosage.getText().toString().trim(); // optional
+
         // validate time fields based on frequency
-
+        // TODO: make the validation functional
         validateTimeFields();
-        // get time(String from edit text) based on frequency and create a timestamp
-
-        Timestamp timestamp1 = getTimestampFromEditText(editTextTime1);
-        Timestamp timestamp2 = getTimestampFromEditText(editTextTime2);
-        Timestamp timestamp3 = getTimestampFromEditText(editTextTime3);
-
         // create a list of timestamps based on frequency
-        List<Timestamp> timestamps = getTimestampsForFrequency(timestamp1, FREQUENCY);
+        List<Timestamp> timestamps = new ArrayList<>();
 
+        // TODO: utilize the timestamps into the notification process
+        // create a reminder object
 
         Reminder reminder = new Reminder();
 
@@ -150,8 +150,8 @@ public class CreateReminderActivity extends AppCompatActivity {
             Toast.makeText(this, "Reminder created successfully", Toast.LENGTH_SHORT).show();
             finish();
         });
-
     }
+
 
     private Timestamp getTimestampFromEditText(EditText editTextTime) {
         String time = editTextTime.getText().toString().trim();
@@ -270,11 +270,15 @@ public class CreateReminderActivity extends AppCompatActivity {
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Reminder Channel";
-            String description = "Channel for medication reminders";
+            // Create the notification channel
+            CharSequence channelName = "Reminder Channel";
+            String channelDescription = "Channel for medication reminders";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
+
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, channelName, importance);
+            channel.setDescription(channelDescription);
+
+            // Register the channel with the system
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         } else Toast.makeText(this, "Notification channel could not be created", Toast.LENGTH_SHORT).show();

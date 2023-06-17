@@ -16,7 +16,7 @@
     <Spinner
             android:id="@+id/spinner_drug"
             android:layout_width="match_parent"
-            android:layout_height="20pt"/>
+            android:layout_height="48dp"/>
 
     <TextView
             android:text="Dosage"
@@ -27,7 +27,8 @@
             android:id="@+id/edit_text_dosage"
             android:layout_width="match_parent"
             android:hint="optional"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"/>
 
     <!--Get frequency using radio button (determines list size)-->
     <TextView
@@ -75,7 +76,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="false"
-            android:hint="select a time for reminder"/>
+            android:hint="select a time for reminder"
+            android:minHeight="48dp"/>
 
     <!-- time 2 -->
     <EditText
