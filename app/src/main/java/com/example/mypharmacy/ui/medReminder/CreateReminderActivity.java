@@ -126,8 +126,13 @@ public class CreateReminderActivity extends AppCompatActivity {
         validateTimeFields();
         // create a list of timestamps based on frequency
         List<Timestamp> timestamps = new ArrayList<>();
+        // mockup timestamps for testing
+        timestamps.add(new Timestamp(Calendar.getInstance().getTimeInMillis() + 1000));
+        timestamps.add(new Timestamp(Calendar.getInstance().getTimeInMillis() + 10000));
+        timestamps.add(new Timestamp(Calendar.getInstance().getTimeInMillis() + 20000));
 
-        // TODO: utilize the timestamps into the notification process
+
+        // TODO: utilize the actual times into the notification process
         // create a reminder object
 
         Reminder reminder = new Reminder();
