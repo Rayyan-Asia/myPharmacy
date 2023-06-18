@@ -23,14 +23,16 @@
             android:background="@color/med_red"
             app:menu="@menu/bottom_navigation_menu" />
 
-    <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
-            android:layout_above="@+id/bottom_navigation"/>
-
     <!-- The Toolbar -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_below="@id/toolbar"
+        app:layout_anchor="@+id/main_content"
+        app:layout_anchorGravity="center" />
+
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
