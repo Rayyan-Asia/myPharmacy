@@ -117,47 +117,67 @@ public class CreateReminderActivity extends AppCompatActivity {
 
     }
 
-    // redoing the creation from scratch
     private void createReminder() {
         String dosage = editTextDosage.getText().toString().trim(); // optional
 
         // validate time fields based on frequency
-        // TODO: make the validation functional
-        validateTimeFields();
-        // create a list of timestamps based on frequency
-        List<Timestamp> timestamps = new ArrayList<>();
-        // mockup timestamps for testing
-        timestamps.add(new Timestamp(Calendar.getInstance().getTimeInMillis() + 1000));
-        timestamps.add(new Timestamp(Calendar.getInstance().getTimeInMillis() + 10000));
-        timestamps.add(new Timestamp(Calendar.getInstance().getTimeInMillis() + 20000));
+        if (validateTimeFields()) {
+            // create a list of timestamps based on frequency
+            List<Timestamp> timestamps;
+            // mockup timestamps for testing
+//        timestamps.add(new Timestamp(Calendar.getInstance().getTimeInMillis() + 1000)); // 1 second from now
+//        timestamps.add(new Timestamp(Calendar.getInstance().getTimeInMillis() + 10000)); // 10 seconds from now
+//        timestamps.add(new Timestamp(Calendar.getInstance().getTimeInMillis() + 20000)); // 20 seconds from now
 
 
-        // TODO: utilize the actual times into the notification process
-        // create a reminder object
+            // create a reminder object
+            timestamps = generateTimestamps();
+            Reminder reminder = new Reminder();
 
-        Reminder reminder = new Reminder();
+            reminder.setTimes(timestamps);
+            // Get drugId from spinner
+            Drug selectedDrug = (Drug) drugSpinner.getSelectedItem();
+            reminder.setName(selectedDrug.getName()); // name from drug
+            if (!dosage.isEmpty()) {
+                reminder.setDosage(dosage);
+            }
+            reminder.setDrugId(selectedDrug.getId());
+            // Add the reminder to the repository
+            new Thread(() -> {
+                reminderRepository.insertReminder(reminder);
+                // Activate a notification for the reminder
+                activateNotification(reminder);
+            }).start();
 
-        reminder.setTimes(timestamps);
-        // Get drugId from spinner
-        Drug selectedDrug = (Drug) drugSpinner.getSelectedItem();
-        reminder.setName(selectedDrug.getName()); // name from drug
-        if (!dosage.isEmpty()) {
-            reminder.setDosage(dosage);
-        }
-        reminder.setDrugId(selectedDrug.getId());
-        // Add the reminder to the repository
-        new Thread(() -> {
-            reminderRepository.insertReminder(reminder);
-            // Activate a notification for the reminder
-            activateNotification(reminder);
-        }).start();
+            runOnUiThread(() -> {
+                Toast.makeText(this, "Reminder created successfully", Toast.LENGTH_SHORT).show();
+                finish();
+            });
+        } else         // Toast an error message
+            Toast.makeText(this, "The selected frequency requires all time fields to be filled", Toast.LENGTH_SHORT).show();
 
-        runOnUiThread(() -> {
-            Toast.makeText(this, "Reminder created successfully", Toast.LENGTH_SHORT).show();
-            finish();
-        });
     }
 
+    private List<Timestamp> generateTimestamps() {
+        List<Timestamp> timestamps = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+
+        if (FREQUENCY.equals("once")) {
+            // Generate a single timestamp for a one-time reminder
+            timestamps.add(getTimestampFromEditText(editTextTime1)); // Get the time from the EditText
+        } else if (FREQUENCY.equals("twice")) {
+            // Generate two timestamps for reminders to be triggered twice
+            timestamps.add(getTimestampFromEditText(editTextTime1));
+            timestamps.add(getTimestampFromEditText(editTextTime2));
+        } else if (FREQUENCY.equals("thrice")) {
+            // Generate three timestamps for reminders to be triggered thrice
+            timestamps.add(getTimestampFromEditText(editTextTime1));
+            timestamps.add(getTimestampFromEditText(editTextTime2));
+            timestamps.add(getTimestampFromEditText(editTextTime3));
+        }
+
+        return timestamps;
+    }
 
     private Timestamp getTimestampFromEditText(EditText editTextTime) {
         String time = editTextTime.getText().toString().trim();
@@ -167,39 +187,47 @@ public class CreateReminderActivity extends AppCompatActivity {
         return getTimestamp(hour, minute);
     }
 
-    private void validateTimeFields() {
+    private boolean validateTimeFields() {
         switch (FREQUENCY) {
             case "once":
                 if (editTextTime1.getText().toString().isEmpty()) {
                     editTextTime1.setError("Time is required");
                     editTextTime1.requestFocus();
+                    return false;
                 }
-                break;
+                return true;
             case "twice":
                 if (editTextTime1.getText().toString().isEmpty()) {
                     editTextTime1.setError("Time is required");
                     editTextTime1.requestFocus();
+                    return false;
                 }
                 if (editTextTime2.getText().toString().isEmpty()) {
                     editTextTime2.setError("Time is required");
                     editTextTime2.requestFocus();
+                    return false;
                 }
-                break;
+                return true;
             case "thrice":
                 if (editTextTime1.getText().toString().isEmpty()) {
                     editTextTime1.setError("Time is required");
                     editTextTime1.requestFocus();
+                    return false;
                 }
                 if (editTextTime2.getText().toString().isEmpty()) {
                     editTextTime2.setError("Time is required");
                     editTextTime2.requestFocus();
+                    return false;
                 }
                 if (editTextTime3.getText().toString().isEmpty()) {
                     editTextTime3.setError("Time is required");
                     editTextTime3.requestFocus();
+                    return false;
                 }
-                break;
+                return true;
+
         }
+        return false;
     }
 
     private Timestamp getTimestamp(int hour, int minute) {
@@ -211,7 +239,9 @@ public class CreateReminderActivity extends AppCompatActivity {
         return timestamp;
     }
 
-
+    /**
+     *
+     * **/
     private void activateNotification(Reminder reminder) {
         List<Timestamp> timestamps = reminder.getTimes();
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
