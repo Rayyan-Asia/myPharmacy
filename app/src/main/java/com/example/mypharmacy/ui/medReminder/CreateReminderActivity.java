@@ -148,7 +148,10 @@ public class CreateReminderActivity extends AppCompatActivity {
                 // Activate a notification for the reminder
                 activateNotification(reminder);
             }).start();
+            // return RESULT_OK to the calling activity
+            setResult(RESULT_OK);
 
+            // Toast a success message
             runOnUiThread(() -> {
                 Toast.makeText(this, "Reminder created successfully", Toast.LENGTH_SHORT).show();
                 finish();

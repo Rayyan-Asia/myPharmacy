@@ -51,9 +51,9 @@ public class ReminderViewHolder extends RecyclerView.ViewHolder {
             new Thread(() -> {
                 ReminderRepository reminderRepository = new ReminderRepositoryImplementation(this.itemView.getContext());
                 reminderRepository.deleteReminder(reminder.getId());
-                List<Reminder> reminderList = reminderRepository.getActiveReminders();
 
                 // update the recycler view reminderRecyclerView from MedicationReminderFragment
+                List<Reminder> reminderList = reminderRepository.getActiveReminders();
                 MedicationReminderFragment.reminderRecyclerView.post(() -> {
                     MedicationReminderFragment.reminderRecyclerView.getAdapter().notifyDataSetChanged();
                     MedicationReminderFragment.reminderAdapter.updateData(reminderList);
