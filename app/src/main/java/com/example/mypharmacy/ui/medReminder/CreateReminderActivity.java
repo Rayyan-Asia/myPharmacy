@@ -241,7 +241,7 @@ public class CreateReminderActivity extends AppCompatActivity {
 
     /**
      *
-     * **/
+     **/
     private void activateNotification(Reminder reminder) {
         List<Timestamp> timestamps = reminder.getTimes();
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -265,10 +265,6 @@ public class CreateReminderActivity extends AppCompatActivity {
                 calendar.add(Calendar.DAY_OF_YEAR, 1);
             }
 
-            // Calculate the time window for the reminder
-            long windowStartMillis = calendar.getTimeInMillis() - (10 * 60 * 1000); // 10 minutes before the reminder time
-            long windowEndMillis = calendar.getTimeInMillis() + (10 * 60 * 1000); // 10 minutes after the reminder time
-
             // Create an Intent for the BroadcastReceiver
             Intent intent = new Intent(this, ReminderBroadcastReceiver.class); // TODO: modify this to put useful data in the intent
             intent.putExtra("reminderId", reminder.getId());
@@ -277,8 +273,8 @@ public class CreateReminderActivity extends AppCompatActivity {
             // Create a PendingIntent using a unique identifier
             @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(this, reminder.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            // Schedule the alarm using AlarmManager and setWindow()
-            alarmManager.setWindow(AlarmManager.RTC_WAKEUP, windowStartMillis, windowEndMillis, pendingIntent);
+            // Schedule the alarm (API(23) and above)
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
 
 
