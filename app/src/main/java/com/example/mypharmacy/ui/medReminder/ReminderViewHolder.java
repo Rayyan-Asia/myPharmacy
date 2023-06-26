@@ -6,28 +6,28 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.TextView;
 
 import com.example.mypharmacy.R;
-import com.example.mypharmacy.data.local.entities.Drug;
 import com.example.mypharmacy.data.local.entities.Reminder;
 import com.example.mypharmacy.data.local.repositories.ReminderRepository;
-import com.example.mypharmacy.data.local.repositories.impl.DrugRepositoryImpl;
 import com.example.mypharmacy.data.local.repositories.impl.ReminderRepositoryImplementation;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ReminderViewHolder extends RecyclerView.ViewHolder {
-    private TextView reminder_name, reminder_dosage;
+    private TextView reminder_name, reminder_times;
     private Button deleteReminderButton;
 
     public ReminderViewHolder(@NonNull @NotNull View itemView) {
         super(itemView);
         reminder_name = itemView.findViewById(R.id.reminder_name);
-        reminder_dosage = itemView.findViewById(R.id.reminder_dosage);
+        reminder_times = itemView.findViewById(R.id.reminder_times);
         deleteReminderButton = itemView.findViewById(R.id.delete_reminder_button);
 
     }
@@ -36,7 +36,16 @@ public class ReminderViewHolder extends RecyclerView.ViewHolder {
         reminder_name.setText(reminder.getName());
         //Drug drug = new DrugRepositoryImpl(this.itemView.getContext()).getDrug(reminder.getDrugId());
         //reminder_dosage.setText(reminder.getDosage() + " " + drug.getDosageUnit()); --> relies on unit implementation
-        reminder_dosage.setText(reminder.getDosage());
+
+        // Retrieve the reminder times and format them as a string HH:mm
+        List<Timestamp> reminderTimes = reminder.getTimes();
+        StringBuilder timesStringBuilder = new StringBuilder();
+        for (Timestamp timestamp : reminderTimes) {
+            String formattedTime = convertTimestampToString(timestamp);
+            timesStringBuilder.append(formattedTime).append("\n");
+        }
+        reminder_times.setText(timesStringBuilder.toString().trim());
+
         deleteReminderButton.setOnClickListener(e -> {
             // Delete the reminder from the repository
             new Thread(() -> {
@@ -57,5 +66,12 @@ public class ReminderViewHolder extends RecyclerView.ViewHolder {
             alarmManager.cancel(pendingIntent);
         });
     }
+
+    private String convertTimestampToString(Timestamp timestamp) {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        Date date = new Date(timestamp.getTime());
+        return timeFormat.format(date);
+    }
+
 
 }
