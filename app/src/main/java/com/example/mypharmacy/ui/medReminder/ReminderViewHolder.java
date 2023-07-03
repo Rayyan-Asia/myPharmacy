@@ -62,7 +62,7 @@ public class ReminderViewHolder extends RecyclerView.ViewHolder {
             // Cancel the scheduled alarm for the reminder
             AlarmManager alarmManager = (AlarmManager) this.itemView.getContext().getSystemService(this.itemView.getContext().ALARM_SERVICE);
             Intent intent = new Intent(this.itemView.getContext(), ReminderBroadcastReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this.itemView.getContext(), reminder.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this.itemView.getContext(), reminder.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             alarmManager.cancel(pendingIntent);
         });
     }
