@@ -7,5 +7,5 @@ import com.example.mypharmacyapi.dto.UserInsertDto;
 public interface UserService {
     UserDto insertUser(UserDto user);
 
-    UserDto getUser(String id);
+    UserDto getUser(String email);
 }

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.mypharmacy.Configuration;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.api.ApiService;
+import com.example.mypharmacy.api.JacksonConverterFactory;
 import com.example.mypharmacy.api.dto.PersonDto;
 import com.example.mypharmacy.api.dto.UserDto;
 import com.example.mypharmacy.data.local.entities.User;
@@ -32,6 +33,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import okhttp3.ResponseBody;
 import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +41,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,14 +72,20 @@ public class FamilyFragment extends Fragment {
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            if(response.isNewUser()) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
+            Call<UserDto> call = apiService.getUser(firebaseUser.getEmail());
+            Response<UserDto> userDto = null;
+            try {
+                 userDto = call.execute();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+                if(userDto == null) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
                         User user = new User();
                         user.setEmail(firebaseUser.getEmail());
                         user.setPersonId(personRepository.getPerson().getId());
-                        userRepository.insertUser(user);
                         UserDto userDto = new UserDto();
                         PersonDto personDto = new PersonDto();
                         personDto.setId(user.personId);
@@ -93,31 +102,27 @@ public class FamilyFragment extends Fragment {
                                     Log.println(Log.INFO, "User Response", data.toString());
 
                                 } else {
-                                    Log.println(Log.ERROR, "User Response","BIG DOO DOO");
+                                    Log.println(Log.ERROR, "User Response", "BIG DOO DOO");
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<UserDto> call, Throwable t) {
-                                // Handle network or other errors
-                                // ...
+
                             }
                         });
+                    }}).start();
+                } else {
 
+                }
 
-                    }
-                }).start();
+                // ...
             } else {
-
+                // Sign in failed. If response is null the user canceled the
+                // sign-in flow using the back button. Otherwise check
+                // response.getError().getErrorCode() and handle the error.
+                // ...
             }
-
-            // ...
-        } else {
-            // Sign in failed. If response is null the user canceled the
-            // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
-            // ...
-        }
     }
 
     public FamilyFragment() {
@@ -136,7 +141,7 @@ public class FamilyFragment extends Fragment {
         login = view.findViewById(R.id.loginButton);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(configuration.getApiUrl())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create())
                 .build();
 
         apiService = retrofit.create(ApiService.class);
@@ -156,8 +161,8 @@ public class FamilyFragment extends Fragment {
                     .setIsSmartLockEnabled(false)
                     .build();
             signInLauncher.launch(signInIntent);
+
+
         });
-
     }
-
 }

@@ -19,7 +19,7 @@ public class UserController {
         return ResponseEntity.ok().body(userService.insertUser(user));
     }
     @GetMapping("/{id}")
-    ResponseEntity<UserDto> getUser(@PathVariable String id){
-        return ResponseEntity.ok().body(userService.getUser(id));
+    ResponseEntity<UserDto> getUser(@PathVariable String email){
+        return ResponseEntity.ok().body(userService.getUser(email));
     }
 }
