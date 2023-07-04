@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUser(String id) {
-        Optional<User> user = userRepository.findById(id);
+    public UserDto getUser(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
         if(user.isPresent()){
             return modelMapper.map(user.get(), UserDto.class);
         } else {
