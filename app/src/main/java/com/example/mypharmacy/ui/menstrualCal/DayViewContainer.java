@@ -10,5 +10,6 @@ public class DayViewContainer extends ViewContainer {
     public DayViewContainer(View view) {
         super(view);
         textView = view.findViewById(R.id.calendarDayText);
+
     }
 }

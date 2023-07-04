@@ -32,6 +32,7 @@ public class MenstrualCycleSurvey extends Fragment {
     private EditText startDate;
     private EditText endDate;
 
+    public boolean isEdit = false;
     private Button save;
     public static LocalDate START_DAY;
     public static LocalDate END_DAY;
@@ -112,16 +113,26 @@ public class MenstrualCycleSurvey extends Fragment {
             } else {
                 if (END_DAY.isAfter(START_DAY)) {
                     if (START_DAY.until(END_DAY).getDays() <= 9) {
-                        if (START_DAY.isBefore(LocalDate.now()) && (END_DAY.isBefore((LocalDate.now())) || END_DAY.getDayOfYear() == LocalDate.now().getDayOfYear() ))  {
+                        if (START_DAY.isBefore(LocalDate.now()) && (END_DAY.isBefore((LocalDate.now())) ||
+                                END_DAY.getDayOfYear() == LocalDate.now().getDayOfYear() ))  {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Menstruation menstruation = new Menstruation();
-                                    menstruation.startDate = START_DAY;
-                                    menstruation.endDate = END_DAY;
-                                    Looper.prepare();
-                                    menstruationRepository.insertMenstruation(menstruation);
-                                    Toast.makeText(getContext(), "Menstruation saved successfully", Toast.LENGTH_SHORT).show();
+                                    if(isEdit){
+                                        Menstruation menstruation = menstruationRepository.getMenstruation();
+                                        menstruation.startDate = START_DAY;
+                                        menstruation.endDate = END_DAY;
+                                        Looper.prepare();
+                                        menstruationRepository.updateMenstruation(menstruation);
+                                        Toast.makeText(getContext(), "Menstruation updated successfully", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Menstruation menstruation = new Menstruation();
+                                        menstruation.startDate = START_DAY;
+                                        menstruation.endDate = END_DAY;
+                                        Looper.prepare();
+                                        menstruationRepository.insertMenstruation(menstruation);
+                                        Toast.makeText(getContext(), "Menstruation saved successfully", Toast.LENGTH_SHORT).show();
+                                    }
                                     switchToCalendar();
                                 }
                             }).start();
