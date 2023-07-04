@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.mypharmacy.data.local.entities.Menstruation;
 
@@ -15,9 +16,12 @@ public interface MenstruationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertMenstruation(Menstruation menstruation);
 
-    @Query("SELECT * FROM Menstruation order by id desc LIMIT 1;")
+    @Update
+    void updateMenstruation(Menstruation menstruation);
+
+    @Query("SELECT * FROM Menstruation ORDER BY id DESC LIMIT 1;")
     Menstruation getMenstruation();
 
-    @Query("SELECT * FROM Menstruation order by id desc LIMIT 200;")
+    @Query("SELECT * FROM Menstruation ORDER BY id DESC LIMIT 200;")
     List<Menstruation> getMenstruations();
 }
