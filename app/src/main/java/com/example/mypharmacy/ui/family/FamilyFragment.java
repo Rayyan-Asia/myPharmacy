@@ -16,8 +16,14 @@ import com.example.mypharmacy.Configuration;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.api.ApiService;
 import com.example.mypharmacy.api.JacksonConverterFactory;
+import com.example.mypharmacy.api.RetroClient;
+import com.example.mypharmacy.api.dto.AppointmentDto;
+import com.example.mypharmacy.api.dto.DoctorDto;
 import com.example.mypharmacy.api.dto.PersonDto;
 import com.example.mypharmacy.api.dto.UserDto;
+import com.example.mypharmacy.data.local.entities.Appointment;
+import com.example.mypharmacy.data.local.entities.Doctor;
+import com.example.mypharmacy.data.local.entities.Person;
 import com.example.mypharmacy.data.local.entities.User;
 import com.example.mypharmacy.data.local.repositories.AppointmentRepository;
 import com.example.mypharmacy.data.local.repositories.DoctorRepository;
@@ -31,8 +37,11 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.signin.SignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthCredential;
 import okhttp3.ResponseBody;
 import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
@@ -42,8 +51,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -68,61 +77,99 @@ public class FamilyFragment extends Fragment {
     );
 
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
-        IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
-            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            Call<UserDto> call = apiService.getUser(firebaseUser.getEmail());
-            Response<UserDto> userDto = null;
-            try {
-                 userDto = call.execute();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-                if(userDto == null) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                        User user = new User();
-                        user.setEmail(firebaseUser.getEmail());
-                        user.setPersonId(personRepository.getPerson().getId());
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    UserDto userDtoEmail = new UserDto();
+                    userDtoEmail.setEmail(firebaseUser.getEmail());
+                    Call<UserDto> call = apiService.getUser(userDtoEmail);
+                    Response<UserDto> userDtoResponse = null;
+                    try {
+                        userDtoResponse = call.execute();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    if (userDtoResponse.body() == null) {
+                        Person person = personRepository.getPerson();
                         UserDto userDto = new UserDto();
                         PersonDto personDto = new PersonDto();
-                        personDto.setId(user.personId);
-                        userDto.setId(user.getId());
-                        userDto.setEmail(user.getEmail());
-                        userDto.setPerson(personDto);
-                        Call<UserDto> call = apiService.insertUser(userDto);
-                        call.enqueue(new Callback<UserDto>() {
-                            @Override
-                            public void onResponse(Call<UserDto> call, Response<UserDto> response) {
-                                if (response.isSuccessful()) {
-                                    // Handle successful response
-                                    UserDto data = response.body();
-                                    Log.println(Log.INFO, "User Response", data.toString());
-
-                                } else {
-                                    Log.println(Log.ERROR, "User Response", "BIG DOO DOO");
+                        personDto.setGender(person.getGender());
+                        personDto.setAddress(person.getAddress());
+                        personDto.setHeight(person.getHeight());
+                        personDto.setWeight(person.getWeight());
+                        personDto.setBirthDate(person.getBirthDate());
+                        personDto.setBloodType(person.getBloodType());
+                        personDto.setMaritalStatus(person.getMaritalStatus());
+                        personDto.setFirstName(person.getFirstName());
+                        personDto.setLastName(person.getLastName());
+                        personDto.setPhoneNumber(person.getPhoneNumber());
+                        Call<PersonDto> callInsertPerson = apiService.insertPerson(personDto);
+                        try {
+                            Response<PersonDto> personResponse = callInsertPerson.execute();
+                            userDto.setId(UUID.randomUUID().toString());
+                            userDto.setEmail(firebaseUser.getEmail());
+                            userDto.setPerson(personResponse.body());
+                            User user = new User();
+                            user.setId(userDto.getId());
+                            user.setEmail(userDto.getEmail());
+                            userRepository.insertUser(user);
+                            Call<UserDto> callInsertUser = apiService.insertUser(userDto);
+                            if (personResponse.body() != null) {
+                                callInsertUser.execute();
+                                List<Doctor> doctors = doctorRepository.getAllDoctors();
+                                List<DoctorDto> doctorDtos = new ArrayList<>();
+                                for (Doctor doctor : doctors) {
+                                    DoctorDto doctorDto = new DoctorDto();
+                                    doctorDto.setEmail(doctor.getEmail());
+                                    doctorDto.setName(doctor.getName());
+                                    doctorDto.setPhone(doctor.getPhone());
+                                    doctorDto.setSpecialty(doctor.getSpecialty());
+                                    doctorDto.setClinicalAddress(doctor.getClinicalAddress());
+                                    doctorDtos.add(doctorDto);
                                 }
+                                Call<List<DoctorDto>> callInsertDoctors = apiService.insertDoctors(doctorDtos);
+                                Response<List<DoctorDto>> doctorsResponse = callInsertDoctors.execute();
+                                // Create a map to store the doctor IDs from the original list mapped to the doctorDto IDs
+                                Map<Integer, Integer> doctorDoctorDtoMap = doctors.stream()
+                                        .collect(Collectors.toMap(
+                                                Doctor::getId,
+                                                doctor -> doctorsResponse.body().stream()
+                                                        .filter(doctorDto -> doctorDto.getEmail().equals(doctor.getEmail()))
+                                                        .findFirst()
+                                                        .map(DoctorDto::getId)
+                                                        .orElse(null)));
+
+                                List<Appointment> appointmentList = appointmentRepository.getAllAppointments();
+                                List<AppointmentDto> appointmentDtos = new ArrayList<>();
+                                for (Appointment appointment : appointmentList) {
+                                    AppointmentDto appointmentDto = new AppointmentDto();
+                                    appointmentDto.setDateOfAppointment(appointment.getDateOfAppointment());
+                                    appointmentDto.setDiagnosis(appointment.getDiagnosis());
+                                    appointmentDto.setSymptoms(appointment.getSymptoms());
+                                    appointmentDto.setTitle(appointment.getTitle());
+                                    Doctor doctor = doctorRepository.getDoctor(appointment.getDoctorId());
+                                    int dtoId = doctorDoctorDtoMap.get(doctor.getId());
+                                    DoctorDto doctorDto = new DoctorDto();
+                                    doctorDto.setId(dtoId);
+                                    appointmentDto.setDoctor(doctorDto);
+                                    appointmentDto.setPerson(personResponse.body());
+                                    appointmentDtos.add(appointmentDto);
+                                }
+                                Call<List<AppointmentDto>> callInsertAppointments = apiService.insertAppointments(appointmentDtos);
+                                callInsertAppointments.execute();
                             }
-
-                            @Override
-                            public void onFailure(Call<UserDto> call, Throwable t) {
-
-                            }
-                        });
-                    }}).start();
-                } else {
-
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
-
-                // ...
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-            }
+            }).start();
+        }
     }
 
     public FamilyFragment() {
@@ -139,10 +186,7 @@ public class FamilyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable Bundle savedInstanceState) {
         login = view.findViewById(R.id.loginButton);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(configuration.getApiUrl())
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build();
+        Retrofit retrofit = RetroClient.getClient();
 
         apiService = retrofit.create(ApiService.class);
         userRepository = new UserRepositoryImpl(view.getContext());
@@ -151,10 +195,12 @@ public class FamilyFragment extends Fragment {
         appointmentRepository = new AppointmentRepositoryImpl(view.getContext());
         successIntent = new Intent(view.getContext(), FamilyList.class);
         login.setOnClickListener(e -> {
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                FirebaseAuth.getInstance().signOut();
+            }
             List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.GoogleBuilder().build());
 
-            // Create and launch sign-in intent
             Intent signInIntent = AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setAvailableProviders(providers)

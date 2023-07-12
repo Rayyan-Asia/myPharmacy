@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/doctor")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -21,5 +23,11 @@ public class DoctorController {
     @GetMapping("/{id}")
     ResponseEntity<DoctorDto> getDoctor(@PathVariable long id){
         return ResponseEntity.ok().body(doctorService.getDoctor(id));
+    }
+    @PostMapping("/all")
+    ResponseEntity<List<DoctorDto>> insertDoctors(@Valid @RequestBody List<DoctorInsertDto> doctors) {
+        System.out.println("IM HITTTT");
+        List<DoctorDto> insertedDoctors = doctorService.insertDoctors(doctors);
+        return ResponseEntity.ok().body(insertedDoctors);
     }
 }

@@ -18,8 +18,13 @@ public class UserController {
     ResponseEntity<UserDto> insertUser(@Valid @RequestBody UserDto user){
         return ResponseEntity.ok().body(userService.insertUser(user));
     }
-    @GetMapping("/{id}")
-    ResponseEntity<UserDto> getUser(@PathVariable String email){
-        return ResponseEntity.ok().body(userService.getUser(email));
+    @PostMapping("/email")
+    ResponseEntity<UserDto> getUser(@Valid @RequestBody UserDto user){
+        UserDto userDto = userService.getUser(user.getEmail());
+        if(userDto != null) {
+            return ResponseEntity.ok().body(userDto);
+        } else {
+            return  ResponseEntity.badRequest().body(null);
+        }
     }
 }
