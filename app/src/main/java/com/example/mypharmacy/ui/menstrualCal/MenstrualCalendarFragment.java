@@ -1,11 +1,15 @@
 package com.example.mypharmacy.ui.menstrualCal;
 
+import static com.kizitonwose.calendar.core.ExtensionsKt.firstDayOfWeekFromLocale;
+
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,34 +20,32 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Menstruation;
-import com.example.mypharmacy.data.local.enums.Color;
 import com.example.mypharmacy.data.local.repositories.MenstruationRepository;
 import com.example.mypharmacy.data.local.repositories.impl.MenstruationRepositoryImpl;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.kizitonwose.calendar.core.CalendarDay;
+import com.kizitonwose.calendar.core.DayPosition;
+import com.kizitonwose.calendar.view.MonthDayBinder;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
 
-public class MenstrualCalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
+public class MenstrualCalendarFragment extends Fragment {
 
-    private TextView monthYearText;
-    private RecyclerView calendarRecyclerView;
-    private Button EditButton;
-    private Button previousMenstruationsButton;
+    private FloatingActionButton editButton;
+    private FloatingActionButton addButton;
     private LocalDate currentDate = LocalDate.now();
-
-
     private MutableLiveData<Menstruation> menstruation = new MutableLiveData<>();
-
-    public LiveData<Menstruation> getData() {
-        return menstruation;
-    }
+    private MutableLiveData<Hashtable<LocalDate, Integer>> dates = new MutableLiveData<>();
+    private com.kizitonwose.calendar.view.CalendarView menstrualCalendar;
 
     public MenstrualCalendarFragment() {
         // Required empty public constructor
@@ -52,45 +54,66 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_menstrual_calendar, container, false);
-
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initWidgets(view);
+        setListeners();
         getMenstruation();
+        getDates();
         this.getData().observe(getViewLifecycleOwner(), new Observer<Menstruation>() {
             @Override
             public void onChanged(Menstruation menstruation) {
-                if (menstruation == null ){
-                    switchToSurvey();
-                } else if (((!isSameMonth(currentDate, menstruation.endDate)
-                        && !isSameMonth(currentDate, menstruation.startDate))) && menstruation.endDate.until(currentDate).getDays()> 35) {
+                if (menstruation == null) {
+                    switchToSurvey(false);
+                } else if (!isSameMonth(currentDate, menstruation.endDate) &&
+                        !isSameMonth(currentDate, menstruation.startDate) &&
+                        menstruation.endDate.until(currentDate).getDays() > 35) {
                     Toast.makeText(getContext(), "No Entry in Previous Month", Toast.LENGTH_LONG).show();
-                    switchToSurvey();
-                } else {
-                    initWidgets(view);
-                    setListeners();
-                    SetMonthView();
+                    switchToSurvey(false);
                 }
             }
         });
 
+        this.getCalendarDates().observe(getViewLifecycleOwner(), new Observer<Hashtable<LocalDate, Integer>>() {
+            @Override
+            public void onChanged(Hashtable<LocalDate, Integer> localDateColorHashtable) {
+                // Update the calendar dates when the LiveData changes
+                setupCalendar();
+
+            }
+        });
+
+
     }
 
-    private void switchToSurvey() {
-        Fragment fragment = new MenstrualCycleSurvey();
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+    private void initWidgets(View view) {
+        currentDate = LocalDate.now();
+        editButton = view.findViewById(R.id.EditMenstruationButton);
+        addButton = view.findViewById(R.id.AddMenstruationButton);
+        menstrualCalendar = view.findViewById(R.id.calendarView);
+    }
+
+    private void setListeners() {
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchToSurvey(true);
+            }
+        });
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchToSurvey(false);
+            }
+        });
     }
 
     private void getMenstruation() {
-        MenstruationRepository menstruationRepository = new MenstruationRepositoryImpl(this.getContext());
+        MenstruationRepository menstruationRepository = new MenstruationRepositoryImpl(requireContext());
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -98,152 +121,82 @@ public class MenstrualCalendarFragment extends Fragment implements CalendarAdapt
                 menstruation.postValue(menstruationTemp);
             }
         }).start();
-
-
     }
 
-
-    private void setListeners() {
-        previousMenstruationsButton.setOnClickListener(e -> {
-            Fragment fragment = new MenstruationsList();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        });
-        EditButton.setOnClickListener(e -> {
-            switchToSurvey();
-        });
-    }
-
-    private void SetMonthView() {
-        monthYearText.setText(MonthYearFromDate(currentDate));
-        ArrayList<CalendarDay> daysInMonth = DaysInMonthArray(currentDate);
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext().getApplicationContext(), 7);
-        calendarRecyclerView.setLayoutManager(layoutManager);
-        calendarRecyclerView.setAdapter(calendarAdapter);
-
-    }
-
-
-    private ArrayList<CalendarDay> DaysInMonthArray(LocalDate selectedDate) {
-        ArrayList<CalendarDay> daysInMonthArray = new ArrayList<>();
-        YearMonth yearMonth = YearMonth.from(selectedDate);
-        int daysInMonth = yearMonth.lengthOfMonth();
-        LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
-        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
-
-        for (int i = 1; i <= 42; i++) {
-            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
-                daysInMonthArray.add(new CalendarDay());
-            } else {
-                Color color = getColorFromDate(i - dayOfWeek, selectedDate);
-                daysInMonthArray.add(new CalendarDay(color, String.valueOf(i - dayOfWeek)));
+    private void getDates() {
+        MenstruationRepository menstruationRepository = new MenstruationRepositoryImpl(requireContext());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Hashtable<LocalDate, Integer> menstruationTemp = menstruationRepository.getCalendarDays();
+                dates.postValue(menstruationTemp);
             }
-
-        }
-        return daysInMonthArray;
+        }).start();
     }
 
-    private Color getColorFromDate(int i, LocalDate selectedDate) {
-        LocalDate endDate = menstruation.getValue().endDate;
-        LocalDate startDate = menstruation.getValue().startDate;
-        if (isSameMonth(endDate, selectedDate) && isSameMonth(startDate, selectedDate)) {
-            return getColorSameMonth(i);
-        } else if (isSameMonth(endDate, selectedDate) && !isSameMonth(startDate, selectedDate)) {
-            return getColorAfter(i, endDate.getDayOfMonth());
-        } else if (!isSameMonth(endDate, selectedDate) && isSameMonth(startDate, selectedDate)) {
-            return getColorBefore(startDate.getDayOfMonth(), i);
-        } else if (endDate.until(currentDate).getDays() < 40){
-            return getColorAfter(i,endDate.getDayOfMonth() - endDate.getMonth().maxLength());
-        }
-        else return Color.PLAIN;
+    private void setupCalendar() {
+        setupDayBinder();
+        YearMonth currentMonth = YearMonth.now();
+        YearMonth startMonth = currentMonth.minusMonths(3); // Adjust as needed
+        YearMonth endMonth = currentMonth.plusMonths(1); // Adjust as needed
+        DayOfWeek firstDayOfWeek = firstDayOfWeekFromLocale(); // Available from the library
 
+        menstrualCalendar.setup(startMonth, endMonth, firstDayOfWeek);
+        menstrualCalendar.scrollToMonth(currentMonth);
+        menstrualCalendar.setMonthHeaderBinder(new MonthHeaderBinderImpl());
     }
 
     private boolean isSameMonth(LocalDate date, LocalDate selectedDate) {
-        return (date.getMonth().equals(selectedDate.getMonth()) && date.getYear() == (selectedDate.getYear()));
+        return date.getMonth() == selectedDate.getMonth() && date.getYear() == selectedDate.getYear();
     }
 
-    @NonNull
-    private Color getColorSameMonth(int i) {
-        Color color;
-        int endDay = menstruation.getValue().endDate.getDayOfMonth();
-        int startDay = menstruation.getValue().startDate.getDayOfMonth();
-        if (i >= startDay && i <= endDay) {
-            color = Color.MENSTRUAL;
-        } else {
-            if (i < startDay) {
-                color = getColorBefore(startDay, i);
-            } else {
-                color = getColorAfter(i, endDay);
+
+    private void setupDayBinder() {
+        menstrualCalendar.setDayBinder(new MonthDayBinder<DayViewContainer>() {
+            @Override
+            public DayViewContainer create(View view) {
+                return new DayViewContainer(view);
             }
-        }
 
-        return color;
+            @Override
+            public void bind(DayViewContainer container, CalendarDay data) {
+                String day = String.valueOf(data.getDate().getDayOfMonth());
+
+                Integer color = dates.getValue().get(data.getDate());
+                container.textView.setText(day);
+
+                Drawable background = container.textView.getBackground();
+                GradientDrawable gradientDrawable = (GradientDrawable) background;
+                if (color != null) {
+                    int resourceColor = getContext().getColor(color);
+                    gradientDrawable.setColor(resourceColor);
+                    container.textView.setTextColor(Color.BLACK);
+                } else {
+                    gradientDrawable.setColor(Color.WHITE);
+                    container.textView.setTextColor(Color.BLACK);
+                }
+
+
+            }
+        });
     }
 
-    @NonNull
-    private Color getColorBefore(int startDay, int i) {
-        Color color;
-        int stage;
-        stage = startDay - i;
-        if (stage < 0) {
-            color = Color.MENSTRUAL;
-        } else if (stage <= 9) {
-            color = Color.LUTEAL;
-        } else if (stage <= 14) {
-            color = Color.OVULATION;
-        } else if (stage <= 23)
-            color = Color.FOLLICULAR;
-        else color = Color.PLAIN;
-        return color;
-    }
-
-    @NonNull
-    private Color getColorAfter(int i, int endDay) {
-        Color color;
-        int stage;
-        stage = i - endDay;
-        if (i <= endDay)
-            return Color.MENSTRUAL;
-        if (stage <= 9) {
-            color = Color.FOLLICULAR;
-        } else if (stage <= 14) {
-            color = Color.OVULATION;
-        } else if (stage <= 23)
-            color = Color.LUTEAL;
-        else if (stage <= 28) {
-            color = Color.EXPECTED;
-        } else
-            color = Color.PLAIN;
-
-
-        return color;
-    }
-
-    private String MonthYearFromDate(LocalDate date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
-        return date.format(formatter);
+    private void switchToSurvey(boolean isEdit) {
+        MenstrualCycleSurvey fragment = new MenstrualCycleSurvey();
+        fragment.isEdit = isEdit;
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
 
-    private void initWidgets(View view) {
-        calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView);
-        monthYearText = view.findViewById(R.id.monthYearTextview);
-        currentDate = LocalDate.now();
-        previousMenstruationsButton = view.findViewById(R.id.PreviousMenstruationsButton);
-        EditButton = view.findViewById(R.id.EditMenstruationButton);
-
+    public LiveData<Menstruation> getData() {
+        return menstruation;
     }
 
-    @Override
-    public void OnItemClick(int position, String dayText) {
-        if (!dayText.equals("")) {
-            String message = "Selected Date " + dayText + " " + MonthYearFromDate(currentDate);
-            Toast.makeText(this.getContext(), message, Toast.LENGTH_LONG).show();
-        }
+    public LiveData<Hashtable<LocalDate, Integer>> getCalendarDates() {
+        return dates;
     }
 }
