@@ -63,29 +63,31 @@ public class MenstrualCalendarFragment extends Fragment {
         initWidgets(view);
         setListeners();
         getMenstruation();
-        getDates();
-        this.getData().observe(getViewLifecycleOwner(), new Observer<Menstruation>() {
-            @Override
-            public void onChanged(Menstruation menstruation) {
-                if (menstruation == null) {
-                    switchToSurvey(false);
-                } else if (!isSameMonth(currentDate, menstruation.endDate) &&
-                        !isSameMonth(currentDate, menstruation.startDate) &&
-                        menstruation.endDate.until(currentDate).getDays() > 35) {
-                    Toast.makeText(getContext(), "No Entry in Previous Month", Toast.LENGTH_LONG).show();
-                    switchToSurvey(false);
+            this.getData().observe(getViewLifecycleOwner(), new Observer<Menstruation>() {
+                @Override
+                public void onChanged(Menstruation menstruation) {
+                    if (menstruation.getEndDate() == null || menstruation.getStartDate() == null) {
+                        switchToSurvey(false);
+                    } else if (!isSameMonth(currentDate, menstruation.endDate) &&
+                            !isSameMonth(currentDate, menstruation.startDate) &&
+                            menstruation.endDate.until(currentDate).getDays() > 35) {
+                        Toast.makeText(getContext(), "No Entry in Previous Month", Toast.LENGTH_LONG).show();
+                        switchToSurvey(false);
+                    } else {
+                        getDates();
+                    }
                 }
-            }
-        });
+            });
 
-        this.getCalendarDates().observe(getViewLifecycleOwner(), new Observer<Hashtable<LocalDate, Integer>>() {
-            @Override
-            public void onChanged(Hashtable<LocalDate, Integer> localDateColorHashtable) {
-                // Update the calendar dates when the LiveData changes
-                setupCalendar();
+            this.getCalendarDates().observe(getViewLifecycleOwner(), new Observer<Hashtable<LocalDate, Integer>>() {
+                @Override
+                public void onChanged(Hashtable<LocalDate, Integer> localDateColorHashtable) {
+                    // Update the calendar dates when the LiveData changes
+                    setupCalendar();
 
-            }
-        });
+                }
+            });
+
 
 
     }
@@ -118,7 +120,11 @@ public class MenstrualCalendarFragment extends Fragment {
             @Override
             public void run() {
                 Menstruation menstruationTemp = menstruationRepository.getMenstruation();
-                menstruation.postValue(menstruationTemp);
+                if(menstruationTemp == null) {
+                    menstruation.postValue(new Menstruation());
+                } else {
+                    menstruation.postValue(menstruationTemp);
+                }
             }
         }).start();
     }
