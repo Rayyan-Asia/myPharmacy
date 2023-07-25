@@ -3,4 +3,6 @@
     <string name="appoinment_form_title">Please enter the appointment information</string>
     <string name="doctor_form_title">Please update us about this doctor.</string>
     <string name="drug_form_title">Please give us the medication information.</string>
+    <string name="create_reminder_title">Please enter reminder information</string>
+    <string name="hint_reminder_time">Select time for reminder</string>
 </resources>
