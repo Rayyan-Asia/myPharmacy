@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "6f49bef4651b52b5ad40d176773f06f8",
+    "identityHash": "00f9c92c408db681970b4f046fe90723",
     "entities": [
       {
         "tableName": "person",
@@ -677,12 +677,86 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "drug_alias",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `drug_id_1` INTEGER NOT NULL, `drug_id_2` INTEGER NOT NULL, FOREIGN KEY(`drug_id_1`) REFERENCES `drug`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`drug_id_2`) REFERENCES `drug`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "drugId1",
+            "columnName": "drug_id_1",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "drugId2",
+            "columnName": "drug_id_2",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_drug_alias_drug_id_1",
+            "unique": false,
+            "columnNames": [
+              "drug_id_1"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_drug_alias_drug_id_1` ON `${TABLE_NAME}` (`drug_id_1`)"
+          },
+          {
+            "name": "index_drug_alias_drug_id_2",
+            "unique": false,
+            "columnNames": [
+              "drug_id_2"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_drug_alias_drug_id_2` ON `${TABLE_NAME}` (`drug_id_2`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "drug",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "drug_id_1"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "drug",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "drug_id_2"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6f49bef4651b52b5ad40d176773f06f8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '00f9c92c408db681970b4f046fe90723')"
     ]
   }
 }
