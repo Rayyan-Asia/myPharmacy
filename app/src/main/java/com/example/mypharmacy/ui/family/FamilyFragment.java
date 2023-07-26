@@ -79,8 +79,9 @@ public class FamilyFragment extends Fragment {
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
-
-            new Thread(new Runnable() {
+            Intent intent = new Intent(this.getContext(), FamilyJoinCreate.class);
+            startActivity(intent);
+            /*new Thread(new Runnable() {
                 @Override
                 public void run() {
                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -168,7 +169,7 @@ public class FamilyFragment extends Fragment {
                         }
                     }
                 }
-            }).start();
+            }).start();*/
         }
     }
 
