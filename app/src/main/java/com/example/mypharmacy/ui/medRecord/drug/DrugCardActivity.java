@@ -1,5 +1,6 @@
 package com.example.mypharmacy.ui.medRecord.drug;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.activity.result.ActivityResult;
@@ -27,6 +28,8 @@ public class DrugCardActivity extends AppCompatActivity {
     RecyclerView drugRecycleView;
     private DrugRepository drugRepository;
     private FloatingActionButton addDrugButton;
+
+    private Context context;
     private ActivityResultLauncher<Intent> createDrugLauncher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class DrugCardActivity extends AppCompatActivity {
 
         drugRepository = new DrugRepositoryImpl(this);
         drugRecycleView = findViewById(R.id.drugs_list);
-
+        context = this.getApplicationContext();
         createDrugLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -64,7 +67,7 @@ public class DrugCardActivity extends AppCompatActivity {
             @Override
             public void run() {
                 List<Drug> drugs = drugRepository.getAllDrugs();
-                drugAdapter = new DrugAdapter(drugs);
+                drugAdapter = new DrugAdapter(drugs, DrugCardActivity.this);
                 drugRecycleView.setAdapter(drugAdapter);
             }
         }).start();
