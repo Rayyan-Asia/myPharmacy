@@ -1,10 +1,13 @@
 package com.example.mypharmacy.ui.menstrualCal;
 
 
+import android.app.Notification;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.mypharmacy.R;
 import com.kizitonwose.calendar.core.CalendarMonth;
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder;
 
@@ -33,6 +36,7 @@ public class MonthHeaderBinderImpl implements MonthHeaderFooterBinder<MonthViewC
                             TextView textView = (TextView) innerChild;
                             String title = daysOfWeek[index2];
                             textView.setText(title);
+                            textView.setTextColor(Color.WHITE);
                         }
 
                     }
@@ -40,6 +44,10 @@ public class MonthHeaderBinderImpl implements MonthHeaderFooterBinder<MonthViewC
                     TextView textView = (TextView) child;
                     String title = data.getYearMonth().getMonth().toString();
                     textView.setText(title);
+//                    int color = textView.getContext().getResources().getColor(R.color.myPharmacy_main_color);
+//                    textView.setTextColor(color);
+                    textView.setTextColor(Color.WHITE);
+
                 }
             }
         }

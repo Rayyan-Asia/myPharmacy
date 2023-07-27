@@ -82,8 +82,10 @@ public class MenstrualCycleSurvey extends Fragment {
                             START_DAY = LocalDate.of(year, monthOfYear + 1, dayOfMonth);
                         }
                     }, mYear, mMonth, mDay);
+
             datePickerDialog.show();
         });
+
 
         endDate.setOnClickListener(e -> {
             final Calendar c = Calendar.getInstance();

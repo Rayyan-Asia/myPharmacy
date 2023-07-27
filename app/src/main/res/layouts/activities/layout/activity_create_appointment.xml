@@ -89,8 +89,7 @@
                 android:id="@+id/edit_text_date_of_appointment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="date"
-                android:imeOptions="actionDone"
+                android:focusable="false"
                 android:hint="Select date of appointment" />
 
         <Button

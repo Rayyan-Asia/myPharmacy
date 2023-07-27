@@ -11,7 +11,6 @@ import com.example.mypharmacy.ui.home.HomeFragment;
 import com.example.mypharmacy.ui.medRecord.MedicalRecordFragment;
 import com.example.mypharmacy.ui.medReminder.MedicationReminderFragment;
 import com.example.mypharmacy.ui.menstrualCal.MenstrualCalendarFragment;
-import com.example.mypharmacy.ui.menstrualCal.MenstrualCycleSurvey;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MenuActivity extends AppCompatActivity {
@@ -69,6 +68,7 @@ public class MenuActivity extends AppCompatActivity {
 
         // Set the Home tab as the default tab
         bottomNavigationView.setSelectedItemId(R.id.home_tab);
+
     }
 
     @Override
