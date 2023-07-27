@@ -3,4 +3,11 @@
     <string name="appoinment_form_title">Please enter the appointment information</string>
     <string name="doctor_form_title">Please update us about this doctor.</string>
     <string name="drug_form_title">Please give us the medication information.</string>
+    <string name="gender_label">Gender: </string>
+    <string name="birthdate_label">Birthdate: </string>
+    <string name="address_label">Address: </string>
+    <string name="blood_type_label">Blood Type: </string>
+    <string name="information_Label">Information: </string>
+    <string name="phone_label">Phone:</string>
+    <string name="marital_status_label">Marital Status:</string>
 </resources>
