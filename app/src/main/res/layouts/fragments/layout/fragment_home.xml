@@ -52,7 +52,7 @@
                         android:id="@+id/info_label_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20sp"
+                        android:textSize="28sp"
                         android:textStyle="bold"
                         android:textColor="@color/dark_gray"
                         android:layout_below="@id/divider"
@@ -77,20 +77,13 @@
                             android:layout_marginEnd="16dp"
                             android:src="@drawable/gender_male_female"/>
 
-                    <TextView
-                            android:id="@+id/gender_textview_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="15sp"
-                            android:textColor="@color/dark_gray"
-                            android:text="@string/gender_label"/>
 
                     <TextView
                             android:id="@+id/gender_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"
-                            android:textColor="@color/dark_gray"
+                            android:textSize="23sp"
+                            android:textStyle="bold"
                             android:text="@string/home_gender_view"/>
 
                 </LinearLayout>
@@ -107,18 +100,10 @@
                             android:src="@drawable/cake"/>
 
                     <TextView
-                            android:id="@+id/birthdate_textview_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:text="@string/birthdate_label"/>
-
-                    <TextView
                             android:id="@+id/birthdate_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="23sp"
                             android:textStyle="bold"
                             android:text="@string/home_birth_date"/>
 
@@ -137,18 +122,10 @@
                             android:src="@drawable/map_marker"/>
 
                     <TextView
-                            android:id="@+id/address_textview_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:text="@string/address_label"/>
-
-                    <TextView
                             android:id="@+id/address_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="23sp"
                             android:textStyle="bold"
                             android:text="@string/home_address_view"/>
 
@@ -167,17 +144,10 @@
                             android:src="@drawable/phone"/>
 
                     <TextView
-                            android:id="@+id/phone_number_textview_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:text="@string/phone_label"/>
-                    <TextView
                             android:id="@+id/phone_number_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="23sp"
                             android:textStyle="bold"
                             android:text="@string/home_phone_view"/>
 
@@ -195,19 +165,12 @@
                             android:layout_marginEnd="16dp"
                             android:src="@drawable/ring"/>
 
-                    <TextView
-                            android:id="@+id/marital_status_textview_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:text="@string/marital_status_label"/>
 
                     <TextView
                             android:id="@+id/marital_status_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="23sp"
                             android:textStyle="bold"
                             android:text="@string/home_marital_view"/>
 
@@ -225,19 +188,12 @@
                             android:layout_marginEnd="16dp"
                             android:src="@drawable/blood_bag"/>
 
-                    <TextView
-                            android:id="@+id/blood_type_textview_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:text="@string/blood_type_label"/>
 
                     <TextView
                             android:id="@+id/blood_type_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="23sp"
                             android:textStyle="bold"
                             android:text="@string/home_blood_view"/>
 
