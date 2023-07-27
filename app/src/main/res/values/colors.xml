@@ -17,6 +17,6 @@
     <color name="ambulance_blue">#0000FF</color>
     <color name="gray">#888</color>
     <color name="blue">#0000ff</color>
-
-
+    <color name="light_pink">#D19D9D</color>
+    <color name="myPharmacy_main_color">#30a561</color>
 </resources>

@@ -137,8 +137,8 @@ public class MenstrualCycleSurvey extends Fragment {
                                 }
                             }).start();
                         } else {
-                            endDate.setError("You can't travel into the future");
-                            Toast.makeText(getContext(), "You can't predict the future", Toast.LENGTH_SHORT).show();
+                            endDate.setError("You can't set end date later than today");
+                            Toast.makeText(getContext(), "You can't set end date later than today", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         endDate.setError("You may need to see a doctor with a period this long!");
