@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="appoinment_form_title">Please enter the appointment information</string>
+    <string name="appointment_form_title">Please enter the appointment information</string>
     <string name="doctor_form_title">Please update us about this doctor.</string>
     <string name="drug_form_title">Please give us the medication information.</string>
     <string name="gender_label">Gender: </string>
@@ -16,4 +16,14 @@
     <string name="medical_records_drug">Drugs</string>
     <string name="medical_records_appointment">Appointments</string>
     <string name="medical_records_lab_tests">Lab Tests</string>
+    <string name="appointment_title_hint">Enter appointment title</string>
+    <string name="appointment_doctor">Doctor</string>
+    <string name="appointment_symptoms">Symptoms</string>
+    <string name="appointment_symptoms_hint">Enter symptoms</string>
+    <string name="appointment_diagnosis">Diagnosis</string>
+    <string name="appointment_diagnosis_hint">Enter diagnosis</string>
+    <string name="appointment_date_of_appointment">Date of Appointment</string>
+    <string name="appointment_date_of_appointment_hint">Select date of appointment</string>
+    <string name="appointment_create">Create</string>
+    <string name="appointment_title">Title</string>
 </resources>

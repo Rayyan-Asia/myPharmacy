@@ -13,6 +13,7 @@ import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Person;
 import com.example.mypharmacy.data.local.repositories.PersonRepository;
 import com.example.mypharmacy.data.local.repositories.impl.PersonRepositoryImpl;
+import com.example.mypharmacy.ui.menu.MenuActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -28,6 +29,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 final Person person = personRepository.getPerson();
+                // if the person is male hide menstrual calendar
+                if (person.getGender().equals("Male"))
+                    MenuActivity.bottomNavigationView.getMenu().findItem(R.id.menstrual_calendar_tab).setVisible(false);
+
+                else
+                    MenuActivity.bottomNavigationView.getMenu().findItem(R.id.menstrual_calendar_tab).setVisible(true);
+
                 // Pass the person object back to the main thread using a Handler
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
@@ -47,10 +55,10 @@ public class HomeFragment extends Fragment {
         TextView genderView = getView().findViewById(R.id.gender_textview);
         TextView birthView = getView().findViewById(R.id.birthdate_textview);
         TextView addressView = getView().findViewById(R.id.address_textview);
-        TextView phoneView =  getView().findViewById(R.id.phone_number_textview);
+        TextView phoneView = getView().findViewById(R.id.phone_number_textview);
         TextView maritalStatus = getView().findViewById(R.id.marital_status_textview);
         TextView bloodType = getView().findViewById(R.id.blood_type_textview);
-        nameView.setText(person.getFirstName()+" "+person.getLastName());
+        nameView.setText(person.getFirstName() + " " + person.getLastName());
         genderView.setText(person.getGender());
         birthView.setText(person.getBirthDate().toString());
         addressView.setText(person.getAddress());
