@@ -13,6 +13,7 @@ import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Person;
 import com.example.mypharmacy.data.local.repositories.PersonRepository;
 import com.example.mypharmacy.data.local.repositories.impl.PersonRepositoryImpl;
+import com.example.mypharmacy.ui.menu.MenuActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -28,6 +29,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 final Person person = personRepository.getPerson();
+                // if the person is male hide menstrual calendar
+                if (person.getGender().equals("Male"))
+                    MenuActivity.bottomNavigationView.getMenu().findItem(R.id.menstrual_calendar_tab).setVisible(false);
+
+                else
+                    MenuActivity.bottomNavigationView.getMenu().findItem(R.id.menstrual_calendar_tab).setVisible(true);
+
                 // Pass the person object back to the main thread using a Handler
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
