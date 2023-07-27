@@ -1,25 +1,28 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="?attr/actionBarSize"
-            android:background="@drawable/med_background"
-            android:paddingBottom="@dimen/navigation_bar_height">
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="?attr/actionBarSize"
+        android:background="@drawable/med_background"
+        android:paddingBottom="@dimen/navigation_bar_height">
 
-    <LinearLayout
+    <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:rowCount="2"
+            android:columnCount="2"
+            android:orientation="horizontal"
+            android:layout_margin="16dp"
+            android:alignmentMode="alignMargins">
 
         <!-- CardView for "Doctor" -->
         <androidx.cardview.widget.CardView
                 android:id="@+id/doctor_card"
-                android:layout_width="match_parent"
+                android:layout_width="170dp"
                 android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:layout_margin="16dp"
-                android:background="@drawable/doctor_background">
+                android:layout_rowWeight="0"
+                android:layout_columnWeight="0"
+                android:layout_margin="8dp">
 
             <FrameLayout
                     android:layout_width="match_parent"
@@ -29,6 +32,7 @@
                         android:id="@+id/doctors_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginBottom="40dp"
                         android:src="@drawable/doctor"/>
 
                 <TextView
@@ -36,27 +40,21 @@
                         android:layout_height="wrap_content"
                         android:padding="16dp"
                         android:text="@string/medical_records_doctor"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="24sp"
-                        android:background="#80000000"
+                        android:gravity="center"
                         android:layout_gravity="bottom"/>
-
             </FrameLayout>
         </androidx.cardview.widget.CardView>
-
-        <!-- Add some spacing between the cards -->
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="16dp"/>
 
         <!-- CardView for "Drug" -->
         <androidx.cardview.widget.CardView
                 android:id="@+id/drug_card"
-                android:layout_width="match_parent"
+                android:layout_width="170dp"
                 android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:layout_margin="16dp"
-                android:background="@drawable/drug_background">
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="0"
+                android:layout_margin="8dp">
 
             <FrameLayout
                     android:layout_width="match_parent"
@@ -66,6 +64,7 @@
                         android:id="@+id/drug_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginBottom="40dp"
                         android:src="@drawable/medications"/>
 
                 <TextView
@@ -73,27 +72,23 @@
                         android:layout_height="wrap_content"
                         android:padding="16dp"
                         android:text="@string/medical_records_drug"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="24sp"
-                        android:background="#80000000"
+                        android:gravity="center"
                         android:layout_gravity="bottom"/>
 
             </FrameLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Add some spacing between the cards -->
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="16dp"/>
-
         <!-- CardView for "Appointment" -->
         <androidx.cardview.widget.CardView
                 android:id="@+id/appointment_card"
-                android:layout_width="match_parent"
+                android:layout_width="170dp"
                 android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:layout_margin="16dp"
-                android:background="@drawable/appointment_background">
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:layout_gravity="center">
 
             <FrameLayout
                     android:layout_width="match_parent"
@@ -103,6 +98,7 @@
                         android:id="@+id/appointments_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_margin="20dp"
                         android:src="@drawable/appointment"/>
 
                 <TextView
@@ -110,27 +106,23 @@
                         android:layout_height="wrap_content"
                         android:padding="16dp"
                         android:text="@string/medical_records_appointment"
-                        android:textColor="@android:color/white"
-                        android:textSize="24sp"
-                        android:background="#80000000"
+                        android:textColor="@android:color/black"
+                        android:textSize="21sp"
+                        android:gravity="center"
                         android:layout_gravity="bottom"/>
 
             </FrameLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Add some spacing between the cards -->
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="16dp"/>
-
         <!-- CardView for "Lab Tests" -->
         <androidx.cardview.widget.CardView
                 android:id="@+id/lab_tests_card"
-                android:layout_width="match_parent"
+                android:layout_width="170dp"
                 android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:layout_margin="16dp"
-                android:background="@drawable/lab_tests_background">
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:layout_gravity="center">
 
             <FrameLayout
                     android:layout_width="match_parent"
@@ -140,6 +132,7 @@
                         android:id="@+id/lab_tests_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_margin="30dp"
                         android:src="@drawable/lab_tests"/>
 
                 <TextView
@@ -147,14 +140,13 @@
                         android:layout_height="wrap_content"
                         android:padding="16dp"
                         android:text="@string/medical_records_lab_tests"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="24sp"
-                        android:background="#80000000"
+                        android:gravity="center"
                         android:layout_gravity="bottom"/>
 
             </FrameLayout>
         </androidx.cardview.widget.CardView>
 
-
-    </LinearLayout>
+    </GridLayout>
 </ScrollView>
