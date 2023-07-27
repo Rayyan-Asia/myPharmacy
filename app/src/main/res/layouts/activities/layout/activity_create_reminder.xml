@@ -2,107 +2,162 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         xmlns:tools="http://schemas.android.com/tools"
         tools:context=".ui.medReminder.CreateReminderActivity"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/med_background"
+        android:padding="20dp">
 
-    <!-- Drug from spinner -->
-    <TextView
-            android:text="Drug"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    <LinearLayout
+            android:layout_marginTop="100dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
 
-    <Spinner
-            android:id="@+id/spinner_drug"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"/>
-
-    <TextView
-            android:text="Dosage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    <EditText
-            android:id="@+id/edit_text_dosage"
-            android:layout_width="match_parent"
-            android:hint="optional"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"/>
-
-    <!--Get frequency using radio button (determines list size)-->
-    <TextView
-            android:text="Frequency per day"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    <!-- Radio buttons for frequency once,twice,thrice /day -->
-    <RadioGroup
-            android:id="@+id/radio_group_frequency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:outlineProvider="background"
+            android:background="@drawable/rounded_rectangle"
+            android:outlineAmbientShadowColor="@color/gray">
 
-        <RadioButton
-                android:id="@+id/radio_button_once"
-                android:text="once"
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/title"
+                android:text="@string/create_reminder_title"/>
+
+        <!-- Drug from spinner -->
+        <TextView
+                android:text="Select Drug"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
 
-        <RadioButton
-                android:id="@+id/radio_button_twice"
-                android:text="Twice"
+        <Spinner
+                android:id="@+id/spinner_drug"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black"
+                android:minHeight="48dp"/>
+        <!-- Dosage -->
+        <TextView
+                android:text="Dosage (optional)"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
 
-        <RadioButton
-                android:id="@+id/radio_button_thrice"
-                android:text="Three times"
+        <EditText
+                android:id="@+id/edit_text_dosage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter dosage"
+                android:minHeight="48dp"
+                android:inputType="number"/>
+
+        <!-- Frequency per day -->
+        <TextView
+                android:text="Frequency per day"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
+        <!-- Radio buttons for frequency -->
+        <RadioGroup
+                android:id="@+id/radio_group_frequency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
 
-    </RadioGroup>
+            <RadioButton
+                    android:id="@+id/radio_button_once"
+                    android:text="Once"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
 
-    <!--Get time of reminder -->
-    <TextView
-            android:text="Time of Reminder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            <RadioButton
+                    android:id="@+id/radio_button_twice"
+                    android:text="Twice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
 
-    <!-- time 1 -->
-    <EditText
-            android:id="@+id/edit_text_time1"
-            android:inputType="time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:hint="select a time for reminder"
-            android:minHeight="48dp"/>
+            <RadioButton
+                    android:id="@+id/radio_button_thrice"
+                    android:text="Three times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
+        </RadioGroup>
+        <!-- Time of Reminder -->
+        <TextView
+                android:text="Time of Reminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
 
-    <!-- time 2 -->
-    <EditText
-            android:id="@+id/edit_text_time2"
-            android:inputType="time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:focusable="false"
-            android:hint="select a time for reminder"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
 
-    <!-- time 3 -->
-    <EditText
-            android:id="@+id/edit_text_time3"
-            android:inputType="time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:focusable="false"
-            android:hint="select a time for reminder"/>
+            <EditText
+                    android:id="@+id/edit_text_time1"
+                    android:inputType="time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:focusable="false"
+                    android:hint="@string/hint_reminder_time"
+                    android:backgroundTint="@color/black"
+                    android:textColor="@color/black"/>
 
-    <Button
-            android:id="@+id/button_create"
-            android:text="Create Drug"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <EditText
+                    android:id="@+id/edit_text_time2"
+                    android:inputType="time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:focusable="false"
+                    android:visibility="gone"
+                    android:hint="@string/hint_reminder_time"
+                    android:backgroundTint="@color/black"
+                    android:textColor="@color/black"/>
+
+            <EditText
+                    android:id="@+id/edit_text_time3"
+                    android:inputType="time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:focusable="false"
+                    android:visibility="gone"
+                    android:hint="@string/hint_reminder_time"
+                    android:backgroundTint="@color/black"
+                    android:textColor="@color/black"/>
+        </LinearLayout>
+
+        <!-- Create Drug Button -->
+        <Button
+                android:id="@+id/button_create"
+                android:text="Create Drug"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                />
+
+
+    </LinearLayout>
 
 </LinearLayout>

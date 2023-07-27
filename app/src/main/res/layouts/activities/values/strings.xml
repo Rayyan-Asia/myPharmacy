@@ -10,4 +10,6 @@
     <string name="information_Label">Information: </string>
     <string name="phone_label">Phone:</string>
     <string name="marital_status_label">Marital Status:</string>
+    <string name="create_reminder_title">Please enter reminder information</string>
+    <string name="hint_reminder_time">Select time for reminder</string>
 </resources>
