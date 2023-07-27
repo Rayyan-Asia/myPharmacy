@@ -3,13 +3,13 @@
     <style name="MyPharmacyTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:forceDarkAllowed" tools:targetApi="29">false</item>
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/ambulance_white</item>
-        <item name="colorPrimaryVariant">@color/ambulance_red</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryVariant">@color/myPharmacy_main_color</item>
         <item name="colorOnPrimary">@color/ambulance_blue</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/ambulance_red</item>
-        <item name="colorSecondaryVariant">@color/ambulance_red</item>
-        <item name="colorOnSecondary">@color/ambulance_white</item>
+        <item name="colorSecondary">@color/myPharmacy_main_color</item>
+        <item name="colorSecondaryVariant">@color/myPharmacy_main_color</item>
+        <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

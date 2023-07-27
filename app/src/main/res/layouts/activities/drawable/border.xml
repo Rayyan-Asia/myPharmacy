@@ -3,5 +3,5 @@
     <solid android:color="@android:color/transparent" /> <!-- Set the background color (transparent in this case) -->
     <stroke
         android:width="3dp"
-    android:color="@android:color/black" /> <!-- Set the color of the border (black in this case) -->
+    android:color="@android:color/white" /> <!-- Set the color of the border (black in this case) -->
 </shape>
