@@ -12,8 +12,8 @@
     <string name="marital_status_label">Marital Status:</string>
     <string name="create_reminder_title">Please enter reminder information</string>
     <string name="hint_reminder_time">Select time for reminder</string>
-    <string name="medical_records_doctor">Doctor</string>
-    <string name="medical_records_drug">Drug</string>
-    <string name="medical_records_appointment">Appointment</string>
+    <string name="medical_records_doctor">Doctors</string>
+    <string name="medical_records_drug">Drugs</string>
+    <string name="medical_records_appointment">Appointments</string>
     <string name="medical_records_lab_tests">Lab Tests</string>
 </resources>
