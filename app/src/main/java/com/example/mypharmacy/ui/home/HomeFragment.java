@@ -47,10 +47,10 @@ public class HomeFragment extends Fragment {
         TextView genderView = getView().findViewById(R.id.gender_textview);
         TextView birthView = getView().findViewById(R.id.birthdate_textview);
         TextView addressView = getView().findViewById(R.id.address_textview);
-        TextView phoneView =  getView().findViewById(R.id.phone_number_textview);
+        TextView phoneView = getView().findViewById(R.id.phone_number_textview);
         TextView maritalStatus = getView().findViewById(R.id.marital_status_textview);
         TextView bloodType = getView().findViewById(R.id.blood_type_textview);
-        nameView.setText(person.getFirstName()+" "+person.getLastName());
+        nameView.setText(person.getFirstName() + " " + person.getLastName());
         genderView.setText(person.getGender());
         birthView.setText(person.getBirthDate().toString());
         addressView.setText(person.getAddress());
