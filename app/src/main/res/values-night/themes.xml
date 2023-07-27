@@ -3,21 +3,23 @@
     <style name="MyPharmacyTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:forceDarkAllowed" tools:targetApi="29">false</item>
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/ambulance_white</item>
+        <item name="colorPrimary">@color/myPharmacy_main_color</item>
         <item name="colorPrimaryVariant">@color/myPharmacy_main_color</item>
-        <item name="colorOnPrimary">@color/ambulance_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/myPharmacy_main_color</item>
         <item name="colorSecondaryVariant">@color/myPharmacy_main_color</item>
-        <item name="colorOnSecondary">@color/ambulance_white</item>
+        <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
+
     <style name="RoundedCornerShapeAppearance">
         <item name="cornerSize">16dp</item>
         <item name="cornerFamily">rounded</item>
     </style>
+
     <style name="MyMenuItemStyle">
         <item name="android:layout_width">32dp</item>
         <item name="android:layout_height">32dp</item>
