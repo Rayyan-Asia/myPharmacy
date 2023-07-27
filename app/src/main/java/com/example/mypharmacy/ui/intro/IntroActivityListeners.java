@@ -37,7 +37,7 @@ public class IntroActivityListeners {
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                             // set day of month , month and year value in the edit text
                             birthDayField.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            BIRTH_DAY = LocalDate.of(year, monthOfYear, dayOfMonth);
+                            BIRTH_DAY = LocalDate.of(year, monthOfYear + 1, dayOfMonth);
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -83,17 +83,26 @@ public class IntroActivityListeners {
             }
 
             String phoneNumber = activity.phoneNumberField.getText().toString().trim();
-            if (!phoneNumber.isEmpty()) {
-                try {
-                    person.setPhoneNumber(Integer.parseInt(phoneNumber));
-                } catch (NumberFormatException e) {
-                    activity.phoneNumberField.setError("Invalid Phone Number");
+
+            // Validate phone number length and leading zero
+            if (phoneNumber.length() == 10 && phoneNumber.startsWith("0")) {
+                // Check if the phone number contains only digits
+                if (phoneNumber.matches("\\d+")) {
+                    try {
+                        person.setPhoneNumber(Integer.parseInt(phoneNumber));
+                    } catch (NumberFormatException e) {
+                        activity.phoneNumberField.setError("Invalid Phone Number");
+                        check = 1;
+                    }
+                } else {
+                    activity.phoneNumberField.setError("Invalid Phone Number (Digits only)");
                     check = 1;
                 }
             } else {
-                activity.phoneNumberField.setError("Invalid Phone Number");
+                activity.phoneNumberField.setError("Invalid Phone Number (Should start with 0 and have 10 digits)");
                 check = 1;
             }
+
 
             String weight = activity.weightField.getText().toString().trim();
             if (!weight.isEmpty()) {
