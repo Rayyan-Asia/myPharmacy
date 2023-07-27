@@ -1,160 +1,156 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="?attr/actionBarSize"
-    android:background="@drawable/med_background"
-    android:paddingBottom="@dimen/navigation_bar_height">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="?attr/actionBarSize"
+            android:background="@drawable/med_background"
+            android:paddingBottom="@dimen/navigation_bar_height">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
         <!-- CardView for "Doctor" -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/doctor_card"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:layout_margin="16dp"
-            android:background="@drawable/doctor_background">
+                android:id="@+id/doctor_card"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:background="@drawable/doctor_background">
 
             <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/doctors_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/doctor" />
+                        android:id="@+id/doctors_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/doctor"/>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="Doctor"
-                    android:textColor="@android:color/white"
-                    android:textSize="24sp"
-                    android:background="#80000000"
-                    android:layout_gravity="center" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="Doctor"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:background="#80000000"
+                        android:layout_gravity="bottom"/>
 
             </FrameLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Add some spacing between the cards -->
         <View
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
+                android:layout_width="match_parent"
+                android:layout_height="16dp"/>
 
         <!-- CardView for "Drug" -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/drug_card"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:layout_margin="16dp"
-            android:background="@drawable/drug_background">
+                android:id="@+id/drug_card"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:background="@drawable/drug_background">
 
             <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/drug_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/medications" />
+                        android:id="@+id/drug_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/medications"/>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="Drug"
-                    android:textColor="@android:color/white"
-                    android:textSize="24sp"
-                    android:background="#80000000"
-                    android:layout_gravity="center" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="Drug"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:background="#80000000"
+                        android:layout_gravity="bottom"/>
 
             </FrameLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Add some spacing between the cards -->
         <View
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
+                android:layout_width="match_parent"
+                android:layout_height="16dp"/>
 
         <!-- CardView for "Appointment" -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/appointment_card"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:layout_margin="16dp"
-            android:background="@drawable/appointment_background">
+                android:id="@+id/appointment_card"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:background="@drawable/appointment_background">
 
             <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/appointments_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/appointment" />
+                        android:id="@+id/appointments_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/appointment"/>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="Appointment"
-                    android:textColor="@android:color/white"
-                    android:textSize="24sp"
-                    android:background="#80000000"
-                    android:layout_gravity="center" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="Appointment"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:background="#80000000"
+                        android:layout_gravity="bottom"/>
 
             </FrameLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Add some spacing between the cards -->
         <View
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
+                android:layout_width="match_parent"
+                android:layout_height="16dp"/>
 
         <!-- CardView for "Lab Tests" -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/lab_tests_card"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:layout_margin="16dp"
-            android:background="@drawable/lab_tests_background">
+                android:id="@+id/lab_tests_card"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:background="@drawable/lab_tests_background">
 
             <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/lab_tests_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/lab_tests" />
+                        android:id="@+id/lab_tests_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/lab_tests"/>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="Lab Tests"
-                    android:textColor="@android:color/white"
-                    android:textSize="24sp"
-                    android:background="#80000000"
-                    android:layout_gravity="center" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="Lab Tests"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:background="#80000000"
+                        android:layout_gravity="bottom"/>
 
             </FrameLayout>
         </androidx.cardview.widget.CardView>
