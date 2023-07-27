@@ -6,27 +6,28 @@
 
 
     <LinearLayout
-        android:layout_marginTop="100dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-        android:outlineProvider="background"
-        android:background="@drawable/rounded_rectangle">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/title"
-            android:text="@string/appoinment_form_title"/>
+            android:outlineProvider="background"
+            android:background="@drawable/rounded_rectangle">
 
         <TextView
-            android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Title" />
+                style="@style/title"
+                android:text="@string/appointment_form_title"/>
+
+        <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/appointment_title"/>
 
         <EditText
                 android:id="@+id/edit_text_title"
@@ -35,25 +36,25 @@
                 android:inputType="text"
                 android:imeOptions="actionNext"
                 android:maxLines="1"
-                android:hint="Enter appointment title" />
+                android:hint="@string/appointment_title_hint"/>
 
         <TextView
-            android:layout_marginTop="20dp"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Doctor" />
+                android:text="@string/appointment_doctor"/>
 
         <Spinner
                 android:id="@+id/spinner_doctor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"/>
 
         <TextView
-            android:layout_marginTop="20dp"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Symptoms" />
+                android:text="@string/appointment_symptoms"/>
 
         <EditText
                 android:id="@+id/edit_text_symptoms"
@@ -62,13 +63,13 @@
                 android:inputType="text"
                 android:imeOptions="actionNext"
                 android:maxLines="3"
-                android:hint="Enter symptoms" />
+                android:hint="@string/appointment_symptoms_hint"/>
 
         <TextView
-            android:layout_marginTop="20dp"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Diagnosis" />
+                android:text="@string/appointment_diagnosis"/>
 
         <EditText
                 android:id="@+id/edit_text_diagnosis"
@@ -77,27 +78,28 @@
                 android:inputType="text"
                 android:imeOptions="actionNext"
                 android:maxLines="3"
-                android:hint="Enter diagnosis" />
+                android:hint="@string/appointment_diagnosis_hint"/>
 
         <TextView
-            android:layout_marginTop="20dp"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Date of Appointment" />
+                android:text="@string/appointment_date_of_appointment"/>
 
         <EditText
                 android:id="@+id/edit_text_date_of_appointment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="date"
                 android:focusable="false"
-                android:hint="Select date of appointment" />
+                android:hint="@string/appointment_date_of_appointment_hint"/>
 
         <Button
-            android:layout_marginTop="20dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/button_create_appointment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Create" />
+                android:text="@string/appointment_create"/>
 
     </LinearLayout>
 
