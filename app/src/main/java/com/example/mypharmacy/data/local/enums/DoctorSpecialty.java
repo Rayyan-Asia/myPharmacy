@@ -12,14 +12,19 @@ public enum DoctorSpecialty {
     RADIOLOGIST("Radiologist"),
     UROLOGIST("Urologist");
 
-    private String displayName;
+    private final String value;
 
-    DoctorSpecialty(String displayName) {
-        this.displayName = displayName;
+    DoctorSpecialty(String value) {
+        this.value = value;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return value;
     }
 }
 

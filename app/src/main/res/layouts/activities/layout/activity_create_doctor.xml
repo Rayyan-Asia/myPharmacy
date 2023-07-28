@@ -25,12 +25,16 @@
             android:layout_height="wrap_content"
             android:hint="Name"/>
 
-    <EditText
+    <TextView
         android:layout_marginTop="20dp"
-            android:id="@+id/specialtyEditText"
+        android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Specialty"/>
+    <Spinner
+        android:id="@+id/specialty_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <EditText
         android:layout_marginTop="20dp"
