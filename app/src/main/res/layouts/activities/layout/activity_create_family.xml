@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/med_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+
+        android:layout_marginTop="200dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/rounded_rectangle"
+        android:orientation="vertical"
+        android:outlineProvider="background"
+        android:padding="16dp">
+
+        <TextView
+            style="@style/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please enter family information" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/name"
+            android:textStyle="bold"
+            android:textColor="@color/myPharmacy_main_color"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/edit_text_family_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Where is the family profile picture saved?"
+            android:textStyle="bold"
+            android:textColor="@color/myPharmacy_main_color"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/storage_location_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@string/manufacturer"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+
+
+        <Button
+            android:id="@+id/create_family_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Add Family" />
+
+    </LinearLayout>
+</ScrollView>

@@ -31,4 +31,6 @@ public class Person {
     public String maritalStatus;
     @ColumnInfo(name = "blood_type")
     public String bloodType;
+    @ColumnInfo(name = "profile_pic_path")
+    public String profilePicPath;
 }

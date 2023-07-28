@@ -23,12 +23,17 @@ public class PersonRepositoryImpl implements PersonRepository {
     }
 
     @Override
-    public void insertPerson(Person person) {
-        personDao.insertPerson(person);
+    public long insertPerson(Person person) {
+        return personDao.insertPerson(person);
     }
 
     @Override
     public Person getPerson() {
         return personDao.getPerson();
+    }
+
+    @Override
+    public Person getPersonWithId(int id) {
+        return personDao.getPersonWithId(id);
     }
 }

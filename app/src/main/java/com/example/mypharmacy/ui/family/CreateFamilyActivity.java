@@ -1,11 +1,10 @@
-package com.example.mypharmacy.ui.medRecord.labTest;
+package com.example.mypharmacy.ui.family;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,71 +13,59 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mypharmacy.R;
+import com.example.mypharmacy.data.local.entities.Family;
 import com.example.mypharmacy.data.local.entities.LabTest;
+import com.example.mypharmacy.data.local.enums.DoctorSpecialty;
 import com.example.mypharmacy.data.local.enums.StorageType;
-import com.example.mypharmacy.data.local.repositories.LabTestRepository;
-import com.example.mypharmacy.data.local.repositories.PersonRepository;
-import com.example.mypharmacy.data.local.repositories.impl.LabTestRepositoryImpl;
-import com.example.mypharmacy.data.local.repositories.impl.PersonRepositoryImpl;
+import com.example.mypharmacy.data.local.repositories.FamilyRepository;
+import com.example.mypharmacy.data.local.repositories.impl.FamilyRepositoryImpl;
 import com.example.mypharmacy.ui.MainActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import lombok.NonNull;
+public class CreateFamilyActivity extends AppCompatActivity {
 
+    private EditText familyNameEditText;
+    private Button addFamilyButton;
 
-public class CreateLabTestActivity extends AppCompatActivity {
-    Button submit;
-    private Spinner typeSpinner;
-    private EditText fileNameEditText;
-    private EditText labTestDate;
-    private String fileName;
-    private LocalDate TEST_DATE;
-    PersonRepository personRepository = new PersonRepositoryImpl(this);
-    LabTestRepository repository = new LabTestRepositoryImpl(this);
+    private FamilyRepository familyRepository;
+    private String name;
+
     private static final int REQUEST_CODE_PICK_FILE = 3;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_PERMISSION_CAMERA = 2;
-
+    private Spinner storageLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_lab_test);
-        submit = findViewById(R.id.submit_lab_type_button);
-        typeSpinner = findViewById(R.id.lab_test_type_spinner);
-        fileNameEditText = findViewById(R.id.lab_test_name_edit_text);
-        labTestDate = findViewById(R.id.test_date_field);
+        setContentView(R.layout.activity_create_family);
+        familyNameEditText = findViewById(R.id.edit_text_family_name);
+        addFamilyButton = findViewById(R.id.create_family_button);
+        storageLocation = findViewById(R.id.storage_location_spinner);
         ArrayAdapter<StorageType> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, StorageType.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        typeSpinner.setAdapter(adapter);
-        initListeners();
+        storageLocation.setAdapter(adapter);
+        familyRepository = new FamilyRepositoryImpl(this);
+        setupListeners();
     }
 
-    private void initListeners() {
-
-        submit.setOnClickListener(e -> {
-            fileName = fileNameEditText.getText().toString().trim();
-            if (fileName.equals("") || fileName.length() <= 3) {
-                Toast.makeText(getApplicationContext(), "Please enter a proper name.",
-                        Toast.LENGTH_LONG).show();
-            } else if (TEST_DATE == null || TEST_DATE.isAfter(LocalDate.now())) {
-                Toast.makeText(getApplicationContext(), "Please enter a proper test date",
-                        Toast.LENGTH_LONG).show();
-            } else {
-                StorageType type = (StorageType) typeSpinner.getSelectedItem();
+    private void setupListeners() {
+        addFamilyButton.setOnClickListener(e->{
+            name = familyNameEditText.getText().toString().trim();
+            if(name.length() <= 3 || name.length() >= 32){
+                familyNameEditText.setError("Please enter a proper name longer than 3 or less than 32 characters");
+            }else{
+               StorageType type =  (StorageType)storageLocation.getSelectedItem();
                 if (type == StorageType.ADD_FROM_LOCAL_STORAGE) {
                     // open storage
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -89,24 +76,6 @@ public class CreateLabTestActivity extends AppCompatActivity {
                 }
             }
 
-        });
-        labTestDate.setOnClickListener(e -> {
-            final Calendar c = Calendar.getInstance();
-            int mYear = c.get(Calendar.YEAR); // current year
-            int mMonth = c.get(Calendar.MONTH); // current month
-            int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-            // date picker dialog
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            // set day of month , month and year value in the edit text
-
-                            labTestDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            TEST_DATE = LocalDate.of(year, monthOfYear + 1, dayOfMonth);
-                        }
-                    }, mYear, mMonth, mDay);
-            datePickerDialog.show();
         });
     }
 
@@ -120,20 +89,6 @@ public class CreateLabTestActivity extends AppCompatActivity {
         } else {
             // Permission is already granted, start camera activity
             startCameraActivity();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_PERMISSION_CAMERA) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Camera permission granted, start camera activity
-                startCameraActivity();
-            } else {
-                // Camera permission denied
-                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
@@ -167,8 +122,10 @@ public class CreateLabTestActivity extends AppCompatActivity {
                 Toast.makeText(this, "Failed to retrieve image", Toast.LENGTH_SHORT).show();
             }
         }
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+        finishAndRemoveTask();
     }
-
 
     private File storeImage(Bitmap image) {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
@@ -187,16 +144,14 @@ public class CreateLabTestActivity extends AppCompatActivity {
 
     private void saveImageToDatabase(String path) {
         // Get the DAO for the image table.
-        LabTest test = new LabTest();
+        Family family = new Family();
 
         Thread thread = new Thread() {
             @Override
             public void run() {
-                test.testName = fileName;
-                test.path = path;
-                test.dateOfTest = TEST_DATE;
-                test.personId = personRepository.getPerson().id;
-                repository.insertLabTest(test);
+                family.name = name;
+                family.profilePicPath = path;
+                familyRepository.insertFamily(family);
             }
         };
         thread.start();
@@ -208,6 +163,8 @@ public class CreateLabTestActivity extends AppCompatActivity {
         startActivity(intent);
         finish(); // Optional: Finish the current activity to remove it from the stack
     }
+
+
 
 
 }
