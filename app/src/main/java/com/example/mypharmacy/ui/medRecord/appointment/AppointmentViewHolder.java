@@ -1,14 +1,11 @@
 package com.example.mypharmacy.ui.medRecord.appointment;
-
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mypharmacy.R;
-import com.example.mypharmacy.data.local.entities.Appointment;
 import com.example.mypharmacy.data.local.entities.Appointment;
 import com.example.mypharmacy.data.local.repositories.AppointmentRepository;
 import com.example.mypharmacy.data.local.repositories.DoctorRepository;
@@ -38,14 +35,23 @@ public class AppointmentViewHolder extends RecyclerView.ViewHolder {
         appointmentSymptoms.setText(appointment.getSymptoms());
         appointmentDiagnosis.setText(appointment.getDiagnosis());
         appointmentDate.setText(appointment.getDateOfAppointment().toString());
-        DoctorRepository doctorRepository = new DoctorRepositoryImpl(context);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                appointmentDoctor.setText(doctorRepository.getDoctor(appointment.getDoctorId()).getName());
-            }
-        }).start();
+
+        // Execute AsyncTask to fetch and set the doctor's name
+        new FetchDoctorNameTask().execute(appointment.getDoctorId());
+    }
+
+    // AsyncTask for fetching the doctor's name
+    private class FetchDoctorNameTask extends AsyncTask<Integer, Void, String> {
+        @Override
+        protected String doInBackground(Integer... params) {
+            int doctorId = params[0];
+            DoctorRepository doctorRepository = new DoctorRepositoryImpl(context);
+            return doctorRepository.getDoctor(doctorId).getName();
+        }
+
+        @Override
+        protected void onPostExecute(String doctorName) {
+            appointmentDoctor.setText(doctorName);
+        }
     }
 }
-
-
