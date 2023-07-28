@@ -3,8 +3,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="?attr/actionBarSize"
-        android:background="@drawable/med_background"
-        android:paddingBottom="@dimen/navigation_bar_height">
+        android:background="@drawable/med_background">
 
     <GridLayout
             android:layout_width="match_parent"
