@@ -51,6 +51,74 @@
                 android:spinnerMode="dropdown"/>
 
         <TextView
+                android:text="Select Drug"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
+
+        <RadioGroup
+                android:id="@+id/radio_group_frequency_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+            <RadioButton
+                    android:id="@+id/radio_button_one"
+                    android:text="@string/one_drug"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
+
+            <RadioButton
+                    android:id="@+id/radio_button_two"
+                    android:text="@string/two_drugs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
+
+            <RadioButton
+                    android:id="@+id/radio_button_three"
+                    android:text="@string/three_drugs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"/>
+        </RadioGroup>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+        <Spinner
+                android:id="@+id/spinner_drug_app_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black"
+                android:minHeight="48dp"/>
+
+        <Spinner
+                android:id="@+id/spinner_drug_app_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black"
+                android:minHeight="48dp"/>
+
+        <Spinner
+                android:id="@+id/spinner_drug_app_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black"
+                android:minHeight="48dp"/>
+
+    </LinearLayout>
+
+        <TextView
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

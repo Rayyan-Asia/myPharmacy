@@ -1,5 +1,6 @@
 package com.example.mypharmacy.ui.medRecord.appointment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
@@ -7,10 +8,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Appointment;
+import com.example.mypharmacy.data.local.entities.AppointmentDrug;
+import com.example.mypharmacy.data.local.entities.Reminder;
 import com.example.mypharmacy.data.local.repositories.AppointmentRepository;
 import com.example.mypharmacy.data.local.repositories.DoctorRepository;
 import com.example.mypharmacy.data.local.repositories.impl.AppointmentRepositoryImpl;
 import com.example.mypharmacy.data.local.repositories.impl.DoctorRepositoryImpl;
+import com.example.mypharmacy.ui.medReminder.DrugConflictAsyncTask;
 
 public class AppointmentViewHolder extends RecyclerView.ViewHolder {
     private final Context context;
@@ -54,4 +58,5 @@ public class AppointmentViewHolder extends RecyclerView.ViewHolder {
             appointmentDoctor.setText(doctorName);
         }
     }
+
 }

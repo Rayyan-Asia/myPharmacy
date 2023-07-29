@@ -16,9 +16,9 @@ import java.time.LocalDate;
 
 @Database(entities = {Person.class, Doctor.class, Drug.class, Prescription.class, Document.class,
         Appointment.class, LabTest.class, DocumentTest.class, AppointmentPrescription.class,
-        Menstruation.class, Reminder.class, User.class, DrugAlias.class, DrugConflict.class,FamilyMember.class, Family.class},
-        version = 10, autoMigrations = {@AutoMigration(from = 1, to = 2), @AutoMigration(from = 3, to = 4), @AutoMigration(from = 5, to = 6),
-        @AutoMigration(from = 6, to = 7), @AutoMigration(from = 7, to = 8), @AutoMigration(from = 8, to = 9), @AutoMigration(from = 9, to = 10)})
+        Menstruation.class, Reminder.class, User.class, DrugAlias.class, DrugConflict.class,FamilyMember.class, Family.class, AppointmentDrug.class},
+        version = 11, autoMigrations = {@AutoMigration(from = 1, to = 2), @AutoMigration(from = 3, to = 4), @AutoMigration(from = 5, to = 6),
+        @AutoMigration(from = 6, to = 7), @AutoMigration(from = 7, to = 8), @AutoMigration(from = 8, to = 9), @AutoMigration(from = 9, to = 10), @AutoMigration(from = 10, to = 11)})
 public abstract class myPharmacyDatabase extends RoomDatabase {
     private static final String DB_NAME = "myPharmacy.db";
     private static myPharmacyDatabase instance;
@@ -51,6 +51,8 @@ public abstract class myPharmacyDatabase extends RoomDatabase {
      public abstract FamilyMemberDao getFamilyMemberDao();
 
      public abstract FamilyDao getFamilyDao();
+
+     public abstract AppoinmentDrugDao getAppointmentDrugDao();
 
      public static synchronized myPharmacyDatabase getInstance(Context context) {
           if (instance == null) {

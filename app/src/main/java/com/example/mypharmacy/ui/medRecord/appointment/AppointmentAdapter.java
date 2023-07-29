@@ -1,5 +1,6 @@
 package com.example.mypharmacy.ui.medRecord.appointment;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentViewHold
         Appointment appointment = appointmentList.get(position);
         holder.bind(appointment);
         holder.itemView.setOnClickListener(e -> {
-
+            Intent intent = new Intent(holder.itemView.getContext(), AppointmentDrugListActivity.class);
+            intent.putExtra("appointmentId",appointment.getId());
+            holder.itemView.getContext().startActivity(intent);
         });
     }
     public void updateData(List<Appointment> data) {

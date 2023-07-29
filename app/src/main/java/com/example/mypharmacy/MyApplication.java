@@ -134,15 +134,6 @@ public class MyApplication extends Application {
                     drugRepository.insertDrug(drug11);
                     drugRepository.insertDrug(drug12);
                 }
-                Appointment appointment = new Appointment();
-                appointment.dateOfAppointment= LocalDate.of(2020,6,23);
-                appointment.personId = 6;
-                appointment.id = 0;
-                appointment.diagnosis = "needs help";
-                appointment.doctorId = 1;
-                appointment.symptoms = "headache";
-                appointment.title = "headache";
-                appointmentRepository.insertAppointment(appointment);
             }
         }).start();
     }
