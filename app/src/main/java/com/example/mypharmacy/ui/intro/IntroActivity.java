@@ -10,7 +10,7 @@ import com.example.mypharmacy.data.local.repositories.impl.PersonRepositoryImpl;
 
 public class IntroActivity extends AppCompatActivity {
     PersonRepository personRepository;
-    EditText firstNameField;
+    public EditText firstNameField;
     EditText lastNameField;
     Spinner genderSpinner;
     EditText birthDayField;

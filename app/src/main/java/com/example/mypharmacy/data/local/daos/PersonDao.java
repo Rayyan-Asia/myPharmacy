@@ -11,6 +11,8 @@ public interface PersonDao {
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         long insertPerson(Person person);
 
-        @Query("SELECT * FROM Person LIMIT 1;")
+        @Query("SELECT * FROM Person WHERE id == 1 LIMIT 1;")
         Person getPerson();
+        @Query("SELECT * FROM Person WHERE id == :id LIMIT 1;")
+        Person getPersonWithId(int id);
 }

@@ -1,38 +1,43 @@
 package com.example.mypharmacy.ui.family;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.mypharmacy.R;
-import com.example.mypharmacy.data.local.entities.FamilyMemeber;
+import com.example.mypharmacy.data.local.entities.Family;
+import com.example.mypharmacy.data.local.entities.FamilyMember;
+import com.example.mypharmacy.data.local.entities.LabTest;
+
+import java.io.File;
 
 public class FamilyViewHolder extends RecyclerView.ViewHolder {
     private final Context context;
-    private TextView family_name;
-    private TextView family_role;
-    private TextView family_phone;
-    private TextView family_email;
-
+    private TextView name;
+    private ImageView imageView;
 
     public FamilyViewHolder(@NonNull View itemView) {
         super(itemView);
-        context = itemView.getContext();
-        family_name = itemView.findViewById(R.id.family_member_name);
-        family_role = itemView.findViewById(R.id.family_member_role);
-        family_phone = itemView.findViewById(R.id.family_member_phone);
-        family_email = itemView.findViewById(R.id.family_member_email);
-
+        this.context = itemView.getContext();
+        name = itemView.findViewById(R.id.family_name_text);
+        imageView = itemView.findViewById(R.id.file_view_family);
     }
+    public void bind(Family family) {
+        name.setText(family.name);
+        File file = new File(family.profilePicPath);
+        if (file.exists()) {
+            Glide.with(context)
+                    .load(file) // Assuming the image path is stored in the 'path' variable of the LabTest object
+                    .into(imageView);
+        } else {
+            Log.e("ERROR", "FILE NOT FOUND!!!! " + family.profilePicPath);
+        }
 
-    public void bind(FamilyMemeber familyMember) {
-
-                family_name.setText(familyMember.getFirstName() + " " + familyMember.getLastName());
-                family_role.setText(familyMember.getRole());
-                family_phone.setText(""+familyMember.getPhoneNumber());
-                family_email.setText(familyMember.getEmail());
     }
 }
-
-

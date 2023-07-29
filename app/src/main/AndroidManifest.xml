@@ -29,6 +29,18 @@
         android:theme="@style/MyPharmacyTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.family.FamilyMemberAppointmentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.family.CreateFamilyMemberActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.family.FamilyMemberListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.family.CreateFamilyActivity"
+            android:exported="false" />
 
         <receiver
             android:name=".ui.medReminder.ReminderBroadcastReceiver"
@@ -172,29 +184,6 @@
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.family.FamilyList"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain"/>
-            </intent-filter>
-        </activity>
-
-        <activity
-                android:name=".ui.family.FamilyJoinCreate"
-                android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
 
                 <data android:mimeType="text/plain" />
             </intent-filter>

@@ -1,11 +1,11 @@
 package com.example.mypharmacy.data.local.enums;
 
-public enum LabTestType {
+public enum StorageType {
     ADD_NEW("Take a picture"),
     ADD_FROM_LOCAL_STORAGE("Add from local storage");
     private final String value;
 
-    LabTestType(String value) {
+    StorageType(String value) {
         this.value = value;
     }
 
