@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="60dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true">
 
@@ -20,6 +20,7 @@
             android:layout_width="143dp"
             android:layout_height="match_parent"
             android:scaleType="centerInside"
+            android:background="@drawable/circle_background"
             android:layout_marginRight="20dp"
             android:src="@drawable/file_icon" />
 

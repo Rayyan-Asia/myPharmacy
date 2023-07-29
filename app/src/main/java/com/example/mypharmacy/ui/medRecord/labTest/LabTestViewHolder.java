@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.LabTest;
 
@@ -38,6 +40,7 @@ public class LabTestViewHolder extends RecyclerView.ViewHolder {
         if (file.exists()) {
             Glide.with(context)
                     .load(file) // Assuming the image path is stored in the 'path' variable of the LabTest object
+                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                     .into(imageView);
         } else {
             Log.e("ERROR", "FILE NOT FOUND!!!! " + labTest.path);

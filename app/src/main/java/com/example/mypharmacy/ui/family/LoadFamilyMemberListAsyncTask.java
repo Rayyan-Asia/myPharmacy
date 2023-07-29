@@ -43,7 +43,8 @@ public class LoadFamilyMemberListAsyncTask extends AsyncTask<Void, Void, List<Fa
         this.familyMembers = familyMembers;
         if (familyMembers.size() == 0) {
             // Start the CreateFamilyActivity if families list has size 0
-            Intent intent = new Intent(context, CreateFamilyActivity.class);
+            Intent intent = new Intent(context, CreateFamilyMemberActivity.class);
+            intent.putExtra("familyId",familyId);
             context.startActivity(intent);
         } else {
             // Update the RecyclerView with the loaded family list

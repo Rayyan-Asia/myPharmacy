@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/light_pink"
+    app:cardCornerRadius="60dp"
     android:elevation="4dp"
     tools:context=".ui.medRecord.labTest.LabTestViewHolder">
 
@@ -21,6 +22,7 @@
             android:layout_width="143dp"
             android:layout_height="match_parent"
             android:layout_marginRight="20dp"
+            android:background="@drawable/circle_background"
             android:src="@drawable/file_icon" />
 
         <LinearLayout
