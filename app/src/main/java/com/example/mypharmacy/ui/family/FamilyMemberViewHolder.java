@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Family;
 import com.example.mypharmacy.data.local.entities.FamilyMember;
@@ -47,6 +49,7 @@ public class FamilyMemberViewHolder extends RecyclerView.ViewHolder {
                     if (file.exists()) {
                         Glide.with(context)
                                 .load(file) // Assuming the image path is stored in the 'path' variable of the LabTest object
+                                .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                                 .into(profilePicView);
                     } else {
                         Log.e("ERROR", "FILE NOT FOUND!!!! " + person.profilePicPath);

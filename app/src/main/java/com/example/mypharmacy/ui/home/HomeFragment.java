@@ -3,17 +3,25 @@ package com.example.mypharmacy.ui.home;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.entities.Person;
 import com.example.mypharmacy.data.local.repositories.PersonRepository;
 import com.example.mypharmacy.data.local.repositories.impl.PersonRepositoryImpl;
 import com.example.mypharmacy.ui.menu.MenuActivity;
+
+import java.io.File;
 
 public class HomeFragment extends Fragment {
 
@@ -58,6 +66,7 @@ public class HomeFragment extends Fragment {
         TextView phoneView = getView().findViewById(R.id.phone_number_textview);
         TextView maritalStatus = getView().findViewById(R.id.marital_status_textview);
         TextView bloodType = getView().findViewById(R.id.blood_type_textview);
+        ImageView imageView = getView().findViewById(R.id.profile_imageview);
         nameView.setText(new StringBuilder().append(person.getFirstName()).append(" ").append(person.getLastName()).toString());
         genderView.setText(person.getGender());
         birthView.setText(person.getBirthDate().toString());
@@ -65,6 +74,14 @@ public class HomeFragment extends Fragment {
         phoneView.setText(new StringBuilder().append('0').append(person.getPhoneNumber()).toString());
         maritalStatus.setText(person.getMaritalStatus());
         bloodType.setText(person.getBloodType());
-
+        File file = new File(person.profilePicPath);
+        if (file.exists()) {
+            Glide.with(this)
+                    .load(file) // Assuming the image path is stored in the 'path' variable of the LabTest object
+                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                    .into(imageView);
+        } else {
+            Log.e("ERROR", "FILE NOT FOUND!!!! " + person.profilePicPath);
+        }
     }
 }
