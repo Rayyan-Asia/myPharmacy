@@ -4,9 +4,15 @@ import android.app.Application;
 
 import com.example.mypharmacy.data.local.entities.Appointment;
 import com.example.mypharmacy.data.local.entities.Drug;
+import com.example.mypharmacy.data.local.entities.DrugAlias;
+import com.example.mypharmacy.data.local.entities.DrugConflict;
 import com.example.mypharmacy.data.local.repositories.AppointmentRepository;
+import com.example.mypharmacy.data.local.repositories.DrugAliasRepository;
+import com.example.mypharmacy.data.local.repositories.DrugConflictRepository;
 import com.example.mypharmacy.data.local.repositories.DrugRepository;
 import com.example.mypharmacy.data.local.repositories.impl.AppointmentRepositoryImpl;
+import com.example.mypharmacy.data.local.repositories.impl.DrugAliasRepositoryImpl;
+import com.example.mypharmacy.data.local.repositories.impl.DrugConflictRepositoryImpl;
 import com.example.mypharmacy.data.local.repositories.impl.DrugRepositoryImpl;
 import com.facebook.stetho.Stetho;
 
@@ -20,9 +26,27 @@ public class MyApplication extends Application {
         super.onCreate();
         DrugRepository drugRepository = new DrugRepositoryImpl(this);
         AppointmentRepository appointmentRepository = new AppointmentRepositoryImpl(this);
+        DrugAliasRepository drugAliasRepository = new DrugAliasRepositoryImpl(this);
+        DrugConflictRepository drugConflictRepository = new DrugConflictRepositoryImpl(this);
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Drug drug01 = new Drug();
+                drug01.setName("Advil");
+                drug01.setDescription("Pain reliever and fever reducer");
+                drug01.setManufacturer("Bayer");
+                drug01.setCategory("Analgesic");
+                drug01.setType("Tablet");
+                drug01.setExpiryDate(LocalDate.of(2024, 6, 30));
+
+                Drug drug02 = new Drug();
+                drug02.setName("Ibuprofen");
+                drug02.setDescription("Pain reliever and fever reducer");
+                drug02.setManufacturer("Bayer");
+                drug02.setCategory("Analgesic");
+                drug02.setType("Tablet");
+                drug02.setExpiryDate(LocalDate.of(2024, 6, 30));
+
                 Drug drug1 = new Drug();
                 drug1.setName("Aspirin");
                 drug1.setDescription("Pain reliever and fever reducer");
@@ -121,8 +145,10 @@ public class MyApplication extends Application {
 
                 // Insert drugs into the repository
                 if(drugRepository.getDrug(1) == null) {
-                    drugRepository.insertDrug(drug1);
-                    drugRepository.insertDrug(drug2);
+                    long drug01AliasId = drugRepository.insertDrug(drug01);
+                    long drug01AliasId2 = drugRepository.insertDrug(drug02);
+                    long drug1ConflictId = drugRepository.insertDrug(drug1);
+                    long drug2ConflictId = drugRepository.insertDrug(drug2);
                     drugRepository.insertDrug(drug3);
                     drugRepository.insertDrug(drug4);
                     drugRepository.insertDrug(drug5);
@@ -133,6 +159,19 @@ public class MyApplication extends Application {
                     drugRepository.insertDrug(drug10);
                     drugRepository.insertDrug(drug11);
                     drugRepository.insertDrug(drug12);
+
+                    DrugAlias drugAlias1 = new DrugAlias();
+                    drugAlias1.setDrugId1((int)drug01AliasId);
+                    drugAlias1.setDrugId2((int)drug01AliasId2);
+
+                    drugAliasRepository.insert(drugAlias1);
+
+                    DrugConflict drugConflict1 = new DrugConflict();
+                    drugConflict1.setDrugId1((int) drug1ConflictId);
+                    drugConflict1.setDrugId2((int) drug2ConflictId);
+
+                    drugConflictRepository.insert(drugConflict1);
+
                 }
             }
         }).start();

@@ -6,7 +6,7 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import lombok.Data;
-
+@Data
 @Entity(tableName = "drug_alias",
         foreignKeys = {
                 @ForeignKey(entity = Drug.class,

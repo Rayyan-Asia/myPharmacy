@@ -5,7 +5,11 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
 @Entity(tableName = "drug_conflict",
         foreignKeys = {
                 @ForeignKey(entity = Drug.class,
@@ -32,8 +36,4 @@ public class DrugConflict {
     @ColumnInfo(name = "drug_id_2")
     public int drugId2; // Second drug ID involved in the conflict
 
-    public DrugConflict(int drugId1, int drugId2) {
-        this.drugId1 = drugId1;
-        this.drugId2 = drugId2;
-    }
 }

@@ -3,6 +3,7 @@ package com.example.mypharmacy.data.local.repositories.impl;
 
 import android.content.Context;
 import com.example.mypharmacy.data.local.daos.DrugConflictDao;
+import com.example.mypharmacy.data.local.entities.DrugConflict;
 import com.example.mypharmacy.data.local.myPharmacyDatabase;
 import com.example.mypharmacy.data.local.repositories.DrugConflictRepository;
 import java.util.List;
@@ -18,5 +19,10 @@ public class DrugConflictRepositoryImpl implements DrugConflictRepository {
     @Override
     public List<Integer> getConflictingDrugIds(int givenDrugId) {
         return drugConflictDao.getConflictingDrugIds(givenDrugId);
+    }
+
+    @Override
+    public long insert(DrugConflict drugConflict) {
+        return 0;
     }
 }
