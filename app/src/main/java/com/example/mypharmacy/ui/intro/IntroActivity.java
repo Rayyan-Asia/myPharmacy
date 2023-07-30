@@ -285,6 +285,7 @@ public class IntroActivity extends AppCompatActivity {
         Thread thread = new Thread() {
             @Override
             public void run() {
+                person.id = 1;
                 person.profilePicPath = path;
                 personRepository.insertPerson(person);
             }
