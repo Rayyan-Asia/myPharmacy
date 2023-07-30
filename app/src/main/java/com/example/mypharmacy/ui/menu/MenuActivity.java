@@ -25,7 +25,7 @@ public class MenuActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         toolbar = findViewById(R.id.toolbar);
-
+        bottomNavigationView.setSelectedItemId(R.id.home_tab);
         setSupportActionBar(toolbar);
 
         // Set the listener for the BottomNavigationView
@@ -69,6 +69,12 @@ public class MenuActivity extends AppCompatActivity {
         // Set the Home tab as the default tab
         bottomNavigationView.setSelectedItemId(R.id.home_tab);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView.setSelectedItemId(R.id.home_tab);
     }
 
     @Override

@@ -6,7 +6,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import com.example.mypharmacy.MyApplication;
 import com.example.mypharmacy.R;
 import com.example.mypharmacy.data.local.repositories.NameRepository;
 import com.example.mypharmacy.data.local.repositories.impl.FirebaseNameRepository;

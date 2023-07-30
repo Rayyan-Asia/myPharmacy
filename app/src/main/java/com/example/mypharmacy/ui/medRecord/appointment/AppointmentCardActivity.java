@@ -44,7 +44,7 @@ public class AppointmentCardActivity extends AppCompatActivity {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    List<Appointment> appointments = appointmentRepository.getAllAppointments();
+                                    List<Appointment> appointments = appointmentRepository.getAppointmentsByPersonId(1);
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -61,7 +61,7 @@ public class AppointmentCardActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<Appointment> appointments = appointmentRepository.getAllAppointments();
+                List<Appointment> appointments = appointmentRepository.getAppointmentsByPersonId(1);
                 appointmentAdapter = new AppointmentAdapter(appointments);
                 appointmentRecycleView.setAdapter(appointmentAdapter);
             }

@@ -26,7 +26,7 @@
     <string name="appointment_date_of_appointment_hint">Select date of appointment</string>
     <string name="appointment_create">Create</string>
     <string name="appointment_title">Title</string>
-    <string name="one_drug">One Drug</string>
-    <string name="two_drugs">Two Drugs</string>
-    <string name="three_drugs">Three Drugs</string>
+    <string name="one_drug">1 Drug</string>
+    <string name="two_drugs">2 Drugs</string>
+    <string name="three_drugs">3 Drugs</string>
 </resources>

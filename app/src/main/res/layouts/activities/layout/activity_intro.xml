@@ -1,129 +1,127 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/med_background">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/med_background">
 
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/rounded_rectangle"
+        android:clipToPadding="false"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:outlineProvider="background"
+        android:padding="16dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/intro_view"
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_horizontal"
+            android:text="@string/tell_us_about_yourself" />
+
+        <!-- Add your input form elements here -->
+        <EditText
+            android:id="@+id/first_name_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:padding="16dp"
-            android:elevation="8dp"
-            android:outlineProvider="background"
-            android:background="@drawable/rounded_rectangle">
+            android:layout_marginTop="16dp"
+            android:hint="@string/first_name" />
 
-            <TextView
-                android:id="@+id/intro_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+        <EditText
+            android:id="@+id/last_name_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/last_name" />
 
-                android:text="@string/tell_us_about_yourself"
-                style="@style/title"/>
+        <Spinner
+            android:id="@+id/gender_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:entries="@array/gender"
+            android:hint="@string/gender_hint" />
 
-            <!-- Add your input form elements here -->
-            <EditText
-                android:id="@+id/first_name_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/first_name"/>
+        <EditText
+            android:id="@+id/birth_day_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:focusable="false"
+            android:hint="@string/select_a_date" />
 
-            <EditText
-                android:id="@+id/last_name_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/last_name"/>
+        <EditText
+            android:id="@+id/address_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/address" />
 
-            <Spinner
-                android:id="@+id/gender_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/gender_hint"
-                android:entries="@array/gender"/>
+        <EditText
+            android:id="@+id/phone_number_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/phone_number"
+            android:inputType="phone" />
 
-            <EditText
-                android:id="@+id/birth_day_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/select_a_date"
-                android:focusable="false"/>
+        <EditText
+            android:id="@+id/weight_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/weight_kg"
+            android:inputType="numberDecimal" />
 
-            <EditText
-                android:id="@+id/address_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/address"/>
+        <EditText
+            android:id="@+id/height_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/height_meters"
+            android:inputType="numberDecimal" />
 
-            <EditText
-                android:id="@+id/phone_number_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:inputType="phone"
-                android:hint="@string/phone_number"/>
+        <Spinner
+            android:id="@+id/marital_status_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:entries="@array/marital_status"
+            android:hint="@string/marital_status_hint" />
 
-            <EditText
-                android:id="@+id/weight_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:inputType="numberDecimal"
-                android:hint="@string/weight_kg"/>
+        <Spinner
+            android:id="@+id/blood_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:entries="@array/blood_types"
+            android:hint="@string/blood_type_hint" />
 
-            <EditText
-                android:id="@+id/height_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:inputType="numberDecimal"
-                android:hint="@string/height_meters"/>
+        <!-- Add more form elements here -->
+        <Spinner
+            android:id="@+id/user_profile_pic_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Profile Pic Location" />
+        <!-- Add spinner for profile pic -->
 
-            <Spinner
-                android:id="@+id/marital_status_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/marital_status_hint"
-                android:entries="@array/marital_status"/>
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:text="@string/save" />
 
-            <Spinner
-                android:id="@+id/blood_type_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/blood_type_hint"
-                android:entries="@array/blood_types"/>
-
-            <!-- Add more form elements here -->
-            <Spinner
-                android:id="@+id/user_profile_pic_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Profile Pic Location"/>
-            <!-- Add spinner for profile pic -->
-
-            <Button
-                android:id="@+id/save_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/save"
-                android:layout_gravity="end"/>
-
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </RelativeLayout>
