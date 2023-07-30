@@ -74,8 +74,8 @@ public class HomeFragment extends Fragment {
         phoneView.setText(new StringBuilder().append('0').append(person.getPhoneNumber()).toString());
         maritalStatus.setText(person.getMaritalStatus());
         bloodType.setText(person.getBloodType());
-        File file = new File(person.profilePicPath);
-        if (file.exists()) {
+        if (person.getProfilePicPath() != null) {
+            File file = new File(person.getProfilePicPath());
             Glide.with(this)
                     .load(file) // Assuming the image path is stored in the 'path' variable of the LabTest object
                     .apply(RequestOptions.bitmapTransform(new CircleCrop()))
