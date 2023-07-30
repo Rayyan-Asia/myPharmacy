@@ -1,174 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/med_background">
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/med_background">
 
     <LinearLayout
-            android:layout_marginTop="100dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/rounded_rectangle"
+        android:clipToPadding="false"
+        android:elevation="8dp"
+        android:outlineProvider="background"
+        android:padding="16dp">
 
+        <TextView
+            style="@style/title"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="50dp"
+            android:text="Tell Us about them." />
+
+        <!-- Add your input form elements here -->
+        <EditText
+            android:id="@+id/edit_text_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:outlineProvider="background"
-            android:background="@drawable/rounded_rectangle">
-
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/title"
-                android:text="@string/appointment_form_title"/>
-
-        <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/appointment_title"/>
-
-        <EditText
-                android:id="@+id/edit_text_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:imeOptions="actionNext"
-                android:maxLines="1"
-                android:hint="@string/appointment_title_hint"/>
-
-        <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/appointment_doctor"/>
+            android:layout_marginTop="16dp"
+            android:hint="@string/appointment_title" />
 
         <Spinner
-                android:id="@+id/spinner_doctor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"/>
+            android:id="@+id/spinner_doctor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:spinnerMode="dropdown" />
 
         <TextView
-                android:text="Select Drug"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/black"/>
+            android:text="Select Amount of Medications"
+            android:paddingTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
 
         <RadioGroup
-                android:id="@+id/radio_group_frequency_app"
+            android:id="@+id/radio_group_frequency_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_button_one"
+                android:text="@string/one_drug"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:textColor="@color/black" />
 
             <RadioButton
-                    android:id="@+id/radio_button_one"
-                    android:text="@string/one_drug"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"/>
+                android:id="@+id/radio_button_two"
+                android:text="@string/two_drugs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black" />
 
             <RadioButton
-                    android:id="@+id/radio_button_two"
-                    android:text="@string/two_drugs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"/>
-
-            <RadioButton
-                    android:id="@+id/radio_button_three"
-                    android:text="@string/three_drugs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"/>
+                android:id="@+id/radio_button_three"
+                android:text="@string/three_drugs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black" />
         </RadioGroup>
 
-    <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:orientation="vertical">
 
-        <Spinner
+            <Spinner
                 android:id="@+id/spinner_drug_app_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/black"
-                android:minHeight="48dp"/>
+                android:minHeight="48dp" />
 
-        <Spinner
+            <Spinner
                 android:id="@+id/spinner_drug_app_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/black"
-                android:minHeight="48dp"/>
+                android:minHeight="48dp" />
 
-        <Spinner
+            <Spinner
                 android:id="@+id/spinner_drug_app_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/black"
-                android:minHeight="48dp"/>
+                android:minHeight="48dp" />
 
-    </LinearLayout>
-
-        <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/appointment_symptoms"/>
+        </LinearLayout>
 
         <EditText
-                android:id="@+id/edit_text_symptoms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:imeOptions="actionNext"
-                android:maxLines="3"
-                android:hint="@string/appointment_symptoms_hint"/>
-
-        <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/appointment_diagnosis"/>
+            android:id="@+id/edit_text_symptoms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:inputType="text"
+            android:imeOptions="actionNext"
+            android:maxLines="3"
+            android:hint="@string/appointment_symptoms_hint" />
 
         <EditText
-                android:id="@+id/edit_text_diagnosis"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:imeOptions="actionNext"
-                android:maxLines="3"
-                android:hint="@string/appointment_diagnosis_hint"/>
-
-        <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/appointment_date_of_appointment"/>
+            android:id="@+id/edit_text_diagnosis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:inputType="text"
+            android:imeOptions="actionNext"
+            android:maxLines="3"
+            android:hint="@string/appointment_diagnosis_hint" />
 
         <EditText
-                android:id="@+id/edit_text_date_of_appointment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="date"
-                android:focusable="false"
-                android:hint="@string/appointment_date_of_appointment_hint"/>
+            android:id="@+id/edit_text_date_of_appointment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:inputType="date"
+            android:focusable="false"
+            android:hint="@string/appointment_date_of_appointment_hint" />
 
         <Button
-                android:layout_marginTop="20dp"
-                android:id="@+id/button_create_appointment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/appointment_create"/>
+            android:id="@+id/button_create_appointment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/appointment_create" />
 
     </LinearLayout>
 
-</ScrollView>
+</RelativeLayout>

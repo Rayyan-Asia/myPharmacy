@@ -1,15 +1,14 @@
 package com.example.mypharmacy.ui.home;
-
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +24,17 @@ import java.io.File;
 
 public class HomeFragment extends Fragment {
 
+    TextView nameView;
+    TextView genderView;
+    TextView birthView;
+    TextView addressView;
+    TextView phoneView;
+    TextView maritalStatus;
+    TextView bloodType;
+    ImageView imageView;
+
+    Context context;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -32,41 +42,26 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        PersonRepository personRepository = new PersonRepositoryImpl(this.getContext());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final Person person = personRepository.getPerson();
-                // if the person is male hide menstrual calendar
-                if (person.getGender().equals("Male"))
-                    MenuActivity.bottomNavigationView.getMenu().findItem(R.id.menstrual_calendar_tab).setVisible(false);
-
-                else
-                    MenuActivity.bottomNavigationView.getMenu().findItem(R.id.menstrual_calendar_tab).setVisible(true);
-
-                // Pass the person object back to the main thread using a Handler
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        setPersonalInfo(person);
-                    }
-                });
-            }
-        }).start();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle bundle) {
+        this.context = view.getContext();
+        nameView = view.findViewById(R.id.name_textview);
+        genderView = view.findViewById(R.id.gender_textview);
+        birthView = view.findViewById(R.id.birthdate_textview);
+        addressView = view.findViewById(R.id.address_textview);
+        phoneView = view.findViewById(R.id.phone_number_textview);
+        maritalStatus = view.findViewById(R.id.marital_status_textview);
+        bloodType = view.findViewById(R.id.blood_type_textview);
+        imageView = view.findViewById(R.id.profile_imageview);
+
+        new LoadPersonDataTask().execute();
+    }
+
     private void setPersonalInfo(Person person) {
-        TextView nameView = getView().findViewById(R.id.name_textview);
-        TextView genderView = getView().findViewById(R.id.gender_textview);
-        TextView birthView = getView().findViewById(R.id.birthdate_textview);
-        TextView addressView = getView().findViewById(R.id.address_textview);
-        TextView phoneView = getView().findViewById(R.id.phone_number_textview);
-        TextView maritalStatus = getView().findViewById(R.id.marital_status_textview);
-        TextView bloodType = getView().findViewById(R.id.blood_type_textview);
-        ImageView imageView = getView().findViewById(R.id.profile_imageview);
         nameView.setText(new StringBuilder().append(person.getFirstName()).append(" ").append(person.getLastName()).toString());
         genderView.setText(person.getGender());
         birthView.setText(person.getBirthDate().toString());
@@ -76,12 +71,35 @@ public class HomeFragment extends Fragment {
         bloodType.setText(person.getBloodType());
         if (person.getProfilePicPath() != null) {
             File file = new File(person.getProfilePicPath());
-            Glide.with(this)
-                    .load(file) // Assuming the image path is stored in the 'path' variable of the LabTest object
-                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
-                    .into(imageView);
+            if(file.exists()){
+                Glide.with(context)
+                        .load(file) // Assuming the image path is stored in the 'path' variable of the LabTest object
+                        .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                        .into(imageView);
+            }
+
         } else {
-            Log.e("ERROR", "FILE NOT FOUND!!!! " + person.profilePicPath);
+            Log.e("ERROR", "FILE NOT FOUND!!!! " + person.getProfilePicPath());
+        }
+    }
+
+    private class LoadPersonDataTask extends AsyncTask<Void, Void, Person> {
+        @Override
+        protected Person doInBackground(Void... voids) {
+            PersonRepository personRepository = new PersonRepositoryImpl(getContext());
+            return personRepository.getPerson();
+        }
+
+        @Override
+        protected void onPostExecute(Person person) {
+            // if the person is male hide menstrual calendar
+            if (person.getGender().equals("Male"))
+                MenuActivity.bottomNavigationView.getMenu().findItem(R.id.menstrual_calendar_tab).setVisible(false);
+            else
+                MenuActivity.bottomNavigationView.getMenu().findItem(R.id.menstrual_calendar_tab).setVisible(true);
+
+            // Update the UI with the retrieved person object
+            setPersonalInfo(person);
         }
     }
 }

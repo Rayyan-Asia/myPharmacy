@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.mypharmacy.R;
+import com.example.mypharmacy.SeedDataTask;
 import com.example.mypharmacy.data.local.entities.Person;
 import com.example.mypharmacy.data.local.repositories.PersonRepository;
 import com.example.mypharmacy.data.local.repositories.impl.PersonRepositoryImpl;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new SeedDataTask(this).execute();
         setTheme(R.style.Theme_MyPharmacy);
         setContentView(R.layout.activity_main);
         GifDrawable gifDrawable = null;

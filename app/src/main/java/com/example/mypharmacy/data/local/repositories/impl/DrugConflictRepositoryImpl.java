@@ -23,6 +23,6 @@ public class DrugConflictRepositoryImpl implements DrugConflictRepository {
 
     @Override
     public long insert(DrugConflict drugConflict) {
-        return 0;
+        return drugConflictDao.insert(drugConflict);
     }
 }
